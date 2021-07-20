@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.improove_flutter">
+    package="com.example.improove">
    <application
-        android:label="improove_flutter"
+        android:label="improove"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"

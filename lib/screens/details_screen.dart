@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:improove_flutter/widgets/bottom_nav_bar.dart';
-import 'package:improove_flutter/widgets/search_bar.dart';
+import 'package:improove/widgets/bottom_nav_bar.dart';
+import 'package:improove/widgets/search_bar.dart';
 
 class DetailsScreen extends StatelessWidget {
   @override

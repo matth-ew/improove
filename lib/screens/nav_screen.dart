@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:improove_flutter/data.dart';
-import 'package:improove_flutter/screens/home_screen.dart';
-import 'package:improove_flutter/screens/profile_screen.dart';
-//import 'package:improove_flutter/screens/details_screen.dart';
+import 'package:improove/data.dart';
+import 'package:improove/screens/home_screen.dart';
+import 'package:improove/screens/profile_screen.dart';
+//import 'package:improove/screens/details_screen.dart';
 
 // final selectedVideoProvider = StateProvider<Video?>((ref) => null);
 

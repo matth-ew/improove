@@ -1,4 +1,4 @@
-package com.example.improove_flutter
+package com.example.improove
 
 import io.flutter.embedding.android.FlutterActivity
 

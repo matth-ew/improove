@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:improove_flutter/screens/details_screen.dart';
-// import 'package:improove_flutter/widgets/bottom_nav_bar.dart';
-import 'package:improove_flutter/widgets/category_card.dart';
-import 'package:improove_flutter/widgets/search_bar.dart';
+import 'package:improove/screens/details_screen.dart';
+// import 'package:improove/widgets/bottom_nav_bar.dart';
+import 'package:improove/widgets/category_card.dart';
+import 'package:improove/widgets/search_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class HomeScreen extends StatelessWidget {
