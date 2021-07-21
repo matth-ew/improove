@@ -9,8 +9,8 @@ class User {
   const User({required this.name, required this.surname});
 
   const User.initial()
-      : name = "",
-        surname = "";
+      : name = "prova",
+        surname = "prova";
 
   User copyWith({String? name, String? surname}) {
     return User(

@@ -2,12 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/selectors/user.dart';
-import 'package:improove/screens/details_screen.dart';
 // import 'package:improove/widgets/bottom_nav_bar.dart';
-import 'package:improove/widgets/category_card.dart';
-import 'package:improove/widgets/search_bar.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:improove/data.dart';
+import 'package:improove/widgets/training_preview_card.dart';
 import 'package:redux/redux.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -35,7 +32,8 @@ class ProfileScreen extends StatelessWidget {
                   maxRadius: 100.0,
                 ),
               ),
-              Text(username)
+              Text(username),
+              TrainingPreviewCard()
             ],
           ));
         });
