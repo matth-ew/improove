@@ -13,31 +13,75 @@ import 'package:redux/redux.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector(
-        converter: (Store<AppState> store) => userSelector(store.state.user),
-        builder: (BuildContext context, String username) {
-          var size = MediaQuery.of(context)
-              .size; //this gonna give us total height and with of our device
-          return Scaffold(
-              // bottomNavigationBar: BottomNavBar(),
-              body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              SizedBox(
-                height: 20.0,
+    return SafeArea(
+      child: StoreConnector(
+          converter: (Store<AppState> store) => userSelector(store.state.user),
+          builder: (BuildContext context, String username) {
+            var size = MediaQuery.of(context)
+                .size; //this gonna give us total height and with of our device
+            return Scaffold(
+                // bottomNavigationBar: BottomNavBar(),
+                body: ListView(shrinkWrap: true, children: <Widget>[
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Center(
+                    child: CircleAvatar(
+                      foregroundImage:
+                          NetworkImage(currentUser.profileImageUrl),
+                      // radius: size.width * 0.2,
+                      minRadius: 20.0,
+                      maxRadius: 100.0,
+                    ),
+                  ),
+                  Text(username),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Center(
+                    child: CircleAvatar(
+                      foregroundImage:
+                          NetworkImage(currentUser.profileImageUrl),
+                      // radius: size.width * 0.2,
+                      minRadius: 20.0,
+                      maxRadius: 100.0,
+                    ),
+                  ),
+                  Text(username),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Center(
+                    child: CircleAvatar(
+                      foregroundImage:
+                          NetworkImage(currentUser.profileImageUrl),
+                      // radius: size.width * 0.2,
+                      minRadius: 20.0,
+                      maxRadius: 100.0,
+                    ),
+                  ),
+                  Text(username),
+                  SizedBox(
+                    height: 20.0,
+                  ),
+                  Center(
+                    child: CircleAvatar(
+                      foregroundImage:
+                          NetworkImage(currentUser.profileImageUrl),
+                      // radius: size.width * 0.2,
+                      minRadius: 20.0,
+                      maxRadius: 100.0,
+                    ),
+                  ),
+                  Text(username)
+                ],
               ),
-              Center(
-                child: CircleAvatar(
-                  foregroundImage: NetworkImage(currentUser.profileImageUrl),
-                  // radius: size.width * 0.2,
-                  minRadius: 20.0,
-                  maxRadius: 100.0,
-                ),
-              ),
-              Text(username)
-            ],
-          ));
-        });
+            ]));
+          }),
+    );
   }
 }
