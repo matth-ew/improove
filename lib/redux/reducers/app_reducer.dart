@@ -1,5 +1,6 @@
 import 'package:improove/redux/models/app_state.dart';
-import 'package:improove/redux/reducers/user.dart';
+import 'package:improove/redux/reducers/reducers.dart';
 
-AppState appReducer(AppState state, dynamic action) =>
-    AppState(user: userReducer(state.user, action));
+AppState appReducer(AppState state, dynamic action) => AppState(
+    user: userReducer(state.user, action),
+    training: trainingReducer(state.training, action));
