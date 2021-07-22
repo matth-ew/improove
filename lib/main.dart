@@ -19,7 +19,7 @@ class App extends StatelessWidget {
       // debugShowCheckedModeBanner: false,
       title: 'Improove',
       theme: CustomTheme.lightTheme,
-      darkTheme: CustomTheme.darkTheme,
+      // darkTheme: CustomTheme.darkTheme,
       home: NavScreen(),
     );
   }
