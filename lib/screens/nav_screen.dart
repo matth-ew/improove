@@ -20,8 +20,8 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   // static const double _playerMinHeight = 60.0;
 
-  // int _selectedIndex = 0;
-  int _selectedIndex = 3;
+  int _selectedIndex = 0;
+  // int _selectedIndex = 3;
 
   final _screens = [
     HomeScreen(),
@@ -35,10 +35,13 @@ class _NavScreenState extends State<NavScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle(
+      value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
         statusBarBrightness: Brightness.dark,
         statusBarIconBrightness: Brightness.dark,
+        systemNavigationBarColor: Colors.transparent,
+        // systemNavigationBarDividerColor: Colors.transparent,
+        systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
         body:

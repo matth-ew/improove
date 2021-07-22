@@ -13,7 +13,8 @@ class Training {
   const Training.initial()
       : name = "Dragonflag",
         duration = "18 minuti",
-        preview = "assets/images/training_preview.png";
+        preview =
+            "https://images.unsplash.com/photo-1619361728853-2542f3864532?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80";
 
   Training copyWith({String? name, String? duration, String? preview}) {
     return Training(

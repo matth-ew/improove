@@ -1,17 +1,21 @@
 class User {
   final String username;
   final String profileImageUrl;
+  final String thumbnailUrl;
   final String subscribers;
 
   const User({
     required this.username,
     required this.profileImageUrl,
+    required this.thumbnailUrl,
     required this.subscribers,
   });
 }
 
 const User currentUser = User(
   username: 'Marcus Ng',
+  thumbnailUrl:
+      'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80',
   profileImageUrl:
       'https://yt3.ggpht.com/ytc/AAUvwniE2k5PgFu9yr4sBVEs9jdpdILdMc7ruiPw59DpS0k=s88-c-k-c0x00ffffff-no-rj',
   subscribers: '100K',

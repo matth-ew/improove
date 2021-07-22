@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:improove/screens/details_screen.dart';
+// import 'package:improove/screens/details_screen.dart';
 // import 'package:improove/widgets/bottom_nav_bar.dart';
-import 'package:improove/widgets/category_card.dart';
-import 'package:improove/widgets/search_bar.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:improove/widgets/category_card.dart';
+// import 'package:improove/widgets/search_bar.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+
+import 'insctructor_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
@@ -12,6 +14,15 @@ class HomeScreen extends StatelessWidget {
         .size; //this gonna give us total height and with of our device
     return Scaffold(
         // bottomNavigationBar: BottomNavBar(),
-        body: Stack());
+        body: Center(
+      child: TextButton(
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => InstructorScreen()),
+            );
+          },
+          child: const Text("Cliccami")),
+    ));
   }
 }
