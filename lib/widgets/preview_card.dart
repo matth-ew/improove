@@ -43,7 +43,7 @@ class PreviewCard extends StatelessWidget {
     // 85 36
     // 20 20
 
-    return Container(
+    return SizedBox(
       height: heightCard,
       width: widthCard,
       child: Card(
@@ -103,7 +103,7 @@ class PreviewCard extends StatelessWidget {
                       ],
                     ),
                   ),
-                  Container(
+                  SizedBox(
                     width: heightAvatar,
                     height: heightAvatar,
                     child: ClipRRect(

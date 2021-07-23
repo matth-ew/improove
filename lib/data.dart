@@ -12,6 +12,20 @@ class User {
   });
 }
 
+class Training {
+  final String name;
+  final String duration;
+  final String preview;
+  final String description;
+
+  const Training({
+    required this.name,
+    required this.duration,
+    required this.preview,
+    required this.description,
+  });
+}
+
 const User currentUser = User(
   username: 'Marcus Ng',
   thumbnailUrl:
@@ -19,6 +33,15 @@ const User currentUser = User(
   profileImageUrl:
       'https://yt3.ggpht.com/ytc/AAUvwniE2k5PgFu9yr4sBVEs9jdpdILdMc7ruiPw59DpS0k=s88-c-k-c0x00ffffff-no-rj',
   subscribers: '100K',
+);
+
+const Training fakeTraining = Training(
+  name: 'Dragonflag',
+  preview:
+      'https://workout-temple.com/media/ExercisesPics/dragon-flag-small.jpg',
+  description:
+      "La dragon flag è uno degli esercizi più popolari e famosi del corpo libero, del calisthenics e non solo. Anche se normalmente viene inserito solo in programmi di allenamento a corpo libero può costituire un movimento di preparazione fisica utilizzo in tantissimi ambiti sportivi a partire dal crossfit, passando dall’arrampicata sino al canottaggio e al nuoto. E’ innegabile come sia diventato un gesto popolare anche nel mondo del cinema grazie a Sylvester stallone nei film di rocky ma anche nel mondo della arti marziali grazie a Bruce Lee. In questo articolo ti mostrerò come analizzare questo esercizio dal punto di vista biomeccanico ed esecutive e, dove possibile, cercherò di sfatare, con logica, uno dei più grandi miti: è un esercizio per l’addome o un esercizio per il dorso?",
+  duration: '7 minutes',
 );
 
 class Video {

@@ -72,7 +72,7 @@ class InstructorScreen extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.all(25.0),
                   child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit ess",
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit ess Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit ess",
                     style: textTheme.subtitle1
                         ?.copyWith(color: colorScheme.primary.withOpacity(.59)),
                   ),
@@ -95,10 +95,10 @@ class InstructorScreen extends StatelessWidget {
           ),
           SliverToBoxAdapter(
             child: SizedBox(
-              height: size.width * 0.60,
+              height: size.width * (92 / 254) * (135 / 92),
               width: size.width,
               child: ListView.builder(
-                padding: const EdgeInsets.only(left: 19.0, right: 19.0),
+                //padding: const EdgeInsets.only(left: 19.0, right: 19.0),
                 scrollDirection: Axis.horizontal,
                 itemCount: 3,
                 itemBuilder: (context, index) {

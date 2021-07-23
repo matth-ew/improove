@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:improove/data.dart';
 import 'package:improove/screens/home_screen.dart';
+import 'package:improove/screens/explore_screen.dart';
 import 'package:improove/screens/profile_screen.dart';
 //import 'package:improove/screens/details_screen.dart';
 
@@ -25,7 +26,7 @@ class _NavScreenState extends State<NavScreen> {
 
   final _screens = [
     HomeScreen(),
-    const Scaffold(body: Center(child: Text('Explore'))),
+    ExploreScreen(),
     const Scaffold(body: Center(child: Text('Improove'))),
     ProfileScreen(),
   ];
