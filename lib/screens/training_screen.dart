@@ -1,10 +1,14 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/data.dart';
+import 'package:improove/screens/progression_screen.dart';
 import 'package:improove/widgets/preview_card.dart';
 
 class TrainingScreen extends StatelessWidget {
+  final String id;
   const TrainingScreen({
     Key? key,
+    this.id = "",
   }) : super(key: key);
 
   @override
@@ -16,13 +20,14 @@ class TrainingScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            elevation: 0,
             expandedHeight: size.height * 0.45,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               iconSize: 32,
               color: Colors.white,
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
             ),
             flexibleSpace: Stack(
@@ -40,7 +45,7 @@ class TrainingScreen extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: -2,
+                  bottom: 0,
                   left: 0,
                   right: 0,
                   child: Container(
@@ -50,12 +55,18 @@ class TrainingScreen extends StatelessWidget {
                         topLeft: Radius.circular(35),
                         topRight: Radius.circular(35),
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
                       color: Colors.white,
                     ),
                   ),
                 ),
                 Positioned(
-                  bottom: 0,
+                  bottom: 3,
                   right: 35,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(30)),
@@ -65,8 +76,8 @@ class TrainingScreen extends StatelessWidget {
                         width: 60,
                         height: 60,
                         fit: BoxFit.cover,
-                        placeholder:
-                            const AssetImage("assets/trainer_avatar.png"),
+                        placeholder: const AssetImage(
+                            "assets/images/trainer_avatar.jpg"),
                         image: NetworkImage(currentUser.thumbnailUrl),
                       ),
                     ),
@@ -99,8 +110,12 @@ class TrainingScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(25.0),
-                  child: Text(
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                  child: ExpandableText(
+                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit ess Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit ess",
+                    expandText: "expand",
+                    collapseText: "collapse",
+                    linkColor: colorScheme.primary,
+                    maxLines: 3,
                     style: textTheme.subtitle1
                         ?.copyWith(color: colorScheme.primary.withOpacity(.59)),
                   ),
@@ -123,6 +138,13 @@ class TrainingScreen extends StatelessWidget {
                     child: PreviewCard(
                       avatar: currentUser.profileImageUrl,
                       preview: currentUser.thumbnailUrl,
+                      // onPressed: () {
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => ProgressionScreen()),
+                      //   );
+                      // },
                     ),
                   );
                 },

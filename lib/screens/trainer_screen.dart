@@ -1,10 +1,13 @@
+import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/data.dart';
 import 'package:improove/widgets/preview_card.dart';
 
-class InstructorScreen extends StatelessWidget {
-  const InstructorScreen({
+class TrainerScreen extends StatelessWidget {
+  final String id;
+  const TrainerScreen({
     Key? key,
+    this.id = "",
   }) : super(key: key);
 
   @override
@@ -16,13 +19,14 @@ class InstructorScreen extends StatelessWidget {
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
+            elevation: 0,
             expandedHeight: size.height * 0.35,
             leading: IconButton(
               icon: const Icon(Icons.arrow_back),
               iconSize: 32,
               color: Colors.white,
               onPressed: () {
-                Navigator.pop(context);
+                Navigator.of(context).pop();
               },
             ),
             flexibleSpace: Stack(
@@ -40,7 +44,7 @@ class InstructorScreen extends StatelessWidget {
                   ),
                 ),
                 Positioned(
-                  bottom: -2,
+                  bottom: 0,
                   left: 0,
                   right: 0,
                   child: Container(
@@ -50,6 +54,12 @@ class InstructorScreen extends StatelessWidget {
                         topLeft: Radius.circular(35),
                         topRight: Radius.circular(35),
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.white,
+                          offset: Offset(0, 2),
+                        ),
+                      ],
                       color: Colors.white,
                     ),
                   ),
@@ -71,8 +81,12 @@ class InstructorScreen extends StatelessWidget {
                 ),
                 Padding(
                   padding: const EdgeInsets.all(25.0),
-                  child: Text(
+                  child: ExpandableText(
                     "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit ess Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit ess",
+                    expandText: "expand",
+                    collapseText: "collapse",
+                    linkColor: colorScheme.primary,
+                    maxLines: 6,
                     style: textTheme.subtitle1
                         ?.copyWith(color: colorScheme.primary.withOpacity(.59)),
                   ),
@@ -98,7 +112,7 @@ class InstructorScreen extends StatelessWidget {
               height: size.width * (92 / 254) * (135 / 92),
               width: size.width,
               child: ListView.builder(
-                //padding: const EdgeInsets.only(left: 19.0, right: 19.0),
+                padding: const EdgeInsets.only(left: 19.0, right: 19.0),
                 scrollDirection: Axis.horizontal,
                 itemCount: 3,
                 itemBuilder: (context, index) {

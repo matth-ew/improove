@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-// import 'package:improove/screens/details_screen.dart';
-// import 'package:improove/widgets/bottom_nav_bar.dart';
-// import 'package:improove/widgets/category_card.dart';
-// import 'package:improove/widgets/search_bar.dart';
-// import 'package:flutter_svg/flutter_svg.dart';
-
+import 'package:improove/screens/progression_screen.dart';
+import 'trainer_screen.dart';
 import 'training_screen.dart';
-import 'insctructor_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
+  final String trainer_id = "blabla";
+  final String training_id = "blabla";
+  final String progression_id = "blabla";
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context)
         .size; //this gonna give us total height and with of our device
@@ -22,7 +20,9 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => InstructorScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => TrainerScreen(id: trainer_id),
+                  ),
                 );
               },
               child: const Text("Istruttore")),
@@ -30,10 +30,22 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TrainingScreen()),
+                  MaterialPageRoute(
+                    builder: (context) => TrainingScreen(id: training_id),
+                  ),
                 );
               },
               child: const Text("Corso")),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProgressionScreen(id: progression_id),
+                  ),
+                );
+              },
+              child: const Text("Progressione")),
         ],
       ),
     );
