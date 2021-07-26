@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:improove/screens/progression_screen.dart';
-import 'insctructor_screen.dart';
+import 'trainer_screen.dart';
 import 'training_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
-  final String instructor_id = "blabla";
+  final String trainer_id = "blabla";
   final String training_id = "blabla";
   final String progression_id = "blabla";
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => InstructorScreen(id: instructor_id),
+                    builder: (context) => TrainerScreen(id: trainer_id),
                   ),
                 );
               },

@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:improove/data.dart';
 import 'package:improove/widgets/preview_card.dart';
 
-class InstructorScreen extends StatelessWidget {
+class TrainerScreen extends StatelessWidget {
   final String id;
-  const InstructorScreen({
+  const TrainerScreen({
     Key? key,
     this.id = "",
   }) : super(key: key);
@@ -112,7 +112,7 @@ class InstructorScreen extends StatelessWidget {
               height: size.width * (92 / 254) * (135 / 92),
               width: size.width,
               child: ListView.builder(
-                //padding: const EdgeInsets.only(left: 19.0, right: 19.0),
+                padding: const EdgeInsets.only(left: 19.0, right: 19.0),
                 scrollDirection: Axis.horizontal,
                 itemCount: 3,
                 itemBuilder: (context, index) {
