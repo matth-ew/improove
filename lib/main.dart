@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:improove/screens/nav_screen.dart';
+import 'package:improove/screens/splash_screen.dart';
 import 'package:improove/theme/custom_theme.dart';
 import 'package:improove/redux/store.dart';
 
@@ -20,7 +20,7 @@ class App extends StatelessWidget {
       title: 'Improove',
       theme: CustomTheme.lightTheme,
       // darkTheme: CustomTheme.darkTheme,
-      home: NavScreen(),
+      home: SplashScreen(),
     );
   }
 }
