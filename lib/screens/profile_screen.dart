@@ -4,6 +4,7 @@ import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
 // import 'package:improove/widgets/bottom_nav_bar.dart';
 import 'package:improove/widgets/preview_card.dart';
+import 'package:improove/widgets/cta_card.dart';
 import 'package:redux/redux.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -36,6 +37,7 @@ class ProfileScreen extends StatelessWidget {
                 preview: vm.training.preview,
                 avatar: vm.user.image,
               ),
+              CtaCard()
             ],
           ));
         });
