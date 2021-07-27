@@ -39,14 +39,17 @@ class ExploreScreen extends StatelessWidget {
             ),
             delegate: SliverChildBuilderDelegate(
               (BuildContext context, int index) {
-                if (index > 3) return null;
-                return Container(
-                    child: Center(
-                        child: PreviewCard(
-                  preview: fakeTraining.preview,
-                  avatar: currentUser.thumbnailUrl,
-                )));
+                return SizedBox(
+                  child: Center(
+                    child: PreviewCard(
+                      category: "Category",
+                      preview: fakeTraining.preview,
+                      avatar: currentUser.thumbnailUrl,
+                    ),
+                  ),
+                );
               },
+              childCount: 10,
             ),
           ),
           SliverToBoxAdapter(

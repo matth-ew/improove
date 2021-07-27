@@ -175,8 +175,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       //rtl: true, // Display as right-to-left
       // skip: const Text('Skip'),
       next: const Icon(Icons.arrow_forward),
-      done: const Text('Get Started',
-          style: TextStyle(fontWeight: FontWeight.w600)),
+      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       controlsPadding: //kIsWeb ? const EdgeInsets.all(12.0) :

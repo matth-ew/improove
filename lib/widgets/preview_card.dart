@@ -9,28 +9,38 @@ import '../screens/training_screen.dart';
 class PreviewCard extends StatelessWidget {
   final String name;
   final String duration;
-  final String avatar;
+  final String? category;
+  final String? avatar;
   final String preview;
-  const PreviewCard(
-      {Key? key,
-      this.name = 'Nome video',
-      this.duration = 'durata video',
-      this.preview = '',
-      this.avatar = ''})
-      : super(key: key);
+  final Function? onTapCard;
+  final Function? onTapAvatar;
+
+  const PreviewCard({
+    Key? key,
+    this.name = 'Nome video',
+    this.duration = 'durata video',
+    this.category,
+    this.preview = '',
+    this.avatar,
+    this.onTapCard,
+    this.onTapAvatar,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     // final double hightScreen = MediaQuery.of(context).size.height;
     final double widthScreen = MediaQuery.of(context).size.width;
 
-    const widthScreenRatio = 92 / 254;
+    const widthScreenRatio = 105 / 254;
     const heightScreenRatio = 119 / 92;
     const heightInnerScreenRatio = 20 / 99;
-    const heightAvatarRatio = 24 / 32;
+    const radiusAvatarRatio = 12 / 32;
     const paddingTopAvatarRatio = 88 / 119;
     const paddingLeftAvatarRatio = 9 / 92;
-    const paddingTopTextRatio = 103 / 119;
+    const paddingTopTextRatio = 97 / 119;
     const paddingLeftTextRatio = 33 / 92;
     const radius = 15.0;
     const borderSize = 2.0;
@@ -42,13 +52,15 @@ class PreviewCard extends StatelessWidget {
     final double widthCard = widthScreen * widthScreenRatio;
     final double heightCard = widthCard * heightScreenRatio;
     final double heightInnerCard = heightCard * heightInnerScreenRatio;
-    final double heightAvatar = heightInnerCard * heightAvatarRatio;
+    final double radiusAvatar = heightInnerCard * radiusAvatarRatio;
     final double paddingTopAvatar =
         heightCard * paddingTopAvatarRatio - borderSize;
     final double paddingLeftAvatar =
         widthCard * paddingLeftAvatarRatio - borderSize;
     final double paddingTopText = heightCard * paddingTopTextRatio;
     final double paddingLeftText = widthCard * paddingLeftTextRatio;
+    final double paddingTopCategory = 2;
+    final double paddingLeftCategory = 6;
 
     // 254 620
     // 92 119
@@ -58,83 +70,95 @@ class PreviewCard extends StatelessWidget {
     // 103 33 padding text
 
     return SizedBox(
-        height: heightCard,
-        width: widthCard,
-        child: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TrainingScreen()),
-            );
-          },
-          child: Stack(children: <Widget>[
+      height: heightCard,
+      width: widthCard,
+      child: GestureDetector(
+        onTap: () {
+          onTapCard?.call();
+        },
+        child: Stack(
+          children: <Widget>[
             Container(
-                height: heightCard - heightInnerCard,
-                width: widthCard,
-                alignment: Alignment.bottomCenter,
-                child: ClipRRect(
-                  borderRadius: const BorderRadius.all(Radius.circular(radius)),
-                  child: FadeInImage(
-                    width: double.infinity,
-                    height: double.infinity,
-                    fit: BoxFit.cover,
-                    placeholder: AssetImage(previewPH),
-                    image: NetworkImage(preview),
-                  ),
-                  // boxShadow: [
-                  //   new BoxShadow(
-                  //     color: Colors.black,
-                  //     blurRadius: 2.0,
-                  //   ),
-                  // ],
-                )),
+              height: heightCard - heightInnerCard,
+              width: widthCard,
+              alignment: Alignment.bottomCenter,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(radius)),
+                child: FadeInImage(
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: const AssetImage(previewPH),
+                  image: NetworkImage(preview),
+                ),
+                // boxShadow: [
+                //   new BoxShadow(
+                //     color: Colors.black,
+                //     blurRadius: 2.0,
+                //   ),
+                // ],
+              ),
+            ),
+            if (category != null)
+              Positioned(
+                top: paddingTopCategory,
+                left: paddingLeftCategory,
+                child: Chip(
+                  backgroundColor: colorScheme.primary,
+                  label: Text(category!,
+                      style:
+                          textTheme.bodyText2?.copyWith(color: Colors.white)),
+                ),
+              ),
             Positioned(
               top: paddingTopText,
-              left: paddingLeftText,
+              left: avatar != null ? paddingLeftText : paddingLeftAvatar,
               child: SizedBox(
                 height: heightInnerCard,
                 width: widthCard,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(name,
-                        style: TextStyle(fontSize: 7, fontFamily: "mukta")),
+                    Text(
+                      name,
+                      style: textTheme.subtitle2
+                          ?.copyWith(color: colorScheme.primary),
+                    ),
                     Text(duration,
-                        style: TextStyle(
-                            color: Colors.grey,
-                            fontSize: 5,
-                            fontFamily: "mukta")),
+                        style: textTheme.bodyText2
+                            ?.copyWith(fontSize: 10, color: Colors.grey)),
                   ],
                 ),
               ),
             ),
-            Positioned(
-              top: paddingTopAvatar,
-              left: paddingLeftAvatar,
-              child: SizedBox(
-                width: heightAvatar + borderSize,
-                height: heightAvatar + borderSize,
-                child: ClipRRect(
-                    child: Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(radius)),
-                    border: Border.all(
-                      color: Colors.white,
-                      width: borderSize,
+            if (avatar != null)
+              Positioned(
+                top: paddingTopAvatar,
+                left: paddingLeftAvatar,
+                child: GestureDetector(
+                  onTap: () {
+                    onTapAvatar?.call();
+                  },
+                  child: CircleAvatar(
+                    radius: radiusAvatar + borderSize,
+                    backgroundColor: colorScheme.background,
+                    child: CircleAvatar(
+                      radius: radiusAvatar,
+                      backgroundImage: NetworkImage(avatar!),
+                      backgroundColor: Colors.transparent,
+                      // FadeInImage(
+                      //   width: double.infinity,
+                      //   fit: BoxFit.cover,
+                      //   placeholder: AssetImage(avatarPH),
+                      //   image: NetworkImage(avatar),
+                      // ),
                     ),
                   ),
-                  child: ClipOval(
-                    child: FadeInImage(
-                      width: double.infinity,
-                      fit: BoxFit.cover,
-                      placeholder: AssetImage(avatarPH),
-                      image: NetworkImage(avatar),
-                    ),
-                  ),
-                )),
+                ),
               ),
-            ),
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
   }
 }

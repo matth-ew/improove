@@ -136,7 +136,6 @@ class TrainingScreen extends StatelessWidget {
                   return Padding(
                     padding: const EdgeInsets.only(left: 6, right: 6),
                     child: PreviewCard(
-                      avatar: currentUser.profileImageUrl,
                       preview: currentUser.thumbnailUrl,
                       // onPressed: () {
                       //   Navigator.push(
