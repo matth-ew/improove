@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:improove/data.dart';
 import 'package:improove/screens/home_screen.dart';
 import 'package:improove/screens/explore_screen.dart';
 import 'package:improove/screens/profile_screen.dart';
@@ -27,14 +26,13 @@ class _NavScreenState extends State<NavScreen> {
   final _screens = [
     HomeScreen(),
     ExploreScreen(),
-    const Scaffold(body: Center(child: Text('Improove'))),
     ProfileScreen(),
   ];
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
@@ -45,6 +43,7 @@ class _NavScreenState extends State<NavScreen> {
         systemNavigationBarIconBrightness: Brightness.dark,
       ),
       child: Scaffold(
+        backgroundColor: colorScheme.background,
         body:
             // Consumer(
             // builder: (context, watch, _) {
@@ -178,16 +177,16 @@ class _NavScreenState extends State<NavScreen> {
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.explore),
-              label: 'Explore',
+              label: 'Improove',
             ),
             // BottomNavigationBarItem(
             //   icon: Icon(Icons.add_circle),
             //   label: 'Add',
             // ),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.fitness_center),
-              label: 'Improove',
-            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.fitness_center),
+            //   label: 'Improove',
+            // ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
               label: 'Profile',

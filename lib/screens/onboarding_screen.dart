@@ -59,7 +59,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
 
   Widget _buildImage(String assetName, [double width = 350]) {
     return SvgPicture.asset(
-      'assets/images/$assetName',
+      'assets/icons/$assetName',
       width: width,
     );
   }

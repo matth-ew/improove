@@ -41,6 +41,11 @@ dependencies:
   video_trimmer: ^0.5.2
   flutter_ffmpeg: ^0.4.0
 
+  #auth plugins
+  flutter_facebook_auth: ^3.5.0
+  google_sign_in: ^5.0.5
+  sign_in_with_apple: ^3.0.0
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:improove/screens/progression_screen.dart';
+import 'authentication_screen.dart';
 import 'trainer_screen.dart';
 import 'training_screen.dart';
 
@@ -46,6 +47,16 @@ class HomeScreen extends StatelessWidget {
                 );
               },
               child: const Text("Progressione")),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => AuthenticationScreen(),
+                  ),
+                );
+              },
+              child: const Text("Accesso")),
         ],
       ),
     );

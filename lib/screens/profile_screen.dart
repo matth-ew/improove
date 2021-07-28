@@ -11,15 +11,13 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StoreConnector(
-        converter: (Store<AppState> store) => _ViewModel.fromStore(store),
-        builder: (BuildContext context, _ViewModel vm) {
-          var size = MediaQuery.of(context)
-              .size; //this gonna give us total height and with of our device
-          return Scaffold(
-              // bottomNavigationBar: BottomNavBar(),
-              body: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisSize: MainAxisSize.max,
+      converter: (Store<AppState> store) => _ViewModel.fromStore(store),
+      builder: (BuildContext context, _ViewModel vm) {
+        var size = MediaQuery.of(context)
+            .size; //this gonna give us total height and with of our device
+        return Scaffold(
+          // bottomNavigationBar: BottomNavBar(),
+          body: Column(
             children: [
               SizedBox(
                 height: 20.0,
@@ -37,10 +35,12 @@ class ProfileScreen extends StatelessWidget {
                 preview: vm.training.preview,
                 avatar: vm.user.image,
               ),
-              CtaCard()
+              CtaCard(),
             ],
-          ));
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
