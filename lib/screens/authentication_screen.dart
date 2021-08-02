@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:improove/services/authservice.dart';
 import 'authentication_widgets/login_form.dart';
 import 'authentication_widgets/signup_form.dart';
 
@@ -18,12 +19,24 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       final LoginResult result = await FacebookAuth.instance
           .login(); // by default we request the email and the public profile
 // or FacebookAuth.i.login()
+      debugPrint(
+          "PRE LOGIN ${result.message} ${result.status.toString()} ${result.accessToken.toString()}");
       if (result.status == LoginStatus.success) {
         // you are logged
         final AccessToken accessToken = result.accessToken!;
+        debugPrint("LOGIN " + accessToken.toString());
+        AuthService().loginFacebook(accessToken).then((val) {
+          final String? token = val?.data['token'] as String?;
+          final String? msg = val?.data['msg'] as String?;
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text('Processing Data Facebook: $msg - $token'),
+            ),
+          );
+        });
       }
     } catch (error) {
-      print(error);
+      debugPrint(error.toString());
     }
   }
 
@@ -34,7 +47,22 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           'email',
         ],
       );
-      await _googleSignIn.signIn();
+      await _googleSignIn.signIn().then((result) {
+        result?.authentication.then((googleKey) {
+          print(googleKey.accessToken);
+          if (googleKey.accessToken != null) {
+            AuthService().loginGoogle(googleKey.accessToken!).then((val) {
+              final String? token = val?.data['token'] as String?;
+              final String? msg = val?.data['msg'] as String?;
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Processing Data Google: $msg - $token'),
+                ),
+              );
+            });
+          }
+        });
+      });
     } catch (error) {
       print(error);
     }

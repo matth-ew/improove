@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:improove/services/authservice.dart';
 
 class SignupForm extends StatefulWidget {
   @override
@@ -28,11 +29,8 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   String? validateEmail(String? value) {
-    const Pattern pattern =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?)*$";
-    final RegExp regex = RegExp(pattern.toString());
+    final RegExp regex = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
     if (value == null || !regex.hasMatch(value)) {
       return 'Enter a valid email address';
     } else {
@@ -89,6 +87,7 @@ class _SignupFormState extends State<SignupForm> {
                   onFieldSubmitted: (value) {
                     _formEmailKey.currentState?.validate();
                   },
+                  keyboardType: TextInputType.emailAddress,
                   validator: validateEmail,
                   decoration: InputDecoration(
                     errorMaxLines: 2,
@@ -187,11 +186,30 @@ class _SignupFormState extends State<SignupForm> {
                     if (_formKey.currentState!.validate()) {
                       // If the form is valid, display a snackbar. In the real world,
                       // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text(
-                              'Processing Data: ${_emailController.text} ${_passwordController.text}'),
-                        ),
+                      AuthService()
+                          .addUser(
+                        _emailController.text,
+                        _passwordController.text,
+                      )
+                          .then(
+                        (val) {
+                          if (val?.data['success'] as bool) {
+                            final token = val?.data['token'];
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Processing Data: ${_emailController.text} ${_passwordController.text} $token'),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Processing Data: ${_emailController.text} ${_passwordController.text} ${val?.data['msg']}'),
+                              ),
+                            );
+                          }
+                        },
                       );
                     }
                   },

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:improove/services/authservice.dart';
 
 class LoginForm extends StatefulWidget {
   @override
@@ -13,11 +14,8 @@ class _LoginFormState extends State<LoginForm> {
   bool _obscurePassword = true;
 
   String? validateEmail(String? value) {
-    const Pattern pattern =
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]"
-        r"{0,253}[a-zA-Z0-9])?)*$";
-    final RegExp regex = RegExp(pattern.toString());
+    final RegExp regex = RegExp(
+        r'^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$');
     if (value == null || !regex.hasMatch(value)) {
       return 'Enter a valid email address';
     } else {
@@ -61,6 +59,7 @@ class _LoginFormState extends State<LoginForm> {
               Padding(
                 padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                 child: TextFormField(
+                  keyboardType: TextInputType.emailAddress,
                   controller: _emailController,
                   validator: validateEmail,
                   decoration: InputDecoration(
@@ -78,7 +77,7 @@ class _LoginFormState extends State<LoginForm> {
                 child: TextFormField(
                   controller: _passwordController,
                   validator: validatePassword,
-                  obscureText: true,
+                  obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
                     border: OutlineInputBorder(
@@ -113,10 +112,39 @@ class _LoginFormState extends State<LoginForm> {
                     if (_formKey.currentState!.validate()) {
                       // If the form is valid, display a snackbar. In the real world,
                       // you'd often call a server or save the information in a database.
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                            content: Text(
-                                'Processing Data: ${_emailController.text} ${_passwordController.text}')),
+                      AuthService()
+                          .login(
+                        _emailController.text,
+                        _passwordController.text,
+                      )
+                          .then(
+                        (val) {
+                          if (val?.data['success'] as bool) {
+                            final String token = val?.data['token'] as String;
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Processing Data: ${_emailController.text} ${_passwordController.text} $token'),
+                              ),
+                            );
+                            AuthService().getInfo(token).then((val2) {
+                              final String msg = val?.data['msg'] as String;
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                      'Processing Data: ${_emailController.text} ${_passwordController.text} $msg'),
+                                ),
+                              );
+                            });
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                    'Processing Data: ${_emailController.text} ${_passwordController.text} ${val?.data['msg']}'),
+                              ),
+                            );
+                          }
+                        },
                       );
                     }
                   },
