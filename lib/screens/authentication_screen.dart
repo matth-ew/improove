@@ -44,7 +44,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     try {
       final GoogleSignIn _googleSignIn = GoogleSignIn(
         scopes: [
+          'profile',
           'email',
+          // 'https://www.googleapis.com/auth/user.birthday.read',
+          // 'https://www.googleapis.com/auth/user.gender.read',
         ],
       );
       await _googleSignIn.signIn().then((result) {

@@ -46,6 +46,7 @@ dependencies:
   google_sign_in: ^5.0.5
   sign_in_with_apple: ^3.0.0
   dio: ^4.0.0
+  flutter_secure_storage: ^4.2.1
 
 dev_dependencies:
   flutter_test:
