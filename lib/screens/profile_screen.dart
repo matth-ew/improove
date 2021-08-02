@@ -30,7 +30,7 @@ class ProfileScreen extends StatelessWidget {
                 ),
               ),
               PreviewCard(
-                name: vm.training.name,
+                name: vm.training.title,
                 duration: vm.training.duration,
                 preview: vm.training.preview,
                 avatar: vm.user.image,

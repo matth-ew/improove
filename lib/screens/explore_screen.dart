@@ -19,9 +19,9 @@ class ExploreScreen extends StatelessWidget {
 
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store),
-        //   onInit: (store) {
-        //   store.dispatch(SetTraining(training));
-        // },
+        onInit: (store) {
+          store.dispatch(getTraining());
+        },
         builder: (BuildContext context, _ViewModel vm) {
           return Scaffold(
             body: CustomScrollView(
@@ -53,6 +53,8 @@ class ExploreScreen extends StatelessWidget {
                         child: Center(
                           child: PreviewCard(
                             category: "Category",
+                            name: vm.training.title,
+                            preview: vm.training.preview,
                           ),
                         ),
                       );
