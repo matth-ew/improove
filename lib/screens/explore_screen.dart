@@ -20,6 +20,7 @@ class ExploreScreen extends StatelessWidget {
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store),
         onInit: (store) {
+          debugPrint("UE UAJO GET O TRAINING");
           store.dispatch(getTraining());
         },
         builder: (BuildContext context, _ViewModel vm) {
