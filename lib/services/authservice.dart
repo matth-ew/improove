@@ -23,12 +23,12 @@ class AuthService {
     }
   }
 
-  Future<Response?> loginFacebook(AccessToken accessToken) async {
+  Future<Response?> loginFacebook(String accessToken) async {
     try {
       debugPrint("LOGIN " + accessToken.toString());
       return await dio.post(
         '$backendUrl/api/authenticate-facebook',
-        data: {'access_token': accessToken.token},
+        data: {'access_token': accessToken},
         options: Options(
           headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         ),
@@ -55,7 +55,7 @@ class AuthService {
     }
   }
 
-  Future<Response?> addUser(String email, String password) async {
+  Future<Response?> signup(String email, String password) async {
     try {
       return await dio.post('$backendUrl/api/adduser',
           data: {'email': email, 'password': password},

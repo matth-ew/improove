@@ -24,16 +24,20 @@ class ProfileScreen extends StatelessWidget {
               ),
               Center(
                 child: CircleAvatar(
+                  backgroundImage: NetworkImage(vm.user.profileImage),
+
                   // radius: size.width * 0.2,
                   minRadius: 20.0,
                   maxRadius: 100.0,
                 ),
               ),
+              Text(vm.user.name),
+              Text(vm.user.surname),
               PreviewCard(
                 name: vm.training.title,
                 duration: vm.training.duration,
                 preview: vm.training.preview,
-                avatar: vm.user.image,
+                avatar: vm.user.profileImage,
               ),
               CtaCard(),
             ],
@@ -48,9 +52,15 @@ class _ViewModel {
   final Training training;
   final User user;
 
-  _ViewModel({required this.training, required this.user});
+  _ViewModel({
+    required this.training,
+    required this.user,
+  });
 
   static _ViewModel fromStore(Store<AppState> store) {
-    return _ViewModel(training: store.state.training, user: store.state.user);
+    return _ViewModel(
+      training: store.state.training,
+      user: store.state.user,
+    );
   }
 }
