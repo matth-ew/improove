@@ -1,0 +1,3 @@
+Manca configurazione Facebook Login e Google Login per iOS e Web (https://facebook.meedu.app/#/, )
+Manca flutter secure-storage per Web e va gestito (https://github.com/mogol/flutter_secure_storage/issues/96)
+Manca Sign in Apple, https://pub.dev/packages/sign_in_with_apple/install

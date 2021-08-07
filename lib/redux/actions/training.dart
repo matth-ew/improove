@@ -1,5 +1,5 @@
 import 'dart:async'; // Add the package
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/services/trainingservice.dart';
 import 'package:redux/redux.dart';
