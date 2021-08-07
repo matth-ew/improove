@@ -10,47 +10,41 @@ import 'package:redux/redux.dart';
 class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return StoreConnector(
-      converter: (Store<AppState> store) => _ViewModel.fromStore(store),
-      builder: (BuildContext context, _ViewModel vm) {
-        var size = MediaQuery.of(context)
-            .size; //this gonna give us total height and with of our device
-        return Scaffold(
-          // bottomNavigationBar: BottomNavBar(),
-          body: Column(
-            children: [
-              SizedBox(
-                height: 20.0,
-              ),
-              Center(
-                child: CircleAvatar(
-                  // radius: size.width * 0.2,
-                  minRadius: 20.0,
-                  maxRadius: 100.0,
-                ),
-              ),
-              PreviewCard(
-                name: vm.training.title,
-                duration: vm.training.duration,
-                preview: vm.training.preview,
-                avatar: vm.user.image,
-              ),
-              CtaCard(),
-            ],
+    //this gonna give us total height and with of our device
+    return Scaffold(
+      // bottomNavigationBar: BottomNavBar(),
+      body: Column(
+        children: [
+          SizedBox(
+            height: 20.0,
           ),
-        );
-      },
+          Center(
+            child: CircleAvatar(
+              // radius: size.width * 0.2,
+              minRadius: 20.0,
+              maxRadius: 100.0,
+            ),
+          ),
+          // PreviewCard(
+          //   name: vm.trainings[1]!.title,
+          //   duration: vm.trainings[1]!.duration,
+          //   preview: vm.trainings[1]!.preview,
+          //   avatar: vm.user.image,
+          // ),
+          CtaCard(),
+        ],
+      ),
     );
   }
 }
 
 class _ViewModel {
-  final Training training;
+  final Map<int, Training> trainings;
   final User user;
 
-  _ViewModel({required this.training, required this.user});
+  _ViewModel({required this.trainings, required this.user});
 
   static _ViewModel fromStore(Store<AppState> store) {
-    return _ViewModel(training: store.state.training, user: store.state.user);
+    return _ViewModel(trainings: store.state.trainings, user: store.state.user);
   }
 }

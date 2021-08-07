@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:improove/screens/progression_screen.dart';
+import 'package:improove/screens/exercise_screen.dart';
 import 'authentication_screen.dart';
 import 'trainer_screen.dart';
 import 'training_screen.dart';
@@ -8,7 +8,7 @@ class HomeScreen extends StatelessWidget {
   @override
   final String trainer_id = "blabla";
   final String training_id = "blabla";
-  final String progression_id = "blabla";
+  final int progression_id = 0;
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context)
         .size; //this gonna give us total height and with of our device
@@ -32,7 +32,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => TrainingScreen(id: training_id),
+                    builder: (context) => TrainingScreen(id: 1),
                   ),
                 );
               },
@@ -42,7 +42,7 @@ class HomeScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => ProgressionScreen(id: progression_id),
+                    builder: (context) => ExerciseScreen(id: progression_id),
                   ),
                 );
               },

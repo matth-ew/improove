@@ -14,6 +14,7 @@ class PreviewCard extends StatelessWidget {
   final String preview;
   final Function? onTapCard;
   final Function? onTapAvatar;
+  final int? id;
 
   const PreviewCard({
     Key? key,
@@ -21,7 +22,8 @@ class PreviewCard extends StatelessWidget {
     this.duration = 'durata video',
     this.category,
     this.preview = '',
-    this.avatar,
+    this.avatar = '',
+    this.id = -1,
     this.onTapCard,
     this.onTapAvatar,
   }) : super(key: key);
@@ -74,7 +76,7 @@ class PreviewCard extends StatelessWidget {
       width: widthCard,
       child: GestureDetector(
         onTap: () {
-          onTapCard?.call();
+          onTapCard?.call(id);
         },
         child: Stack(
           children: <Widget>[

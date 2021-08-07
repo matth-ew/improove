@@ -3,4 +3,4 @@ import 'package:improove/redux/reducers/reducers.dart';
 
 AppState appReducer(AppState state, dynamic action) => AppState(
     user: userReducer(state.user, action),
-    training: trainingReducer(state.training, action));
+    trainings: trainingReducer(state.trainings, action));

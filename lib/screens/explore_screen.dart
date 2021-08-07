@@ -1,5 +1,8 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/actions.dart';
+import 'package:improove/screens/training_screen.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/widgets/cta_card.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -20,7 +23,6 @@ class ExploreScreen extends StatelessWidget {
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store),
         onInit: (store) {
-          debugPrint("UE UAJO GET O TRAINING");
           store.dispatch(getTraining());
         },
         builder: (BuildContext context, _ViewModel vm) {
@@ -46,21 +48,29 @@ class ExploreScreen extends StatelessWidget {
                 ),
                 SliverGrid(
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                  ),
+                      crossAxisCount: 2, mainAxisSpacing: 30),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                       return SizedBox(
                         child: Center(
-                          child: PreviewCard(
-                            category: "Category",
-                            name: vm.training.title,
-                            preview: vm.training.preview,
-                          ),
-                        ),
+                            child: PreviewCard(
+                          name: vm.trainings[index]!.title,
+                          preview: vm.trainings[index]!.preview,
+                          category: vm.trainings[index]!.category,
+                          avatar: vm.trainings[index]!.trainerImage,
+                          id: index,
+                          onTapCard: (int index) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      TrainingScreen(id: index)),
+                            );
+                          },
+                        )),
                       );
                     },
-                    childCount: 10,
+                    childCount: vm.trainings.length,
                   ),
                 ),
                 SliverToBoxAdapter(
@@ -76,11 +86,13 @@ class ExploreScreen extends StatelessWidget {
 }
 
 class _ViewModel {
-  final Training training;
+  final Map<int, Training> trainings;
 
-  _ViewModel({required this.training});
+  _ViewModel({required this.trainings});
 
   static _ViewModel fromStore(Store<AppState> store) {
-    return _ViewModel(training: store.state.training);
+    return _ViewModel(
+      trainings: store.state.trainings,
+    );
   }
 }

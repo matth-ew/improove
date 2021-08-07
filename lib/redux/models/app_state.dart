@@ -6,10 +6,11 @@ import 'models.dart';
 class AppState {
   final User user;
 
-  final Training training;
+  //final Training training;
+  final Map<int, Training> trainings;
 
-  const AppState({required this.training, required this.user});
+  const AppState({required this.user, required this.trainings});
   const AppState.initial()
-      : training = const Training.initial(),
+      : trainings = const {},
         user = const User.initial();
 }

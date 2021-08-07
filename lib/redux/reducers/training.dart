@@ -1,13 +1,22 @@
+import 'package:flutter/material.dart';
 import 'package:redux/redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 
-final trainingReducer = combineReducers<Training>([
-  TypedReducer<Training, SetTraining>(_setTrainingReducer),
+final trainingReducer = combineReducers<Map<int, Training>>([
+  TypedReducer<Map<int, Training>, SetTrainings>(_setAllTrainings),
+  TypedReducer<Map<int, Training>, SetTraining>(_setTrainingById),
 ]);
 
-Training _setTrainingReducer(Training training, SetTraining action) {
-  return action.training;
+Map<int, Training> _setAllTrainings(
+    Map<int, Training> trainings, SetTrainings action) {
+  return action.trainings;
+}
+
+Map<int, Training> _setTrainingById(
+    Map<int, Training> trainings, SetTraining action) {
+  trainings[action.id] = action.training;
+  return trainings;
 }
 
 
