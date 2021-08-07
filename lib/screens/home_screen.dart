@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/screens/progression_screen.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'authentication_screen.dart';
 import 'trainer_screen.dart';
 import 'training_screen.dart';
@@ -12,48 +14,48 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context)
         .size; //this gonna give us total height and with of our device
-    return Scaffold(
+    return CupertinoPageScaffold(
       // bottomNavigationBar: BottomNavBar(),
-      body: Column(
+      child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: [
           TextButton(
               onPressed: () {
-                Navigator.push(
+                pushNewScreen(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => TrainerScreen(id: trainer_id),
-                  ),
+                  screen: TrainerScreen(id: trainer_id),
+                  withNavBar: true,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
               },
               child: const Text("Istruttore")),
           TextButton(
               onPressed: () {
-                Navigator.push(
+                pushNewScreen(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => TrainingScreen(id: training_id),
-                  ),
+                  screen: TrainingScreen(id: training_id),
+                  withNavBar: true,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
               },
               child: const Text("Corso")),
           TextButton(
               onPressed: () {
-                Navigator.push(
+                pushNewScreen(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => ProgressionScreen(id: progression_id),
-                  ),
+                  screen: ProgressionScreen(id: progression_id),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
               },
               child: const Text("Progressione")),
           TextButton(
               onPressed: () {
-                Navigator.push(
+                pushNewScreen(
                   context,
-                  MaterialPageRoute(
-                    builder: (context) => AuthenticationScreen(),
-                  ),
+                  screen: AuthenticationScreen(),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
               },
               child: const Text("Accesso")),
