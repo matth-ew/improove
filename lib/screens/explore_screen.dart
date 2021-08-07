@@ -8,6 +8,7 @@ import 'package:improove/widgets/cta_card.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
 class ExploreScreen extends StatelessWidget {
@@ -60,11 +61,12 @@ class ExploreScreen extends StatelessWidget {
                           avatar: vm.trainings[index]!.trainerImage,
                           id: index,
                           onTapCard: (int index) {
-                            Navigator.push(
+                            pushNewScreen(
                               context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      TrainingScreen(id: index)),
+                              screen: TrainingScreen(id: index),
+                              withNavBar: true,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
                             );
                           },
                         )),

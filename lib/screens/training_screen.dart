@@ -1,11 +1,13 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/training.dart';
+import 'package:improove/screens/trainer_screen.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/screens/exercise_screen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
 class TrainingScreen extends StatelessWidget {
@@ -80,7 +82,17 @@ class TrainingScreen extends StatelessWidget {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(30)),
                           child: GestureDetector(
-                            onTap: () => {},
+                            onTap: () => {
+                              pushNewScreen(
+                                context,
+                                screen: TrainerScreen(
+                                  id: vm.training!.trainerId,
+                                ),
+                                withNavBar: true,
+                                pageTransitionAnimation:
+                                    PageTransitionAnimation.cupertino,
+                              )
+                            },
                             child: FadeInImage(
                                 width: 60,
                                 height: 60,
@@ -146,14 +158,18 @@ class TrainingScreen extends StatelessWidget {
                           child: PreviewCard(
                             preview: vm.training!.exercises[index].preview,
                             name: vm.training!.exercises[index].title,
-                            avatar: vm.training!.trainerImage,
+                            // avatar: vm.training!.trainerImage,
                             id: index,
                             onTapCard: (int index) {
-                              Navigator.push(
+                              pushNewScreen(
                                 context,
-                                MaterialPageRoute(
-                                    builder: (context) => ExerciseScreen(
-                                        training_id: id, id: index)),
+                                screen: ExerciseScreen(
+                                  training_id: id,
+                                  id: index,
+                                ),
+                                withNavBar: false,
+                                pageTransitionAnimation:
+                                    PageTransitionAnimation.slideUp,
                               );
                             },
                           ),

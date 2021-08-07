@@ -22,7 +22,7 @@ class PreviewCard extends StatelessWidget {
     this.duration = 'durata video',
     this.category,
     this.preview = '',
-    this.avatar = '',
+    this.avatar,
     this.id = -1,
     this.onTapCard,
     this.onTapAvatar,

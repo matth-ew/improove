@@ -8,7 +8,7 @@ import 'training_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   @override
-  final String trainer_id = "blabla";
+  final int trainer_id = -1;
   final int training_id = -1;
   final int progression_id = 0;
   Widget build(BuildContext context) {
@@ -43,7 +43,10 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 pushNewScreen(
                   context,
-                  screen: ExerciseScreen(id: progression_id),
+                  screen: ExerciseScreen(
+                    id: progression_id,
+                    training_id: training_id,
+                  ),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );

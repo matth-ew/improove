@@ -4,10 +4,10 @@ import 'package:improove/data.dart';
 import 'package:improove/widgets/preview_card.dart';
 
 class TrainerScreen extends StatelessWidget {
-  final String id;
+  final int id;
   const TrainerScreen({
     Key? key,
-    this.id = "",
+    this.id = -1,
   }) : super(key: key);
 
   @override
