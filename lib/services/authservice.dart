@@ -25,7 +25,6 @@ class AuthService {
 
   Future<Response?> loginFacebook(String accessToken) async {
     try {
-      debugPrint("LOGIN " + accessToken.toString());
       return await dio.post(
         '$backendUrl/api/authenticate-facebook',
         data: {'access_token': accessToken},
@@ -41,7 +40,6 @@ class AuthService {
 
   Future<Response?> loginGoogle(String accessToken) async {
     try {
-      debugPrint("LOGIN " + accessToken.toString());
       return await dio.post(
         '$backendUrl/api/authenticate-google',
         data: {'access_token': accessToken},

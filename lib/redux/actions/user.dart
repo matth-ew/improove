@@ -48,6 +48,7 @@ ThunkAction<AppState> loginFacebookThunk(String accessToken, [Function? cb]) {
     try {
       final Response? r = await AuthService().loginFacebook(accessToken);
       if (r?.data['success'] as bool) {
+        debugPrint(r!.data!["user"].toString());
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
         await storage.write(
