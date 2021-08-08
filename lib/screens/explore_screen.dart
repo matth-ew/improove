@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/screens/training_screen.dart';
@@ -37,7 +35,7 @@ class ExploreScreen extends StatelessWidget {
                   expandedHeight: heightScreen / 8,
 
                   ///Properties of the App Bar when it is expanded
-                  flexibleSpace: FlexibleSpaceBar(
+                  flexibleSpace: const FlexibleSpaceBar(
                     title: Text(
                       "Improove",
                       style: TextStyle(
@@ -48,7 +46,7 @@ class ExploreScreen extends StatelessWidget {
                   ),
                 ),
                 SliverGrid(
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2, mainAxisSpacing: 30),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
@@ -79,7 +77,7 @@ class ExploreScreen extends StatelessWidget {
                     child: SizedBox(
                         height: size.width * (198 / 254) * (135 / 198),
                         width: size.width * (198 / 254),
-                        child: CtaCard()))
+                        child: const CtaCard()))
               ],
             ),
           );

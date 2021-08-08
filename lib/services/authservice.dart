@@ -1,8 +1,5 @@
 import 'dart:io';
-
 import 'package:dio/dio.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 const backendUrl = 'http://10.0.2.2:3001';
 
@@ -66,7 +63,7 @@ class AuthService {
 
   Future<Response?> token(String refreshToken) async {
     try {
-      dio.options.headers['Authorization'] = '$refreshToken';
+      dio.options.headers['Authorization'] = refreshToken;
       return await dio.get('$backendUrl/api/token',
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
@@ -77,7 +74,7 @@ class AuthService {
 
   Future<Response?> getInfo(String token) async {
     try {
-      dio.options.headers['Authorization'] = '$token';
+      dio.options.headers['Authorization'] = token;
       return await dio.get('$backendUrl/api/getinfo');
     } on DioError catch (e) {
       print(e.response?.data['msg']);

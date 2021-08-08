@@ -45,8 +45,8 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   void _createChewieController() {
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
-      autoPlay: false,
-      looping: false,
+      // autoPlay: false,
+      // looping: false,
       // showControls: false,
       materialProgressColors: ChewieProgressColors(
         playedColor: Colors.red,

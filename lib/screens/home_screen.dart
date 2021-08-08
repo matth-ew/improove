@@ -7,13 +7,12 @@ import 'trainer_screen.dart';
 import 'training_screen.dart';
 
 class HomeScreen extends StatelessWidget {
+  final int trainerId = -1;
+  final int trainingId = -1;
+  final int progressionId = 0;
   @override
-  final int trainer_id = -1;
-  final int training_id = -1;
-  final int progression_id = 0;
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context)
-        .size; //this gonna give us total height and with of our device
+    // var size = MediaQuery.of(context).size;
     return CupertinoPageScaffold(
       // bottomNavigationBar: BottomNavBar(),
       child: Column(
@@ -23,7 +22,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 pushNewScreen(
                   context,
-                  screen: TrainerScreen(id: trainer_id),
+                  screen: TrainerScreen(id: trainerId),
                   withNavBar: true,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
@@ -33,7 +32,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 pushNewScreen(
                   context,
-                  screen: TrainingScreen(id: training_id),
+                  screen: TrainingScreen(id: trainingId),
                   withNavBar: true,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
@@ -44,8 +43,8 @@ class HomeScreen extends StatelessWidget {
                 pushNewScreen(
                   context,
                   screen: ExerciseScreen(
-                    id: progression_id,
-                    training_id: training_id,
+                    id: progressionId,
+                    trainingId: trainingId,
                   ),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,

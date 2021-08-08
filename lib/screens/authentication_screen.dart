@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'authentication_widgets/login_form.dart';
-import 'authentication_widgets/signup_form.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';
+
+import 'authentication_widgets/login_form.dart';
+import 'authentication_widgets/signup_form.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   @override
@@ -67,11 +68,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         });
       });
     } catch (error) {
-      print(error);
+      debugPrint(error.toString());
     }
   }
 
-  _appleLogin() async {}
+  // _appleLogin() async {}
 
   @override
   Widget build(BuildContext context) {

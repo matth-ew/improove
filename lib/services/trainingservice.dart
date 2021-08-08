@@ -1,8 +1,6 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:convert';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:improove/redux/models/models.dart';
 
 const backendUrl = 'http://10.0.2.2:3001';

@@ -1,6 +1,5 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
-import 'package:improove/data.dart';
 import 'package:improove/widgets/my_video_player.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
@@ -8,9 +7,9 @@ import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';
 
 class ExerciseScreen extends StatelessWidget {
-  final int training_id;
+  final int trainingId;
   final int id;
-  const ExerciseScreen({Key? key, this.id = -1, this.training_id = -1})
+  const ExerciseScreen({Key? key, this.id = -1, this.trainingId = -1})
       : super(key: key);
 
   @override
@@ -23,14 +22,13 @@ class ExerciseScreen extends StatelessWidget {
       if (video != "") {
         return video;
       } else {
-        return "https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-a-bubble-gum-at-an-amusement-park-1226-large.mp4"; //https: //assets.mixkit.co/videos/preview/mixkit-forest-stream-in-the-sunlight-529-large.mp4;
-        ;
+        return "https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-a-bubble-gum-at-an-amusement-park-1226-large.mp4";
       }
     }
 
     return StoreConnector(
         converter: (Store<AppState> store) =>
-            _ViewModel.fromStore(store, training_id, id),
+            _ViewModel.fromStore(store, trainingId, id),
         builder: (BuildContext context, _ViewModel vm) {
           return Scaffold(
             body: CustomScrollView(
@@ -126,7 +124,7 @@ class ExerciseScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(
                           left: 25.0,
                           right: 25.0,
-                          top: 0,
+                          // top: 0,
                           bottom: 10.0,
                         ),
                         child: Text(
@@ -155,7 +153,6 @@ class ExerciseScreen extends StatelessWidget {
                         padding: const EdgeInsets.only(
                           left: 25.0,
                           right: 25.0,
-                          top: 0,
                           bottom: 10.0,
                         ),
                         child: Text(
@@ -195,8 +192,8 @@ class _ViewModel {
 
   _ViewModel({required this.exercise});
 
-  static _ViewModel fromStore(Store<AppState> store, int training_id, int id) {
+  static _ViewModel fromStore(Store<AppState> store, int trainingId, int id) {
     return _ViewModel(
-        exercise: store.state.trainings[training_id]!.exercises[id]);
+        exercise: store.state.trainings[trainingId]!.exercises[id]);
   }
 }

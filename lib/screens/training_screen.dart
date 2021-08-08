@@ -164,7 +164,7 @@ class TrainingScreen extends StatelessWidget {
                               pushNewScreen(
                                 context,
                                 screen: ExerciseScreen(
-                                  training_id: id,
+                                  trainingId: id,
                                   id: index,
                                 ),
                                 withNavBar: false,

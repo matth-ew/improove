@@ -1,10 +1,4 @@
-/// Flutter code sample for Card
-
-// This sample shows creation of a [Card] widget that shows album information
-// and two actions.
-
 import 'package:flutter/material.dart';
-import '../screens/training_screen.dart';
 
 class PreviewCard extends StatelessWidget {
   final String name;
@@ -49,7 +43,7 @@ class PreviewCard extends StatelessWidget {
 
     //placeholders
     const String previewPH = 'assets/images/undraw_pilates_gpdb.png';
-    const String avatarPH = 'assets/images/meditation_bg.png';
+    // const String avatarPH = 'assets/images/meditation_bg.png';
 
     final double widthCard = widthScreen * widthScreenRatio;
     final double heightCard = widthCard * heightScreenRatio;
@@ -61,8 +55,8 @@ class PreviewCard extends StatelessWidget {
         widthCard * paddingLeftAvatarRatio - borderSize;
     final double paddingTopText = heightCard * paddingTopTextRatio;
     final double paddingLeftText = widthCard * paddingLeftTextRatio;
-    final double paddingTopCategory = 2;
-    final double paddingLeftCategory = 6;
+    const double paddingTopCategory = 2;
+    const double paddingLeftCategory = 6;
 
     // 254 620
     // 92 119

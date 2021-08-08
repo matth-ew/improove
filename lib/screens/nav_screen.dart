@@ -23,16 +23,11 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   // static const double _playerMinHeight = 60.0;
 
-  final PersistentTabController _controller =
-      PersistentTabController(initialIndex: 0);
+  final PersistentTabController _controller = PersistentTabController(
+      // initialIndex: 0,
+      );
 
   // int _selectedIndex = 3;
-
-  final _screens = [
-    HomeScreen(),
-    ExploreScreen(),
-    ProfileScreen(),
-  ];
 
   List<Widget> _buildScreens() {
     return [
@@ -66,21 +61,21 @@ class _NavScreenState extends State<NavScreen> {
   List<PersistentBottomNavBarItem> _navBarsItems(ColorScheme colorScheme) {
     return [
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.home),
-        inactiveIcon: Icon(Icons.home_outlined),
+        icon: const Icon(Icons.home),
+        inactiveIcon: const Icon(Icons.home_outlined),
         // title: ("Home"),
         activeColorPrimary: colorScheme.primary,
         inactiveColorPrimary: colorScheme.primary.withOpacity(.49),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.explore),
-        inactiveIcon: Icon(Icons.explore_outlined),
+        icon: const Icon(Icons.explore),
+        inactiveIcon: const Icon(Icons.explore_outlined),
         activeColorPrimary: colorScheme.primary,
         inactiveColorPrimary: colorScheme.primary.withOpacity(.49),
       ),
       PersistentBottomNavBarItem(
-        icon: Icon(Icons.person),
-        inactiveIcon: Icon(Icons.person_outlined),
+        icon: const Icon(Icons.person),
+        inactiveIcon: const Icon(Icons.person_outlined),
         activeColorPrimary: colorScheme.primary,
         inactiveColorPrimary: colorScheme.primary.withOpacity(.49),
       ),
@@ -107,12 +102,11 @@ class _NavScreenState extends State<NavScreen> {
         items: _navBarsItems(colorScheme),
         confineInSafeArea: false,
         backgroundColor: colorScheme.background, // Default is Colors.white.
-        handleAndroidBackButtonPress: true, // Default is true.
+        // handleAndroidBackButtonPress: true, // Default is true.
         resizeToAvoidBottomInset:
             true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-        stateManagement: true, // Default is true.
-        hideNavigationBarWhenKeyboardShows:
-            true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+        // stateManagement: true, // Default is true.
+        // hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
         decoration: NavBarDecoration(
           // adjustScreenBottomPaddingOnCurve: false,
           // borderRadius: BorderRadius.circular(10.0),
@@ -123,18 +117,18 @@ class _NavScreenState extends State<NavScreen> {
             ),
           ),
         ),
-        popAllScreensOnTapOfSelectedTab: true,
-        popActionScreens: PopActionScreensType.all,
-        itemAnimationProperties: ItemAnimationProperties(
+        // popAllScreensOnTapOfSelectedTab: true,
+        // popActionScreens: PopActionScreensType.all,
+        itemAnimationProperties: const ItemAnimationProperties(
           // Navigation Bar's items animation properties.
           duration: Duration(milliseconds: 200),
           curve: Curves.ease,
         ),
-        screenTransitionAnimation: ScreenTransitionAnimation(
+        screenTransitionAnimation: const ScreenTransitionAnimation(
           // Screen transition animation on change of selected tab.
           animateTabTransition: true,
-          curve: Curves.ease,
-          duration: Duration(milliseconds: 200),
+          // curve: Curves.ease,
+          // duration: Duration(milliseconds: 200),
         ),
         navBarStyle:
             NavBarStyle.simple, // Choose the nav bar style with this property.
@@ -246,42 +240,3 @@ class _NavScreenState extends State<NavScreen> {
         //         //       );
         //         // },
         //         ),
-        //   bottomNavigationBar: BottomNavigationBar(
-        //     type: BottomNavigationBarType.fixed,
-        //     currentIndex: _selectedIndex,
-        //     onTap: (i) => setState(() => _selectedIndex = i),
-        //     showSelectedLabels: false,
-        //     showUnselectedLabels: false,
-        //     backgroundColor: colorScheme.background,
-        //     selectedItemColor: colorScheme.primary,
-        //     unselectedItemColor: colorScheme.primary.withOpacity(.49),
-        //     elevation: 1,
-        //     // selectedFontSize: 10.0,
-        //     // unselectedFontSize: 10.0,
-        //     items: const [
-        //       BottomNavigationBarItem(
-        //         icon: Icon(Icons.home),
-        //         label: 'Home',
-        //       ),
-        //       BottomNavigationBarItem(
-        //         icon: Icon(Icons.explore),
-        //         label: 'Improove',
-        //       ),
-        //       // BottomNavigationBarItem(
-        //       //   icon: Icon(Icons.add_circle),
-        //       //   label: 'Add',
-        //       // ),
-        //       // BottomNavigationBarItem(
-        //       //   icon: Icon(Icons.fitness_center),
-        //       //   label: 'Improove',
-        //       // ),
-        //       BottomNavigationBarItem(
-        //         icon: Icon(Icons.person),
-        //         label: 'Profile',
-        //       ),
-        //     ],
-        //   ),
-        // ),
-  //     ),
-  //   );
-  // }

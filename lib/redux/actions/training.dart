@@ -29,7 +29,7 @@ ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
       }
       // No exception, complete without error
     } catch (e) {
-      debugPrint("Errore in getTrainingById " + e.toString());
+      debugPrint("Errore in getTrainingById ${e.toString()}");
       completer?.completeError(e); // Exception thrown, complete with error
     }
   };
@@ -46,7 +46,7 @@ ThunkAction<AppState> getTraining([Completer? completer]) {
       }
       // No exception, complete without error
     } catch (e) {
-      debugPrint("Errore in getTraining " + e.toString());
+      debugPrint("Errore in getTraining ${e.toString()}");
       completer?.completeError(e); // Exception thrown, complete with error
     }
   };

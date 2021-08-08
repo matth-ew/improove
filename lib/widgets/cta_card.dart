@@ -27,7 +27,7 @@ class CtaCard extends StatelessWidget {
     const widthScreenRatio = 198 / 254;
     const heightScreenRatio = 135 / 198;
     const radius = 15.0;
-    const borderSize = 2.0;
+    // const borderSize = 2.0;
 
     //placeholders
     const String previewPH = 'assets/images/undraw_pilates_gpdb.png';
@@ -49,7 +49,7 @@ class CtaCard extends StatelessWidget {
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
-              placeholder: AssetImage(previewPH),
+              placeholder: const AssetImage(previewPH),
               image: NetworkImage(preview),
             ),
             // boxShadow: [
