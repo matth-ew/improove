@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:improove/screens/settings_screen.dart';
 import 'package:improove/screens/training_screen.dart';
 import 'package:improove/widgets/row_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -32,14 +33,13 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    // final Size size = MediaQuery.of(context).size;
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       builder: (BuildContext context, _ViewModel vm) {
-        var size = MediaQuery.of(context)
-            .size; //this gonna give us total height and with of our device
+        // var size = MediaQuery.of(context).size;
         return Scaffold(
           // Persistent AppBar that never scrolls
 
@@ -60,7 +60,26 @@ class ProfileScreen extends StatelessWidget {
             actions: [
               IconButton(
                 splashRadius: 25,
-                onPressed: () {},
+                onPressed: () {
+                  pushNewScreen(
+                    context,
+                    screen: SettingsScreen(),
+                    withNavBar: false,
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  );
+                  // showModalBottomSheet(
+                  //   shape: RoundedRectangleBorder(
+                  //       borderRadius: BorderRadius.only(
+                  //     topLeft: Radius.circular(15),
+                  //     topRight: Radius.circular(15),
+                  //   )),
+                  //   context: context,
+                  //   useRootNavigator: true,
+                  //   builder: (context) {
+                  //     return SettingsScreen();
+                  //   },
+                  // );
+                },
                 icon: Icon(Icons.settings, color: colorScheme.primary),
               ),
             ],
@@ -111,7 +130,7 @@ class ProfileScreen extends StatelessWidget {
                       indicatorColor: colorScheme.primary,
                       labelColor: colorScheme.primary,
                       unselectedLabelColor: colorScheme.onSurface,
-                      tabs: [
+                      tabs: const [
                         Tab(icon: Icon(Icons.video_library)),
                         Tab(icon: Icon(Icons.history)),
                       ],
@@ -146,7 +165,7 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   pushNewScreen(
                     context,
-                    screen: TrainingScreen(id: index!),
+                    screen: TrainingScreen(id: index),
                     withNavBar: true,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );
@@ -169,7 +188,7 @@ class ProfileScreen extends StatelessWidget {
                 onTap: () {
                   pushNewScreen(
                     context,
-                    screen: TrainingScreen(id: index!),
+                    screen: TrainingScreen(id: index),
                     withNavBar: true,
                     pageTransitionAnimation: PageTransitionAnimation.cupertino,
                   );

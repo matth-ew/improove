@@ -119,7 +119,18 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             ElevatedButton(
-                              onPressed: () => _facebookLogin(vm.facebookLogin),
+                              onPressed: () => _facebookLogin(
+                                vm.facebookLogin,
+                                (Error? e) {
+                                  if (e == null) {
+                                    debugPrint("NOT ERROR");
+                                    Navigator.of(context).pop();
+                                  } else {
+                                    debugPrint("ERROR ${e.toString()}");
+                                    Navigator.of(context).pop();
+                                  }
+                                },
+                              ),
                               style: ButtonStyle(
                                 padding: MaterialStateProperty.all(
                                     const EdgeInsets.fromLTRB(15, 10, 15, 10)),
@@ -136,7 +147,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               width: 40,
                             ),
                             ElevatedButton(
-                              onPressed: () => _googleLogin(vm.googleLogin),
+                              onPressed: () => _googleLogin(
+                                vm.googleLogin,
+                                (Error? e) {
+                                  if (e == null) Navigator.of(context).pop();
+                                },
+                              ),
                               style: ButtonStyle(
                                 padding: MaterialStateProperty.all(
                                     const EdgeInsets.fromLTRB(15, 10, 15, 10)),

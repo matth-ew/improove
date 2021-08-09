@@ -21,6 +21,10 @@ class SetFullName {
   SetFullName(this.name, this.surname);
 }
 
+class UserLogout {
+  UserLogout();
+}
+
 ThunkAction<AppState> loginThunk(String email, String password,
     [Function? cb]) {
   // Define the parameter
@@ -32,6 +36,7 @@ ThunkAction<AppState> loginThunk(String email, String password,
         store.dispatch(SetUser(u));
         await storage.write(
             key: "accessToken", value: r.data!["token"] as String);
+        cb?.call();
       } else {
         cb?.call(r?.data['msg']);
       }
@@ -53,6 +58,7 @@ ThunkAction<AppState> loginFacebookThunk(String accessToken, [Function? cb]) {
         store.dispatch(SetUser(u));
         await storage.write(
             key: "accessToken", value: r.data!["token"] as String);
+        cb?.call();
       } else {
         cb?.call(r?.data['msg']);
       }
@@ -73,6 +79,7 @@ ThunkAction<AppState> loginGoogleThunk(String accessToken, [Function? cb]) {
         store.dispatch(SetUser(u));
         await storage.write(
             key: "accessToken", value: r.data!["token"] as String);
+        cb?.call();
       } else {
         cb?.call(r?.data['msg']);
       }
@@ -94,6 +101,7 @@ ThunkAction<AppState> signupThunk(String email, String password,
         store.dispatch(SetUser(u)); // Create storage
         await storage.write(
             key: "accessToken", value: r.data!["token"] as String);
+        cb?.call();
       } else {
         cb?.call(r?.data['msg']);
       }
@@ -107,9 +115,14 @@ ThunkAction<AppState> signupThunk(String email, String password,
 
 ThunkAction<AppState> logoutThunk([Function? cb]) {
   return (Store<AppState> store) async {
-    await storage.delete(key: "accessToken");
-    //CANCELLA DATI DA REDUX!
-
-    //
+    try {
+      await storage.delete(key: "accessToken");
+      //CANCELLA DATI DA REDUX!
+      store.dispatch(UserLogout());
+      cb?.call();
+      //
+    } catch (e) {
+      cb?.call(e);
+    }
   };
 }

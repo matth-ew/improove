@@ -5,6 +5,7 @@ import 'package:improove/redux/models/models.dart';
 final userReducer = combineReducers<User>([
   TypedReducer<User, SetUser>(_setUserReducer),
   TypedReducer<User, SetFullName>(_setFullNameReducer),
+  TypedReducer<User, UserLogout>(_userLogoutReducer),
 ]);
 
 User _setUserReducer(User user, SetUser action) {
@@ -13,6 +14,10 @@ User _setUserReducer(User user, SetUser action) {
 
 User _setFullNameReducer(User user, SetFullName action) {
   return user.copyWith(name: action.name, surname: action.surname);
+}
+
+User _userLogoutReducer(User user, UserLogout action) {
+  return const User.initial();
 }
 
 
