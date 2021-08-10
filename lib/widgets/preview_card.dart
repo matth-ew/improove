@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+import 'package:improove/screens/profile_screen.dart';
 
 class PreviewCard extends StatelessWidget {
   final String name;
@@ -133,7 +135,13 @@ class PreviewCard extends StatelessWidget {
                 left: paddingLeftAvatar,
                 child: GestureDetector(
                   onTap: () {
-                    onTapAvatar?.call();
+                    pushNewScreen(
+                      context,
+                      screen: ProfileScreen(),
+                      withNavBar: true,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino,
+                    );
                   },
                   child: CircleAvatar(
                     radius: radiusAvatar + borderSize,

@@ -9,8 +9,12 @@ class AppState {
   //final Training training;
   final Map<int, Training> trainings;
 
-  const AppState({required this.user, required this.trainings});
+  final Map<int, User> trainers;
+
+  const AppState(
+      {required this.user, required this.trainings, required this.trainers});
   const AppState.initial()
       : trainings = const {},
-        user = const User.initial();
+        user = const User.initial(),
+        trainers = const {};
 }

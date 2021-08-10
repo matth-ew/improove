@@ -3,12 +3,14 @@ import 'package:meta/meta.dart';
 
 @immutable
 class User {
+  final int id;
   final String name;
   final String surname;
   final String profileImage;
   final String email;
   final int birth;
   final String gender;
+  final String trainerDescription;
   final List<SavedTraining> savedTrainings;
   final List<ClosedTraining> closedTrainings;
 
@@ -19,6 +21,8 @@ class User {
     required this.email,
     required this.birth,
     required this.gender,
+    required this.id,
+    required this.trainerDescription,
     this.savedTrainings = const [],
     this.closedTrainings = const [],
   });
@@ -30,6 +34,8 @@ class User {
         email = "",
         birth = -1,
         gender = "",
+        id = -1,
+        trainerDescription = "",
         savedTrainings = const [],
         closedTrainings = const [];
 
@@ -40,6 +46,8 @@ class User {
     String? email,
     int? birth,
     String? gender,
+    int? id,
+    String? trainerDescription,
     List<SavedTraining>? savedTrainings,
     List<ClosedTraining>? closedTrainings,
   }) {
@@ -50,18 +58,22 @@ class User {
       email: email ?? this.email,
       birth: birth ?? this.birth,
       gender: gender ?? this.gender,
+      id: id ?? this.id,
+      trainerDescription: trainerDescription ?? this.trainerDescription,
       savedTrainings: savedTrainings ?? this.savedTrainings,
       closedTrainings: closedTrainings ?? this.closedTrainings,
     );
   }
 
   dynamic toJson() => {
+        'id': id,
         'name': name,
         'surname': surname,
         'profileImage': profileImage,
         'email': email,
         'birth': birth,
         'gender': gender,
+        'trainer description': trainerDescription,
         'savedTrainings': savedTrainings,
         'closedTrainings': closedTrainings,
       };
@@ -73,6 +85,8 @@ class User {
         email = (json['email'] ?? "") as String,
         birth = (json['birth'] ?? -1) as int,
         gender = (json['gender'] ?? "") as String,
+        id = (json['_id'] ?? -1) as int,
+        trainerDescription = (json['trainerDescription'] ?? "") as String,
         savedTrainings = List<SavedTraining>.from(
             ((json['savedTrainings'] ?? const []) as List)
                 .map((t) => SavedTraining.fromJson(t as Map<String, dynamic>))),

@@ -7,7 +7,7 @@ import 'trainer_screen.dart';
 import 'training_screen.dart';
 
 class HomeScreen extends StatelessWidget {
-  final int trainerId = -1;
+  final int trainerId = 1;
   final int trainingId = -1;
   final int progressionId = 0;
   @override

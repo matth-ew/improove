@@ -24,9 +24,6 @@ class TrainingScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store, id),
-        onInit: (store) {
-          //store.dispatch(getTrainingById(id));
-        },
         builder: (BuildContext context, _ViewModel vm) {
           return Scaffold(
             body: CustomScrollView(
