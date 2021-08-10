@@ -7,7 +7,7 @@ class PreviewCard extends StatelessWidget {
   final String duration;
   final String? category;
   final String? avatar;
-  final String preview;
+  final String? preview;
   final Function? onTapCard;
   final Function? onTapAvatar;
   final int? id;
@@ -17,7 +17,7 @@ class PreviewCard extends StatelessWidget {
     this.name = 'Nome video',
     this.duration = 'durata video',
     this.category,
-    this.preview = '',
+    this.preview,
     this.avatar,
     this.id = -1,
     this.onTapCard,
@@ -82,13 +82,15 @@ class PreviewCard extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(radius)),
-                child: FadeInImage(
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder: const AssetImage(previewPH),
-                  image: NetworkImage(preview),
-                ),
+                child: preview != null
+                    ? FadeInImage(
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                        placeholder: const AssetImage(previewPH),
+                        image: NetworkImage(preview!),
+                      )
+                    : Image.asset(previewPH),
                 // boxShadow: [
                 //   new BoxShadow(
                 //     color: Colors.black,

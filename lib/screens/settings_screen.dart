@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:improove/screens/authentication_screen.dart';
 import 'package:redux/redux.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -50,7 +51,14 @@ class SettingsScreen extends StatelessWidget {
                 title: const Text('Disconnect',
                     style: TextStyle(color: Colors.redAccent)),
                 onTap: () {
-                  vm.logout(() => {Navigator.pop(context)});
+                  vm.logout(() => {
+                        Navigator.of(context).pushAndRemoveUntil<void>(
+                          MaterialPageRoute<void>(
+                              builder: (BuildContext context) =>
+                                  AuthenticationScreen()),
+                          (Route<dynamic> route) => false,
+                        )
+                      });
                 },
               ),
             ],

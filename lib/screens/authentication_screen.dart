@@ -5,6 +5,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:improove/screens/nav_screen.dart';
 import 'package:redux/redux.dart';
 
 import 'authentication_widgets/login_form.dart';
@@ -124,11 +125,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 (Error? e) {
                                   if (e == null) {
                                     debugPrint("NOT ERROR");
-                                    Navigator.of(context).pop();
                                   } else {
                                     debugPrint("ERROR ${e.toString()}");
-                                    Navigator.of(context).pop();
                                   }
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (_) => NavScreen(),
+                                    ),
+                                  );
                                 },
                               ),
                               style: ButtonStyle(
@@ -150,7 +154,11 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                               onPressed: () => _googleLogin(
                                 vm.googleLogin,
                                 (Error? e) {
-                                  if (e == null) Navigator.of(context).pop();
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (_) => NavScreen(),
+                                    ),
+                                  );
                                 },
                               ),
                               style: ButtonStyle(

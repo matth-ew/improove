@@ -22,9 +22,10 @@ class ExploreScreen extends StatelessWidget {
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store),
         onInit: (store) {
-          store.dispatch(getTraining());
+          store.dispatch(getTrainings());
         },
         builder: (BuildContext context, _ViewModel vm) {
+          final List<Training> trainingList = vm.trainings.values.toList();
           return Scaffold(
             body: CustomScrollView(
               slivers: [
@@ -53,15 +54,16 @@ class ExploreScreen extends StatelessWidget {
                       return SizedBox(
                         child: Center(
                             child: PreviewCard(
-                          name: vm.trainings[index]!.title,
-                          preview: vm.trainings[index]!.preview,
-                          category: vm.trainings[index]!.category,
-                          avatar: vm.trainings[index]!.trainerImage,
+                          name: trainingList[index].title,
+                          preview: trainingList[index].preview,
+                          category: trainingList[index].category,
+                          avatar: trainingList[index].trainerImage,
                           id: index,
                           onTapCard: (int index) {
                             pushNewScreen(
                               context,
-                              screen: TrainingScreen(id: index),
+                              screen:
+                                  TrainingScreen(id: trainingList[index].id),
                               withNavBar: true,
                               pageTransitionAnimation:
                                   PageTransitionAnimation.cupertino,
@@ -70,7 +72,7 @@ class ExploreScreen extends StatelessWidget {
                         )),
                       );
                     },
-                    childCount: vm.trainings.length,
+                    childCount: trainingList.length,
                   ),
                 ),
                 SliverToBoxAdapter(

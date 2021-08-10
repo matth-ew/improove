@@ -42,6 +42,7 @@ class Exercise {
 
 @immutable
 class Training {
+  final int id;
   final String title;
   final String duration;
   final String preview;
@@ -52,7 +53,8 @@ class Training {
   final List<Exercise> exercises;
 
   const Training(
-      {required this.title,
+      {required this.id,
+      required this.title,
       required this.duration,
       required this.preview,
       required this.category,
@@ -62,7 +64,8 @@ class Training {
       required this.exercises});
 
   const Training.initial()
-      : title = "Dragonflag",
+      : id = -1,
+        title = "Dragonflag",
         duration = "18 minuti",
         preview =
             "https://images.unsplash.com/photo-1619361728853-2542f3864532?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
@@ -73,7 +76,8 @@ class Training {
         exercises = const [];
 
   Training copyWith(
-      {String? title,
+      {int? id,
+      String? title,
       String? duration,
       String? preview,
       String? category,
@@ -82,6 +86,7 @@ class Training {
       String? description,
       List<Exercise>? exercises}) {
     return Training(
+        id: id ?? this.id,
         title: title ?? this.title,
         duration: duration ?? this.duration,
         preview: preview ?? this.preview,
@@ -93,6 +98,7 @@ class Training {
   }
 
   dynamic toJson() => {
+        'id': id,
         'title': title,
         'duration': duration,
         'preview': preview,
@@ -107,18 +113,18 @@ class Training {
   //     duration = duration,
   //     preview = preview;
 
-  Training.fromJson(Map<String, dynamic> json, int i)
-      : title = (json['result'][i]['title'] ?? "") as String,
-        duration = (json['result'][i]['duration'] ?? "") as String,
-        preview = (json['result'][i]['preview'] ?? "") as String,
-        category = (json['result'][i]['category'] ?? "") as String,
-        description = (json['result'][i]['description'] ?? "") as String,
+  Training.fromJson(Map<String, dynamic> json)
+      : id = (json['_id'] ?? -1) as int,
+        title = (json['title'] ?? "") as String,
+        duration = (json['duration'] ?? "") as String,
+        preview = (json['preview'] ?? "") as String,
+        category = (json['category'] ?? "") as String,
+        description = (json['description'] ?? "") as String,
         exercises = List<Exercise>.from(
-            ((json['result'][i]['video_array'] ?? const []) as List)
+            ((json['video_array'] ?? const []) as List)
                 .map((t) => Exercise.fromJson(t as Map<String, dynamic>))),
-        trainerId = (json['result'][i]['trainer_id']["_id"] ?? -1) as int,
-        trainerImage =
-            (json['result'][i]['trainer_id']["profileImage"] ?? "") as String;
+        trainerId = (json['trainer_id']["_id"] ?? -1) as int,
+        trainerImage = (json['trainer_id']["profileImage"] ?? "") as String;
 
   @override
   String toString() {

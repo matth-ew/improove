@@ -1,6 +1,7 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/training.dart';
+import 'package:improove/redux/actions/user.dart';
 import 'package:improove/screens/trainer_screen.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/screens/exercise_screen.dart';
@@ -24,6 +25,11 @@ class TrainingScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store, id),
+        onInit: (Store<AppState> store) {
+          if (store.state.trainings[id]!.description == "") {
+            store.dispatch(getTrainingById(id));
+          }
+        },
         builder: (BuildContext context, _ViewModel vm) {
           return Scaffold(
             body: CustomScrollView(
@@ -39,6 +45,27 @@ class TrainingScreen extends StatelessWidget {
                       Navigator.of(context).pop();
                     },
                   ),
+                  actions: [
+                    if (vm.savedTrainings.any((s) => s.trainingId == id))
+                      IconButton(
+                        icon: const Icon(Icons.bookmark),
+                        iconSize: 32,
+                        color: Colors.white,
+                        onPressed: () {
+                          vm.removeTraining();
+                        },
+                      )
+                    else
+                      IconButton(
+                        icon: const Icon(Icons.bookmark_outline),
+                        iconSize: 32,
+                        splashRadius: 25,
+                        color: Colors.white,
+                        onPressed: () {
+                          vm.saveTraining();
+                        },
+                      )
+                  ],
                   flexibleSpace: Stack(
                     children: [
                       Positioned(
@@ -184,15 +211,28 @@ class TrainingScreen extends StatelessWidget {
 }
 
 class _ViewModel {
+  final List<SavedTraining> savedTrainings;
   final Training? training;
+  final Function([Function? cb]) saveTraining;
+  final Function([Function? cb]) removeTraining;
 
-  _ViewModel({required this.training});
+  _ViewModel({
+    required this.savedTrainings,
+    required this.training,
+    required this.saveTraining,
+    required this.removeTraining,
+  });
 
   static _ViewModel fromStore(Store<AppState> store, int id) {
-    if (store.state.trainings[id]!.description == "") {
-      store.dispatch(getTrainingById(id));
-    }
-    debugPrint(store.state.trainings[id]!.exercises.toString());
-    return _ViewModel(training: store.state.trainings[id]);
+    return _ViewModel(
+      savedTrainings: store.state.user.savedTrainings,
+      training: store.state.trainings[id],
+      saveTraining: ([cb]) => store.dispatch(
+        saveTrainingThunk(id, cb),
+      ),
+      removeTraining: ([cb]) => store.dispatch(
+        removeTrainingThunk(id, cb),
+      ),
+    );
   }
 }

@@ -1,5 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:improove/screens/authentication_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:improove/screens/nav_screen.dart';
 import 'package:improove/screens/onboarding_screen.dart';
@@ -23,18 +25,32 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Future<void> _checkIfFirstOpen() async {
     final prefs = await SharedPreferences.getInstance();
+    final accessToken =
+        await const FlutterSecureStorage().read(key: "accessToken");
     final hasOpened = prefs.getBool(isOnboardingFinished) ?? false;
 
-    if (hasOpened) {
-      _changePage();
-    } else {
+    if (!hasOpened) {
       setState(() {
         isLoading = false;
       });
+    } else if (accessToken == null) {
+      _goToAuthScreen();
+    } else {
+      _goToNavScreen();
     }
   }
 
-  void _changePage() {
+  void _goToAuthScreen() {
+    Navigator.of(context).pushReplacement(
+      // this is route builder without any animation
+      PageRouteBuilder(
+        pageBuilder: (context, animation1, animation2) =>
+            AuthenticationScreen(),
+      ),
+    );
+  }
+
+  void _goToNavScreen() {
     Navigator.of(context).pushReplacement(
       // this is route builder without any animation
       PageRouteBuilder(

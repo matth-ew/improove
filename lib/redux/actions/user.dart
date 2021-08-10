@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/services/authservice.dart';
+import 'package:improove/services/user_service.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -19,6 +20,18 @@ class SetFullName {
   final String surname;
 
   SetFullName(this.name, this.surname);
+}
+
+class AddSavedTraining {
+  final SavedTraining savedTraining;
+
+  AddSavedTraining(this.savedTraining);
+}
+
+class DeleteSavedTraining {
+  final int trainingId;
+
+  DeleteSavedTraining(this.trainingId);
 }
 
 class UserLogout {
@@ -121,6 +134,71 @@ ThunkAction<AppState> logoutThunk([Function? cb]) {
       store.dispatch(UserLogout());
       cb?.call();
       //
+    } catch (e) {
+      cb?.call(e);
+    }
+  };
+}
+
+ThunkAction<AppState> getInfoThunk([Function? cb]) {
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r = await UserService().getInfo(token);
+        debugPrint("UE RESP ${r?.data}");
+        if (r?.data['success'] as bool) {
+          final User u =
+              User.fromJson(r!.data!["user"] as Map<String, dynamic>);
+          debugPrint("UE USER ${u.toString()}");
+          store.dispatch(SetUser(u));
+        }
+      }
+    } catch (e) {
+      debugPrint("UE ERR GETINFO $e");
+      cb?.call(e);
+    }
+  };
+}
+
+ThunkAction<AppState> saveTrainingThunk(int trainingId, [Function? cb]) {
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r = await UserService().saveTraining(trainingId, token);
+        debugPrint("UE RESP $r");
+        if (r?.data['success'] as bool) {
+          final SavedTraining s =
+              SavedTraining(trainingId: trainingId, seenExercises: []);
+          store.dispatch(AddSavedTraining(s));
+          // final User u =
+          //     User.fromJson(r!.data!["user"] as Map<String, dynamic>);
+          // debugPrint("UE USER ${u.toString()}");
+          // store.dispatch(SetUser(u));
+        }
+      }
+    } catch (e) {
+      cb?.call(e);
+    }
+  };
+}
+
+ThunkAction<AppState> removeTrainingThunk(int trainingId, [Function? cb]) {
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r =
+            await UserService().removeTraining(trainingId, token);
+        if (r?.data['success'] as bool) {
+          store.dispatch(DeleteSavedTraining(trainingId));
+          // final User u =
+          //     User.fromJson(r!.data!["user"] as Map<String, dynamic>);
+          // debugPrint("UE USER ${u.toString()}");
+          // store.dispatch(SetUser(u));
+        }
+      }
     } catch (e) {
       cb?.call(e);
     }

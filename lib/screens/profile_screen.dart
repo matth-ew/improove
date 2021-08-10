@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
+import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/settings_screen.dart';
 import 'package:improove/screens/training_screen.dart';
@@ -38,6 +39,9 @@ class ProfileScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
+      onInit: (Store<AppState> store) {
+        store.dispatch(getInfoThunk());
+      },
       builder: (BuildContext context, _ViewModel vm) {
         // var size = MediaQuery.of(context).size;
         return Scaffold(
@@ -100,14 +104,20 @@ class ProfileScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(vm.user.profileImage),
-
-                                  // radius: size.width * 0.2,
-                                  minRadius: 20.0,
-                                  maxRadius: 50.0,
-                                ),
+                                if (vm.user.profileImage != null)
+                                  CircleAvatar(
+                                    backgroundColor: Colors.grey,
+                                    backgroundImage:
+                                        NetworkImage(vm.user.profileImage!),
+                                    minRadius: 20.0,
+                                    maxRadius: 50.0,
+                                  )
+                                else
+                                  const CircleAvatar(
+                                    backgroundColor: Colors.grey,
+                                    minRadius: 20.0,
+                                    maxRadius: 50.0,
+                                  ),
                                 textElem("1", "LEVEL", context),
                                 textElem("1", "END", context),
                                 textElem("1", "CHALL", context),
@@ -138,7 +148,8 @@ class ProfileScreen extends StatelessWidget {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          _showSavedTrainings(context, vm.trainings),
+                          _showSavedTrainings(
+                              context, vm.user.savedTrainings, vm.trainings),
                           _showClosedTrainings(context, vm.trainings),
                         ],
                       ),
@@ -153,25 +164,24 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _showSavedTrainings(
-      BuildContext context, Map<int, Training> trainings) {
+  Widget _showSavedTrainings(BuildContext context,
+      List<SavedTraining> savedTrainings, Map<int, Training> trainings) {
     return ListView(
       // padding: EdgeInsets.all(5),
       children: [
-        ...trainings.keys.map(
-          (index) {
-            return CardRow(
-                training: trainings[index]!,
-                onTap: () {
-                  pushNewScreen(
-                    context,
-                    screen: TrainingScreen(id: index),
-                    withNavBar: true,
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                  );
-                });
-          },
-        ),
+        ...savedTrainings.map((s) {
+          return CardRow(
+            training: trainings[s.trainingId]!,
+            onTap: () {
+              pushNewScreen(
+                context,
+                screen: TrainingScreen(id: s.trainingId),
+                withNavBar: true,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              );
+            },
+          );
+        }),
       ],
     );
   }

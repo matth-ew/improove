@@ -71,14 +71,4 @@ class AuthService {
       return e.response;
     }
   }
-
-  Future<Response?> getInfo(String token) async {
-    try {
-      dio.options.headers['Authorization'] = token;
-      return await dio.get('$backendUrl/api/getinfo');
-    } on DioError catch (e) {
-      print(e.response?.data['msg']);
-      return e.response;
-    }
-  }
 }

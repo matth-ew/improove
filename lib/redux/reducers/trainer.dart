@@ -7,6 +7,5 @@ final trainerReducer = combineReducers<Map<int, User>>([
 ]);
 
 Map<int, User> _setTrainerById(Map<int, User> trainers, SetTrainer action) {
-  trainers[action.id] = action.trainer;
-  return trainers;
+  return Map.from(trainers)..addAll({action.id: action.trainer});
 }

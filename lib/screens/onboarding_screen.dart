@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:improove/screens/authentication_screen.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'nav_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
   @override
@@ -36,15 +36,15 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   //   });
   // }
 
-  void _onIntroEnd(BuildContext context) {
-    _setOnboardingEnd();
-    navigationPageHome();
+  Future<void> _onIntroEnd(BuildContext context) async {
+    await _setOnboardingEnd();
+    _goToAuthScreen();
   }
 
-  void navigationPageHome() {
+  void _goToAuthScreen() {
     //Navigator.of(context).pushReplacementNamed('/HomePage');
-    Navigator.of(context)
-        .pushReplacement(MaterialPageRoute(builder: (_) => NavScreen()));
+    Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => AuthenticationScreen()));
   }
 
   // Widget _buildFullscrenImage() {

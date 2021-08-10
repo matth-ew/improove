@@ -6,7 +6,7 @@ class User {
   final int id;
   final String name;
   final String surname;
-  final String profileImage;
+  final String? profileImage;
   final String email;
   final int birth;
   final String gender;
@@ -17,7 +17,7 @@ class User {
   const User({
     required this.name,
     required this.surname,
-    required this.profileImage,
+    this.profileImage,
     required this.email,
     required this.birth,
     required this.gender,
@@ -30,7 +30,7 @@ class User {
   const User.initial()
       : name = "",
         surname = "",
-        profileImage = "",
+        profileImage = null,
         email = "",
         birth = -1,
         gender = "",
@@ -90,6 +90,14 @@ class User {
         savedTrainings = List<SavedTraining>.from(
             ((json['savedTrainings'] ?? const []) as List)
                 .map((t) => SavedTraining.fromJson(t as Map<String, dynamic>))),
+        // savedTrainings = <SavedTraining>[
+        //   ...[
+        //     SavedTraining(
+        //         trainingId: json['savedTrainings'][0]["trainingId"] as int,
+        //         seenExercises: (json['savedTrainings'][0]["seenExercises"] ??
+        //             <String>[]) as List<String>)
+        //   ]
+        // ],
         closedTrainings = List<ClosedTraining>.from(((json['closedTrainings'] ??
                 const []) as List)
             .map((t) => ClosedTraining.fromJson(t as Map<String, dynamic>)));
@@ -100,6 +108,7 @@ class User {
   }
 }
 
+@immutable
 class SavedTraining {
   final int trainingId;
   final List<String> seenExercises;
@@ -108,16 +117,21 @@ class SavedTraining {
     required this.seenExercises,
   });
 
+  dynamic toJson() => {
+        'trainingId': trainingId,
+        'seenExercises': seenExercises,
+      };
+
   const SavedTraining.initial()
       : trainingId = -1,
-        seenExercises = const [];
+        seenExercises = const <String>[];
 
-  SavedTraining.fromJson(Map<String, dynamic> savedTraining)
-      : trainingId = (savedTraining['trainingId'] ?? -1) as int,
-        seenExercises =
-            (savedTraining['seenExercises'] ?? const []) as List<String>;
+  SavedTraining.fromJson(Map<String, dynamic> json)
+      : trainingId = (json['trainingId'] ?? -1) as int,
+        seenExercises = (const <String>[]) as List<String>;
 }
 
+@immutable
 class ClosedTraining {
   final int trainingId;
   final String challengeUrl;
@@ -125,6 +139,11 @@ class ClosedTraining {
     required this.trainingId,
     required this.challengeUrl,
   });
+
+  dynamic toJson() => {
+        'trainingId': trainingId,
+        'challengeUrl': challengeUrl,
+      };
   const ClosedTraining.initial()
       : trainingId = -1,
         challengeUrl = "";

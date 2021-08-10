@@ -8,21 +8,16 @@ const backendUrl = 'http://10.0.2.2:3001';
 class TrainingService {
   Dio dio = Dio();
 
-  Future<Map<int, Training>?> getTraining() async {
+  Future<Response?> getTrainings() async {
     try {
-      final Response<Map<String, dynamic>> res = await dio.post(
+      return await dio.post(
         '$backendUrl/api/getTrainings',
-        data: {'id': 1},
+        // data: {'id': 1},
         options: Options(
           headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         ),
       );
-      final Map<int, Training> trainings = {};
-      final results = [...res.data!["result"]];
-      for (var i = 0; i < results.length; i++) {
-        trainings[i] = Training.fromJson(res.data!, i);
-      }
-      return trainings;
+
       // return Training.fromJson(
       //     res.data["result.title"].toString(),
       //     res.data["result.duration"].toString(),
@@ -33,22 +28,15 @@ class TrainingService {
     }
   }
 
-  Future<Training?> getTrainingById(int id) async {
+  Future<Response?> getTrainingById(int id) async {
     try {
-      final Response<Map<String, dynamic>> res = await dio.post(
+      return await dio.post(
         '$backendUrl/api/getTrainingById',
-        data: {'id': id + 1},
+        data: {'id': id},
         options: Options(
           headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         ),
       );
-
-      final Training training = Training.fromJson(res.data!, 0);
-      return training;
-      // return Training.fromJson(
-      //     res.data["result.title"].toString(),
-      //     res.data["result.duration"].toString(),
-      //     res.data["result.preview"].toString());
     } on DioError catch (e) {
       print(e.response?.data['msg']);
       return null;

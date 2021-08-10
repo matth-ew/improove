@@ -14,8 +14,7 @@ Map<int, Training> _setAllTrainings(
 
 Map<int, Training> _setTrainingById(
     Map<int, Training> trainings, SetTraining action) {
-  trainings[action.id] = action.training;
-  return trainings;
+  return Map.from(trainings)..addAll({action.id: action.training});
 }
 
 

@@ -5,6 +5,8 @@ import 'package:improove/redux/models/models.dart';
 final userReducer = combineReducers<User>([
   TypedReducer<User, SetUser>(_setUserReducer),
   TypedReducer<User, SetFullName>(_setFullNameReducer),
+  TypedReducer<User, AddSavedTraining>(_addSavedTraining),
+  TypedReducer<User, DeleteSavedTraining>(_deleteSavedTraining),
   TypedReducer<User, UserLogout>(_userLogoutReducer),
 ]);
 
@@ -14,6 +16,19 @@ User _setUserReducer(User user, SetUser action) {
 
 User _setFullNameReducer(User user, SetFullName action) {
   return user.copyWith(name: action.name, surname: action.surname);
+}
+
+User _addSavedTraining(User user, AddSavedTraining action) {
+  return user.copyWith(
+      savedTrainings: List.from(user.savedTrainings)
+        ..add(action.savedTraining));
+}
+
+User _deleteSavedTraining(User user, DeleteSavedTraining action) {
+  return user.copyWith(
+      savedTrainings: user.savedTrainings
+          .where((s) => s.trainingId != action.trainingId)
+          .toList());
 }
 
 User _userLogoutReducer(User user, UserLogout action) {

@@ -23,6 +23,11 @@ class TrainerScreen extends StatelessWidget {
 
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store, id),
+        onInit: (Store<AppState> store) {
+          if (store.state.trainers[id] == null) {
+            store.dispatch(getTrainerById(id));
+          }
+        },
         builder: (BuildContext context, _ViewModel vm) {
           return Scaffold(
             body: CustomScrollView(
@@ -40,18 +45,20 @@ class TrainerScreen extends StatelessWidget {
                   ),
                   flexibleSpace: Stack(
                     children: [
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: Image(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(
-                            vm.trainer!.profileImage,
+                      if (vm.trainer != null &&
+                          vm.trainer!.profileImage != null)
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: Image(
+                            fit: BoxFit.cover,
+                            image: NetworkImage(
+                              vm.trainer!.profileImage!,
+                            ),
                           ),
                         ),
-                      ),
                       Positioned(
                         bottom: 0,
                         left: 0,
@@ -83,7 +90,7 @@ class TrainerScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 25.0),
                         child: Text(
-                          '$vm.trainer!.name $vm.trainer!.surname',
+                          '${vm.trainer?.name} ${vm.trainer?.surname}',
                           style: textTheme.headline4
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),
@@ -91,7 +98,7 @@ class TrainerScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(25.0),
                         child: ExpandableText(
-                          vm.trainer!.trainerDescription,
+                          vm.trainer?.trainerDescription ?? "",
                           expandText: "expand",
                           collapseText: "collapse",
                           linkColor: colorScheme.primary,
@@ -128,7 +135,7 @@ class TrainerScreen extends StatelessWidget {
                         return Padding(
                           padding: const EdgeInsets.only(left: 6, right: 6),
                           child: PreviewCard(
-                            preview: vm.trainer!.profileImage,
+                            preview: vm.trainer?.profileImage,
                           ),
                         );
                       },
@@ -148,10 +155,10 @@ class _ViewModel {
   _ViewModel({required this.trainer});
 
   static _ViewModel fromStore(Store<AppState> store, int id) {
-    if (store.state.trainers[id]!.id == -1) {
-      store.dispatch(getTrainerById(id));
-    }
-    debugPrint(store.state.trainers[id]!.toString());
+    // if (store.state.trainers[id] == null) {
+    //   store.dispatch(getTrainerById(id));
+    // }
+    // debugPrint(store.state.trainers[id]?.toString());
     return _ViewModel(trainer: store.state.trainers[id]);
   }
 }
