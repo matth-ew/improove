@@ -122,7 +122,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             ElevatedButton(
                               onPressed: () => _facebookLogin(
                                 vm.facebookLogin,
-                                (Error? e) {
+                                (String? e) {
                                   if (e == null) {
                                     debugPrint("NOT ERROR");
                                   } else {
@@ -153,7 +153,12 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             ElevatedButton(
                               onPressed: () => _googleLogin(
                                 vm.googleLogin,
-                                (Error? e) {
+                                (String? e) {
+                                  if (e == null) {
+                                    debugPrint("NOT ERROR");
+                                  } else {
+                                    debugPrint("ERROR ${e.toString()}");
+                                  }
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
                                       builder: (_) => NavScreen(),

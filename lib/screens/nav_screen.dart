@@ -86,53 +86,43 @@ class _NavScreenState extends State<NavScreen> {
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     // final textTheme = Theme.of(context).textTheme;
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarBrightness: Brightness.dark,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Colors.transparent,
-        // systemNavigationBarDividerColor: Colors.transparent,
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-      child: PersistentTabView(
-        context,
-        controller: _controller,
-        screens: _buildScreens(),
-        items: _navBarsItems(colorScheme),
-        confineInSafeArea: false,
-        backgroundColor: colorScheme.background, // Default is Colors.white.
-        // handleAndroidBackButtonPress: true, // Default is true.
-        resizeToAvoidBottomInset:
-            true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
-        // stateManagement: true, // Default is true.
-        // hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
-        decoration: NavBarDecoration(
-          // adjustScreenBottomPaddingOnCurve: false,
-          // borderRadius: BorderRadius.circular(10.0),
-          // colorBehindNavBar: Colors.white,
-          border: BorderDirectional(
-            top: BorderSide(
-              color: colorScheme.onSurface.withOpacity(0.49),
-            ),
+    return PersistentTabView(
+      context,
+      controller: _controller,
+      screens: _buildScreens(),
+      items: _navBarsItems(colorScheme),
+      confineInSafeArea: false,
+      backgroundColor: colorScheme.background, // Default is Colors.white.
+      // handleAndroidBackButtonPress: true, // Default is true.
+      resizeToAvoidBottomInset:
+          true, // This needs to be true if you want to move up the screen when keyboard appears. Default is true.
+      // stateManagement: true, // Default is true.
+      // hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
+      decoration: NavBarDecoration(
+        // adjustScreenBottomPaddingOnCurve: false,
+        // borderRadius: BorderRadius.circular(10.0),
+        // colorBehindNavBar: Colors.white,
+        border: BorderDirectional(
+          top: BorderSide(
+            color: colorScheme.onSurface.withOpacity(0.49),
           ),
         ),
-        // popAllScreensOnTapOfSelectedTab: true,
-        // popActionScreens: PopActionScreensType.all,
-        itemAnimationProperties: const ItemAnimationProperties(
-          // Navigation Bar's items animation properties.
-          duration: Duration(milliseconds: 200),
-          curve: Curves.ease,
-        ),
-        screenTransitionAnimation: const ScreenTransitionAnimation(
-          // Screen transition animation on change of selected tab.
-          animateTabTransition: true,
-          // curve: Curves.ease,
-          // duration: Duration(milliseconds: 200),
-        ),
-        navBarStyle:
-            NavBarStyle.simple, // Choose the nav bar style with this property.
       ),
+      // popAllScreensOnTapOfSelectedTab: true,
+      // popActionScreens: PopActionScreensType.all,
+      itemAnimationProperties: const ItemAnimationProperties(
+        // Navigation Bar's items animation properties.
+        duration: Duration(milliseconds: 200),
+        curve: Curves.ease,
+      ),
+      screenTransitionAnimation: const ScreenTransitionAnimation(
+        // Screen transition animation on change of selected tab.
+        animateTabTransition: true,
+        // curve: Curves.ease,
+        // duration: Duration(milliseconds: 200),
+      ),
+      navBarStyle:
+          NavBarStyle.simple, // Choose the nav bar style with this property.
     );
   }
 }

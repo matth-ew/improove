@@ -113,7 +113,7 @@ class Training {
   //     duration = duration,
   //     preview = preview;
 
-  Training.fromJson(Map<String, dynamic> json)
+  Training.fromJson(dynamic json)
       : id = (json['_id'] ?? -1) as int,
         title = (json['title'] ?? "") as String,
         duration = (json['duration'] ?? "") as String,

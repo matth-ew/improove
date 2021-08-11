@@ -49,13 +49,13 @@ ThunkAction<AppState> loginThunk(String email, String password,
         store.dispatch(SetUser(u));
         await storage.write(
             key: "accessToken", value: r.data!["token"] as String);
-        cb?.call();
+        cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
       }
     } catch (e) {
       debugPrint("ERR LOGIN ${e.toString()}");
-      cb?.call(e);
+      cb?.call(e.toString());
     }
   };
 }
@@ -71,13 +71,13 @@ ThunkAction<AppState> loginFacebookThunk(String accessToken, [Function? cb]) {
         store.dispatch(SetUser(u));
         await storage.write(
             key: "accessToken", value: r.data!["token"] as String);
-        cb?.call();
+        cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
       }
     } catch (e) {
       debugPrint("ERR LOGIN FACEBOOK ${e.toString()}");
-      cb?.call(e);
+      cb?.call(e.toString());
     }
   };
 }
@@ -92,13 +92,13 @@ ThunkAction<AppState> loginGoogleThunk(String accessToken, [Function? cb]) {
         store.dispatch(SetUser(u));
         await storage.write(
             key: "accessToken", value: r.data!["token"] as String);
-        cb?.call();
+        cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
       }
     } catch (e) {
       debugPrint("ERR LOGIN GOOGLE ${e.toString()}");
-      cb?.call(e);
+      cb?.call(e.toString());
     }
   };
 }
@@ -114,13 +114,13 @@ ThunkAction<AppState> signupThunk(String email, String password,
         store.dispatch(SetUser(u)); // Create storage
         await storage.write(
             key: "accessToken", value: r.data!["token"] as String);
-        cb?.call();
+        cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
       }
     } catch (e) {
-      debugPrint("UE UAJO ERR O SIGNUP");
-      cb?.call(e);
+      debugPrint("UE UAJO ERR O SIGNUP $e");
+      cb?.call(e.toString());
     }
   };
 }
@@ -132,10 +132,10 @@ ThunkAction<AppState> logoutThunk([Function? cb]) {
       await storage.delete(key: "accessToken");
       //CANCELLA DATI DA REDUX!
       store.dispatch(UserLogout());
-      cb?.call();
+      cb?.call(null);
       //
     } catch (e) {
-      cb?.call(e);
+      cb?.call(e.toString());
     }
   };
 }

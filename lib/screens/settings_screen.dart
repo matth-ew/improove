@@ -51,14 +51,16 @@ class SettingsScreen extends StatelessWidget {
                 title: const Text('Disconnect',
                     style: TextStyle(color: Colors.redAccent)),
                 onTap: () {
-                  vm.logout(() => {
-                        Navigator.of(context).pushAndRemoveUntil<void>(
-                          MaterialPageRoute<void>(
-                              builder: (BuildContext context) =>
-                                  AuthenticationScreen()),
-                          (Route<dynamic> route) => false,
-                        )
-                      });
+                  vm.logout(
+                    (String? e) {
+                      Navigator.of(context).pushAndRemoveUntil<void>(
+                        MaterialPageRoute<void>(
+                            builder: (BuildContext context) =>
+                                AuthenticationScreen()),
+                        (Route<dynamic> route) => false,
+                      );
+                    },
+                  );
                 },
               ),
             ],
