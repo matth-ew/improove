@@ -5,6 +5,7 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/settings_screen.dart';
 import 'package:improove/screens/training_screen.dart';
+import 'package:improove/widgets/custom_bottom_sheet.dart';
 import 'package:improove/widgets/row_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
@@ -65,24 +66,7 @@ class ProfileScreen extends StatelessWidget {
               IconButton(
                 splashRadius: 25,
                 onPressed: () {
-                  pushNewScreen(
-                    context,
-                    screen: SettingsScreen(),
-                    withNavBar: false,
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                  );
-                  // showModalBottomSheet(
-                  //   shape: RoundedRectangleBorder(
-                  //       borderRadius: BorderRadius.only(
-                  //     topLeft: Radius.circular(15),
-                  //     topRight: Radius.circular(15),
-                  //   )),
-                  //   context: context,
-                  //   useRootNavigator: true,
-                  //   builder: (context) {
-                  //     return SettingsScreen();
-                  //   },
-                  // );
+                  showCustomBottomSheet(context, SettingsScreen());
                 },
                 icon: Icon(Icons.settings, color: colorScheme.primary),
               ),

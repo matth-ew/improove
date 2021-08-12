@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:improove/redux/models/models.dart';
@@ -20,6 +22,12 @@ class SetFullName {
   final String surname;
 
   SetFullName(this.name, this.surname);
+}
+
+class SetProfileImage {
+  final String profileImage;
+
+  SetProfileImage(this.profileImage);
 }
 
 class AddSavedTraining {
@@ -133,6 +141,27 @@ ThunkAction<AppState> logoutThunk([Function? cb]) {
       //CANCELLA DATI DA REDUX!
       store.dispatch(UserLogout());
       cb?.call(null);
+      //
+    } catch (e) {
+      cb?.call(e.toString());
+    }
+  };
+}
+
+ThunkAction<AppState> changeProfileImageThunk(File image, [Function? cb]) {
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r =
+            await UserService().changeProfileImage(image, token);
+        if (r?.data['success'] as bool) {
+          debugPrint("UE RESP ${r?.data}");
+          final String image = r!.data!["image"] as String;
+          store.dispatch(SetProfileImage(image));
+        }
+        cb?.call(null);
+      }
       //
     } catch (e) {
       cb?.call(e.toString());
