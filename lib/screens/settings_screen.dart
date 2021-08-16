@@ -5,14 +5,15 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
 import 'package:improove/widgets/image_picker_cropper.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    //final colorScheme = Theme.of(context).colorScheme;
+    // final colorScheme = Theme.of(context).colorScheme;
     // final buttonTheme = Theme.of(context).buttonTheme;
-    //final textTheme = Theme.of(context).textTheme;
+    // final textTheme = Theme.of(context).textTheme;
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       builder: (BuildContext context, _ViewModel vm) {
@@ -34,9 +35,14 @@ class SettingsScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('Change User Info'),
+              title: const Text('Change Personal Info'),
               onTap: () {
-                Navigator.pop(context);
+                pushNewScreen(
+                  context,
+                  screen: ChangePersonalInfo(),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
               },
             ),
             ListTile(
@@ -82,6 +88,106 @@ class _ViewModel {
       ),
       changeProfileImage: (image, [cb]) => store.dispatch(
         changeProfileImageThunk(image, cb),
+      ),
+    );
+  }
+}
+
+class ChangePersonalInfo extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    // final buttonTheme = Theme.of(context).buttonTheme;
+    final textTheme = Theme.of(context).textTheme;
+    return Scaffold(
+      appBar: AppBar(
+        elevation: 0,
+        title: Text(
+          "Change personal info",
+          style: textTheme.headline6?.copyWith(
+              color: colorScheme.primary, fontWeight: FontWeight.w600),
+        ),
+        leading: IconButton(
+          splashRadius: 25,
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          icon: Icon(Icons.close, color: colorScheme.onSurface),
+        ),
+        actions: [
+          IconButton(
+            splashRadius: 25,
+            onPressed: () {},
+            icon: Icon(Icons.done, color: colorScheme.secondary),
+          ),
+        ],
+        backgroundColor: colorScheme.background,
+      ),
+      body: Form(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+              child: TextFormField(
+                // key: _formEmailKey,
+                // controller: _emailController,
+                onFieldSubmitted: (value) {
+                  // _formEmailKey.currentState?.validate();
+                },
+                keyboardType: TextInputType.emailAddress,
+                // validator: validateEmail,
+                decoration: InputDecoration(
+                  errorMaxLines: 2,
+                  contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                  labelText: 'Email',
+                ),
+                textInputAction: TextInputAction.next,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+              child: TextFormField(
+                // key: _formEmailKey,
+                // controller: _emailController,
+                onFieldSubmitted: (value) {
+                  // _formEmailKey.currentState?.validate();
+                },
+                keyboardType: TextInputType.emailAddress,
+                // validator: validateEmail,
+                decoration: InputDecoration(
+                  errorMaxLines: 2,
+                  contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                  labelText: 'Email',
+                ),
+                textInputAction: TextInputAction.next,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
+              child: TextFormField(
+                // key: _formEmailKey,
+                // controller: _emailController,
+                onFieldSubmitted: (value) {
+                  // _formEmailKey.currentState?.validate();
+                },
+                keyboardType: TextInputType.emailAddress,
+                // validator: validateEmail,
+                decoration: InputDecoration(
+                  errorMaxLines: 2,
+                  contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(30.0)),
+                  labelText: 'Email',
+                ),
+                textInputAction: TextInputAction.next,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

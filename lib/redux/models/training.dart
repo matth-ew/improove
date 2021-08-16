@@ -129,6 +129,19 @@ class Training {
   //     duration = duration,
   //     preview = preview;
 
+  Training.fromJsonUnpopulated(Map<String, dynamic> json)
+      : id = (json['_id'] ?? -1) as int,
+        title = (json['title'] ?? "") as String,
+        duration = (json['duration'] ?? "") as String,
+        preview = (json['preview'] ?? "") as String,
+        category = (json['category'] ?? "") as String,
+        description = (json['description'] ?? "") as String,
+        exercises = List<Exercise>.from(
+            ((json['exercises'] ?? const []) as List)
+                .map((t) => Exercise.fromJson(t as Map<String, dynamic>))),
+        trainerId = (json['trainer_id'] ?? -1) as int,
+        trainerImage = "";
+
   Training.fromJson(dynamic json)
       : id = (json['_id'] ?? -1) as int,
         title = (json['title'] ?? "") as String,
