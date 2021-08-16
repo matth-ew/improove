@@ -1,8 +1,10 @@
-import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/trainer.dart';
+import 'package:improove/widgets/edit_text.dart';
+import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:flutter_redux/flutter_redux.dart';
+import 'package:improove/screens/training_screen.dart';
 import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -15,6 +17,19 @@ class TrainerScreen extends StatelessWidget {
     this.id = -1,
   }) : super(key: key);
 
+  Widget checkIfEdit(_ViewModel vm, int trainerId) {
+    if (vm.user.id == trainerId) {
+      return EditTextCard(
+        text: vm.trainer?.trainerDescription ?? "",
+        onDone: (String text) {
+          vm.setDescription(trainerId, text);
+        },
+      );
+    } else {
+      return MyExpandableText(text: vm.trainer?.trainerDescription ?? "");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -25,6 +40,7 @@ class TrainerScreen extends StatelessWidget {
         converter: (Store<AppState> store) => _ViewModel.fromStore(store, id),
         onInit: (Store<AppState> store) {
           if (store.state.trainers[id] == null) {
+            debugPrint(id.toString());
             store.dispatch(getTrainerById(id));
           }
         },
@@ -96,17 +112,24 @@ class TrainerScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(25.0),
-                        child: ExpandableText(
-                          vm.trainer?.trainerDescription ?? "",
-                          expandText: "expand",
-                          collapseText: "collapse",
-                          linkColor: colorScheme.primary,
-                          maxLines: 6,
-                          style: textTheme.subtitle1?.copyWith(
-                              color: colorScheme.primary.withOpacity(.59)),
-                        ),
-                      ),
+                          padding: const EdgeInsets.all(25.0),
+                          // child: ExpandableText(
+                          //   vm.trainer?.trainerDescription ?? "",
+                          //   expandText: "expand",
+                          //   collapseText: "collapse",
+                          //   linkColor: colorScheme.primary,
+                          //   maxLines: 6,
+                          //   style: textTheme.subtitle1?.copyWith(
+                          //       color: colorScheme.primary.withOpacity(.59)),
+                          // )
+                          // child: EditTextCard(
+                          //   text: vm.trainer?.trainerDescription ?? "",
+                          //   onDone: (String text) {
+                          //     debugPrint("qui");
+                          //     vm.setDescription(id, text);
+                          //   },
+                          // )),
+                          child: checkIfEdit(vm, id)),
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 25.0,
@@ -130,12 +153,24 @@ class TrainerScreen extends StatelessWidget {
                     child: ListView.builder(
                       padding: const EdgeInsets.only(left: 19.0, right: 19.0),
                       scrollDirection: Axis.horizontal,
-                      itemCount: 3,
+                      itemCount: vm.trainings.length,
                       itemBuilder: (context, index) {
                         return Padding(
                           padding: const EdgeInsets.only(left: 6, right: 6),
                           child: PreviewCard(
-                            preview: vm.trainer?.profileImage,
+                            preview: vm.trainings[index]!.preview,
+                            name: vm.trainings[index]!.title,
+                            id: index,
+                            onTapCard: (int index) {
+                              pushNewScreen(
+                                context,
+                                screen:
+                                    TrainingScreen(id: vm.trainings[index]!.id),
+                                withNavBar: true,
+                                pageTransitionAnimation:
+                                    PageTransitionAnimation.cupertino,
+                              );
+                            },
                           ),
                         );
                       },
@@ -151,14 +186,33 @@ class TrainerScreen extends StatelessWidget {
 
 class _ViewModel {
   final User? trainer;
+  final User user;
+  final Map<int, Training?> trainings;
+  final Function(int, String) setDescription;
 
-  _ViewModel({required this.trainer});
+  _ViewModel(
+      {required this.trainer,
+      required this.trainings,
+      required this.user,
+      required this.setDescription});
 
   static _ViewModel fromStore(Store<AppState> store, int id) {
-    // if (store.state.trainers[id] == null) {
-    //   store.dispatch(getTrainerById(id));
-    // }
-    // debugPrint(store.state.trainers[id]?.toString());
-    return _ViewModel(trainer: store.state.trainers[id]);
+    final Map<int, Training?> trainings = {};
+    {
+      // da ottimizzare (non ora)
+      int index = 0;
+      store.state.trainings.forEach((i, training) {
+        if (training.trainerId == store.state.trainers[id]!.id) {
+          trainings.addAll({index: training});
+          index++;
+        }
+      });
+    }
+    return _ViewModel(
+        setDescription: (int id, String text) =>
+            store.dispatch(setTrainerDescription(id, text)),
+        trainer: store.state.trainers[id],
+        trainings: trainings,
+        user: store.state.user);
   }
 }

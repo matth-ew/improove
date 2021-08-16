@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:improove/screens/profile_screen.dart';
+import 'package:improove/screens/trainer_screen.dart';
 
 class PreviewCard extends StatelessWidget {
   final String name;
@@ -11,6 +11,7 @@ class PreviewCard extends StatelessWidget {
   final Function? onTapCard;
   final Function? onTapAvatar;
   final int? id;
+  final int trainerId;
 
   const PreviewCard({
     Key? key,
@@ -20,6 +21,7 @@ class PreviewCard extends StatelessWidget {
     this.preview,
     this.avatar,
     this.id = -1,
+    this.trainerId = -1,
     this.onTapCard,
     this.onTapAvatar,
   }) : super(key: key);
@@ -139,7 +141,7 @@ class PreviewCard extends StatelessWidget {
                   onTap: () {
                     pushNewScreen(
                       context,
-                      screen: ProfileScreen(),
+                      screen: TrainerScreen(id: trainerId),
                       withNavBar: true,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino,

@@ -24,4 +24,22 @@ class TrainerService {
       return null;
     }
   }
+
+  Future<Response?> setTrainerDescription(
+      int id, String text, String token) async {
+    try {
+      dio.options.headers['Authorization'] = token;
+      return await dio.post(
+        '$backendUrl/api/setTrainerDescription',
+        data: {'id': id, 'text': text},
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint("UE DIOERROR");
+      print(e.response?.data['msg']);
+      return null;
+    }
+  }
 }

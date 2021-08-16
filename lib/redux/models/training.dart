@@ -34,6 +34,22 @@ class Exercise {
         'preview': preview
       };
 
+  Exercise copyWith(
+      {String? title,
+      String? tips,
+      String? mistakes,
+      String? how,
+      String? video,
+      String? preview}) {
+    return Exercise(
+        title: title ?? this.title,
+        preview: preview ?? this.preview,
+        tips: tips ?? this.tips,
+        how: how ?? this.how,
+        mistakes: mistakes ?? this.mistakes,
+        video: video ?? this.video);
+  }
+
   @override
   String toString() {
     return 'Exercise: ${const JsonEncoder.withIndent('  ').convert(this)}';
@@ -113,6 +129,19 @@ class Training {
   //     duration = duration,
   //     preview = preview;
 
+  Training.fromJsonUnpopulated(Map<String, dynamic> json)
+      : id = (json['_id'] ?? -1) as int,
+        title = (json['title'] ?? "") as String,
+        duration = (json['duration'] ?? "") as String,
+        preview = (json['preview'] ?? "") as String,
+        category = (json['category'] ?? "") as String,
+        description = (json['description'] ?? "") as String,
+        exercises = List<Exercise>.from(
+            ((json['exercises'] ?? const []) as List)
+                .map((t) => Exercise.fromJson(t as Map<String, dynamic>))),
+        trainerId = (json['trainer_id'] ?? -1) as int,
+        trainerImage = "";
+
   Training.fromJson(Map<String, dynamic> json)
       : id = (json['_id'] ?? -1) as int,
         title = (json['title'] ?? "") as String,
@@ -121,10 +150,10 @@ class Training {
         category = (json['category'] ?? "") as String,
         description = (json['description'] ?? "") as String,
         exercises = List<Exercise>.from(
-            ((json['video_array'] ?? const []) as List)
+            ((json['exercises'] ?? const []) as List)
                 .map((t) => Exercise.fromJson(t as Map<String, dynamic>))),
-        trainerId = (json['trainer_id']["_id"] ?? -1) as int,
-        trainerImage = (json['trainer_id']["profileImage"] ?? "") as String;
+        trainerId = (json['trainer_id']?["_id"] ?? -1) as int,
+        trainerImage = (json['trainer_id']?["profileImage"] ?? "") as String;
 
   @override
   String toString() {

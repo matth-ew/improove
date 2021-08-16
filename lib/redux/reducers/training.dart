@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:redux/redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
@@ -5,6 +6,7 @@ import 'package:improove/redux/models/models.dart';
 final trainingReducer = combineReducers<Map<int, Training>>([
   TypedReducer<Map<int, Training>, SetTrainings>(_setAllTrainings),
   TypedReducer<Map<int, Training>, SetTraining>(_setTrainingById),
+  TypedReducer<Map<int, Training>, SetExercise>(_setExerciseByTitle)
 ]);
 
 Map<int, Training> _setAllTrainings(
@@ -16,6 +18,20 @@ Map<int, Training> _setTrainingById(
     Map<int, Training> trainings, SetTraining action) {
   return Map.from(trainings)..addAll({action.id: action.training});
 }
+
+Map<int, Training> _setExerciseByTitle(
+    Map<int, Training> trainings, SetExercise action) {
+  final List<Exercise> e = trainings[action.trainingId]!
+      .exercises
+      .map((exercise) =>
+          exercise.title == action.exercise.title ? action.exercise : exercise)
+      .toList();
+  return Map.from(trainings)
+    ..addAll({
+      action.trainingId: trainings[action.trainingId]!.copyWith(exercises: e)
+    });
+}
+
 
 
 

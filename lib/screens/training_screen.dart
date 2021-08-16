@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/screens/trainer_screen.dart';
+import 'package:improove/widgets/edit_text.dart';
+import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/screens/exercise_screen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -17,6 +19,19 @@ class TrainingScreen extends StatelessWidget {
     Key? key,
     this.id = -1,
   }) : super(key: key);
+
+  Widget checkIfEdit(_ViewModel vm, int trainingId) {
+    if (vm.user.id == vm.training!.trainerId) {
+      return EditTextCard(
+        text: vm.training?.description ?? "",
+        onDone: (String text) {
+          vm.setDescription(trainingId, text);
+        },
+      );
+    } else {
+      return MyExpandableText(text: vm.training?.description ?? "");
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -153,17 +168,8 @@ class TrainingScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.all(25.0),
-                        child: ExpandableText(
-                          vm.training!.description,
-                          expandText: "expand",
-                          collapseText: "collapse",
-                          linkColor: colorScheme.primary,
-                          maxLines: 3,
-                          style: textTheme.subtitle1?.copyWith(
-                              color: colorScheme.primary.withOpacity(.59)),
-                        ),
-                      ),
+                          padding: const EdgeInsets.all(25.0),
+                          child: checkIfEdit(vm, id)),
                     ],
                   ),
                 ),
@@ -213,19 +219,25 @@ class TrainingScreen extends StatelessWidget {
 class _ViewModel {
   final List<SavedTraining> savedTrainings;
   final Training? training;
+  final User user;
   final Function([Function? cb]) saveTraining;
   final Function([Function? cb]) removeTraining;
+  final Function(int, String) setDescription;
 
-  _ViewModel({
-    required this.savedTrainings,
-    required this.training,
-    required this.saveTraining,
-    required this.removeTraining,
-  });
+  _ViewModel(
+      {required this.savedTrainings,
+      required this.training,
+      required this.user,
+      required this.saveTraining,
+      required this.removeTraining,
+      required this.setDescription});
 
   static _ViewModel fromStore(Store<AppState> store, int id) {
     return _ViewModel(
       savedTrainings: store.state.user.savedTrainings,
+      user: store.state.user,
+      setDescription: (int id, String text) =>
+          store.dispatch(setTrainingDescription(id, text)),
       training: store.state.trainings[id],
       saveTraining: ([cb]) => store.dispatch(
         saveTrainingThunk(id, cb),

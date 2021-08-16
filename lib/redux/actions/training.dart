@@ -2,8 +2,9 @@ import 'dart:async'; // Add the package
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:improove/redux/models/models.dart';
-import 'package:improove/services/trainingservice.dart';
+import 'package:improove/services/training_service.dart';
 import 'package:redux/redux.dart';
+import 'package:improove/redux/actions/user.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
 class SetTrainings {
@@ -19,6 +20,13 @@ class SetTraining {
   SetTraining(this.training, this.id);
 }
 
+class SetExercise {
+  final Exercise exercise;
+  final int trainingId;
+
+  SetExercise(this.exercise, this.trainingId);
+}
+
 ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
   // Define the parameter
   return (Store<AppState> store) async {
@@ -32,6 +40,7 @@ ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
             id,
           ),
         );
+        debugPrint("GET TRAININGS BY ID $store.state.trainings");
       }
       // final Training training = Training.fromJson(res.data!);
       // if (t != null) {
@@ -61,8 +70,8 @@ ThunkAction<AppState> getTrainings([Completer? completer]) {
           // debugPrint("INDEX $i ${t.toString()}");
           trainings.addAll({t.id: t});
         }
-        // debugPrint("TRAININGS $trainings");
         store.dispatch(SetTrainings(trainings));
+        debugPrint("GET TRAININGS $store.state.trainings");
         // if (t != null) {
         //   store.dispatch(SetTrainings(t));
         //   completer?.complete();
@@ -71,6 +80,98 @@ ThunkAction<AppState> getTrainings([Completer? completer]) {
       // No exception, complete without error
     } catch (e) {
       debugPrint("Errore in getTraining ${e.toString()}");
+      completer?.completeError(e); // Exception thrown, complete with error
+    }
+  };
+}
+
+ThunkAction<AppState> setTrainingDescription(int id, String text,
+    [Completer? completer]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r =
+            await TrainingService().setTrainingDescription(id, text, token);
+        if (r?.data['success'] as bool) {
+          store.dispatch(SetTraining(
+              store.state.trainings[id]!.copyWith(description: text), id));
+        }
+      }
+    } catch (e) {
+      debugPrint("Errore in getTrainerById ${e.toString()}");
+      completer?.completeError(e); // Exception thrown, complete with error
+    }
+  };
+}
+
+///******************* EXERCISE *******************///
+
+ThunkAction<AppState> setExerciseTips(int id, String title, String text,
+    [Completer? completer]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r =
+            await TrainingService().setExerciseTips(id, title, text, token);
+        if (r?.data['success'] as bool) {
+          final Exercise e = store.state.trainings[id]!.exercises
+              .firstWhere((element) => element.title == title)
+              .copyWith(tips: text);
+          store.dispatch(SetExercise(e, id));
+        }
+      }
+    } catch (e) {
+      debugPrint("Errore in getTrainerById ${e.toString()}");
+      completer?.completeError(e); // Exception thrown, complete with error
+    }
+  };
+}
+
+ThunkAction<AppState> setExerciseMistakes(int id, String title, String text,
+    [Completer? completer]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r =
+            await TrainingService().setExerciseMistakes(id, title, text, token);
+        if (r?.data['success'] as bool) {
+          final Exercise e = store.state.trainings[id]!.exercises
+              .firstWhere((element) => element.title == title)
+              .copyWith(mistakes: text);
+          store.dispatch(SetExercise(e, id));
+        }
+      }
+    } catch (e) {
+      debugPrint("Errore in getTrainerById ${e.toString()}");
+      completer?.completeError(e); // Exception thrown, complete with error
+    }
+  };
+}
+
+ThunkAction<AppState> setExerciseHow(int id, String title, String text,
+    [Completer? completer]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r =
+            await TrainingService().setExerciseHow(id, title, text, token);
+        if (r?.data['success'] as bool) {
+          final Exercise e = store.state.trainings[id]!.exercises
+              .firstWhere((element) => element.title == title)
+              .copyWith(how: text);
+          store.dispatch(SetExercise(e, id));
+        }
+      }
+    } catch (e) {
+      debugPrint("Errore in getTrainerById ${e.toString()}");
       completer?.completeError(e); // Exception thrown, complete with error
     }
   };

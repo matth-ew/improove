@@ -59,6 +59,7 @@ class ExploreScreen extends StatelessWidget {
                           category: trainingList[index].category,
                           avatar: trainingList[index].trainerImage,
                           id: index,
+                          trainerId: trainingList[index].trainerId,
                           onTapCard: (int index) {
                             pushNewScreen(
                               context,

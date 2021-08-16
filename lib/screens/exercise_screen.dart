@@ -1,8 +1,11 @@
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:improove/widgets/edit_text.dart';
+import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/widgets/my_video_player.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
+import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';
 
@@ -11,6 +14,47 @@ class ExerciseScreen extends StatelessWidget {
   final int id;
   const ExerciseScreen({Key? key, this.id = -1, this.trainingId = -1})
       : super(key: key);
+
+  Widget? checkIfEdit(_ViewModel vm, int trainingId, String section) {
+    if (section == "tips") {
+      if (vm.userId == vm.training.trainerId) {
+        return EditTextCard(
+          text: vm.exercise!.tips,
+          onDone: (String text) {
+            vm.setTips(trainingId, vm.exercise!.title, text);
+          },
+        );
+      } else {
+        return MyExpandableText(text: vm.exercise!.tips);
+      }
+    }
+
+    if (section == "how") {
+      if (vm.userId == vm.training.trainerId) {
+        return EditTextCard(
+          text: vm.exercise!.how,
+          onDone: (String text) {
+            vm.setHow(trainingId, vm.exercise!.title, text);
+          },
+        );
+      } else {
+        return MyExpandableText(text: vm.exercise!.how);
+      }
+    }
+
+    if (section == "mistakes") {
+      if (vm.userId == vm.training.trainerId) {
+        return EditTextCard(
+          text: vm.exercise!.mistakes,
+          onDone: (String text) {
+            vm.setMistakes(trainingId, vm.exercise!.title, text);
+          },
+        );
+      } else {
+        return MyExpandableText(text: vm.exercise!.mistakes);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -110,15 +154,7 @@ class ExerciseScreen extends StatelessWidget {
                           right: 25.0,
                           bottom: 15.0,
                         ),
-                        child: ExpandableText(
-                          vm.exercise!.how,
-                          expandText: "expand",
-                          collapseText: "collapse",
-                          linkColor: colorScheme.primary,
-                          maxLines: 3,
-                          style: textTheme.bodyText2?.copyWith(
-                              color: colorScheme.primary.withOpacity(.59)),
-                        ),
+                        child: checkIfEdit(vm, trainingId, "how"),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(
@@ -134,21 +170,12 @@ class ExerciseScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 25.0,
-                          right: 25.0,
-                          bottom: 15.0,
-                        ),
-                        child: ExpandableText(
-                          vm.exercise!.mistakes,
-                          expandText: "expand",
-                          collapseText: "collapse",
-                          linkColor: colorScheme.primary,
-                          maxLines: 3,
-                          style: textTheme.bodyText2?.copyWith(
-                              color: colorScheme.primary.withOpacity(.59)),
-                        ),
-                      ),
+                          padding: const EdgeInsets.only(
+                            left: 25.0,
+                            right: 25.0,
+                            bottom: 15.0,
+                          ),
+                          child: checkIfEdit(vm, trainingId, "mistakes")),
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 25.0,
@@ -162,21 +189,12 @@ class ExerciseScreen extends StatelessWidget {
                         ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(
-                          left: 25.0,
-                          right: 25.0,
-                          bottom: 5.0,
-                        ),
-                        child: ExpandableText(
-                          vm.exercise!.tips,
-                          expandText: "expand",
-                          collapseText: "collapse",
-                          linkColor: colorScheme.primary,
-                          maxLines: 3,
-                          style: textTheme.bodyText2?.copyWith(
-                              color: colorScheme.primary.withOpacity(.59)),
-                        ),
-                      ),
+                          padding: const EdgeInsets.only(
+                            left: 25.0,
+                            right: 25.0,
+                            bottom: 5.0,
+                          ),
+                          child: checkIfEdit(vm, trainingId, "tips")),
                     ],
                   ),
                 ),
@@ -189,11 +207,31 @@ class ExerciseScreen extends StatelessWidget {
 
 class _ViewModel {
   final Exercise? exercise;
+  final Training training;
+  final int userId;
+  final Function(int, String, String) setTips;
+  final Function(int, String, String) setHow;
+  final Function(int, String, String) setMistakes;
 
-  _ViewModel({required this.exercise});
+  _ViewModel(
+      {required this.exercise,
+      required this.training,
+      required this.userId,
+      required this.setTips,
+      required this.setHow,
+      required this.setMistakes});
 
   static _ViewModel fromStore(Store<AppState> store, int trainingId, int id) {
     return _ViewModel(
-        exercise: store.state.trainings[trainingId]!.exercises[id]);
+      userId: store.state.user.id,
+      training: store.state.trainings[trainingId]!,
+      exercise: store.state.trainings[trainingId]!.exercises[id],
+      setTips: (int id, String title, String text) =>
+          store.dispatch(setExerciseTips(id, title, text)),
+      setHow: (int id, String title, String text) =>
+          store.dispatch(setExerciseHow(id, title, text)),
+      setMistakes: (int id, String title, String text) =>
+          store.dispatch(setExerciseMistakes(id, title, text)),
+    );
   }
 }
