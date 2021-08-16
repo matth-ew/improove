@@ -4,6 +4,8 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';
 
+import '../nav_screen.dart';
+
 class LoginForm extends StatefulWidget {
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -123,12 +125,20 @@ class _LoginFormState extends State<LoginForm> {
                           vm.login(
                             _emailController.text,
                             _passwordController.text,
-                            (e) => {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text('Processing Data: $e'),
-                                    behavior: SnackBarBehavior.floating),
-                              ),
+                            (String? e) {
+                              if (e == null) {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (_) => NavScreen(),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text('Processing Data: $e'),
+                                      behavior: SnackBarBehavior.floating),
+                                );
+                              }
                             },
                           );
                           /*AuthService()

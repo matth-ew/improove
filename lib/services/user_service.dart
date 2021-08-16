@@ -48,4 +48,19 @@ class UserService {
       return e.response;
     }
   }
+
+  Future<Response?> changeProfileImage(File image, String token) async {
+    try {
+      final String fileName = image.path.split('/').last;
+      final FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(image.path, filename: fileName),
+      });
+      dio.options.headers['Authorization'] = token;
+      return await dio.post('$backendUrl/api/userChangeProfileImage',
+          data: formData);
+    } on DioError catch (e) {
+      debugPrint("GETINFO ERROR ${e.response?.data?['msg']}");
+      return e.response;
+    }
+  }
 }

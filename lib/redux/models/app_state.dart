@@ -1,4 +1,5 @@
 // lib/models/app_state.dart
+import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 import 'models.dart';
 
@@ -17,4 +18,41 @@ class AppState {
       : trainings = const {},
         user = const User.initial(),
         trainers = const {};
+
+  dynamic toJson() => {
+        'user': user.toJson(),
+        //'trainers': trainers.entries.map((e) => {e.key: e.value.toJson()}),
+        //'trainings': trainings.entries.map((e) => {e.key: e.value.toJson()}),
+      };
+  static AppState fromJson(dynamic json) {
+    if (json == null) return AppState.initial();
+    return AppState(
+      user: User.fromJson(json['user']),
+      trainers: const {},
+      trainings: const {},
+      /*trainers: (json['trainers'] ?? "").map(
+        (t) => {
+          t["key"]: User.fromJson(
+            t["value"],
+          ),
+        },
+      ) as Map<int, User>,
+      trainings: (json['trainings'] ?? "").map(
+        (t) => {
+          t["key"]: Training.fromJson(
+            t["value"],
+          ),
+        },
+      ) as Map<int, Training>,*/
+    );
+  }
+  /*
+      : user = User.fromJson(json['user']),
+        trainers = (json['trainers'] ?? "")
+                .map((t) => {t["key"]: User.fromJson(t["value"])})
+            as Map<int, User>,
+        trainings = (json['trainings'] ?? "")
+                .map((t) => {t["key"]: Training.fromJson(t["value"])})
+            as Map<int, Training>;
+            */
 }

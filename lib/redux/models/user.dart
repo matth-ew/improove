@@ -78,7 +78,7 @@ class User {
         'closedTrainings': closedTrainings,
       };
 
-  User.fromJson(Map<String, dynamic> json)
+  User.fromJson(dynamic json)
       : name = (json['name'] ?? "") as String,
         surname = (json['surname'] ?? "") as String,
         profileImage = (json['profileImage'] ?? "") as String,

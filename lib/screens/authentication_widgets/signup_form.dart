@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:improove/screens/nav_screen.dart';
 import 'package:redux/redux.dart';
 
 class SignupForm extends StatefulWidget {
@@ -198,12 +199,20 @@ class _SignupFormState extends State<SignupForm> {
                           vm.signup(
                             _emailController.text,
                             _passwordController.text,
-                            (e) => {
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                    content: Text('Processing Data: $e'),
-                                    behavior: SnackBarBehavior.floating),
-                              ),
+                            (String? e) {
+                              if (e == null) {
+                                Navigator.of(context).pushReplacement(
+                                  MaterialPageRoute(
+                                    builder: (_) => NavScreen(),
+                                  ),
+                                );
+                              } else {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                      content: Text('Processing Data: $e'),
+                                      behavior: SnackBarBehavior.floating),
+                                );
+                              }
                             },
                           );
                           // AuthService()
