@@ -25,7 +25,7 @@ class SettingsScreen extends StatelessWidget {
               title: const Text('Change Profile Image'),
               onTap: () async {
                 final File? fileToSave =
-                    await showImagePickerCropper(context, 500, 500);
+                    await showImagePickerCropper(context, 500, 500, "circle");
                 if (fileToSave != null) {
                   vm.changeProfileImage(fileToSave, () {
                     Navigator.pop(context);

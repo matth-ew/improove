@@ -26,6 +26,21 @@ class TrainerService {
     }
   }
 
+  Future<Response?> setTrainerImage(File image, String token) async {
+    try {
+      final String fileName = image.path.split('/').last;
+      final FormData formData = FormData.fromMap({
+        "image": await MultipartFile.fromFile(image.path, filename: fileName),
+      });
+      dio.options.headers['Authorization'] = token;
+      return await dio.post('$backendUrl/api/userChangeTrainerImage',
+          data: formData);
+    } on DioError catch (e) {
+      debugPrint("GETINFO ERROR ${e.response?.data?['msg']}");
+      return e.response;
+    }
+  }
+
   Future<Response?> setTrainerDescription(
       int id, String text, String token) async {
     try {

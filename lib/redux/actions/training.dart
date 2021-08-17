@@ -64,6 +64,7 @@ ThunkAction<AppState> getTrainings([Completer? completer]) {
         // debugPrint("UE GET TRAININGS IN");
         final Map<int, Training> trainings = {};
         final results = [...r!.data!["result"]];
+        debugPrint(results.toString());
         for (var i = 0; i < results.length; i++) {
           final Training t =
               Training.fromJson(results[i] as Map<String, dynamic>);

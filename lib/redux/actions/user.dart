@@ -30,6 +30,12 @@ class SetProfileImage {
   SetProfileImage(this.profileImage);
 }
 
+class SetTrainerImage {
+  final String trainerImage;
+
+  SetTrainerImage(this.trainerImage);
+}
+
 class AddSavedTraining {
   final SavedTraining savedTraining;
 

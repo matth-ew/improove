@@ -8,6 +8,7 @@ Future<File?> showImagePickerCropper(
   BuildContext context, [
   int? maxHeight,
   int? maxWidth,
+  String? cropper,
 ]) async {
   final colorScheme = Theme.of(context).colorScheme;
   // final buttonTheme = Theme.of(context).buttonTheme;
@@ -16,10 +17,14 @@ Future<File?> showImagePickerCropper(
       await FilePicker.platform.pickFiles(type: FileType.image);
 
   if (result != null) {
+    CropStyle myCrop;
+    (cropper == "circle")
+        ? myCrop = CropStyle.circle
+        : myCrop = CropStyle.rectangle;
     //final File file = File(result.files.single.path!);
     return ImageCropper.cropImage(
       sourcePath: result.files.single.path!,
-      cropStyle: CropStyle.circle,
+      cropStyle: myCrop,
       maxHeight: maxHeight,
       maxWidth: maxWidth,
       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),

@@ -7,6 +7,7 @@ class User {
   final String name;
   final String surname;
   final String? profileImage;
+  final String? trainerImage;
   final String email;
   final int birth;
   final String gender;
@@ -18,6 +19,7 @@ class User {
     required this.name,
     required this.surname,
     this.profileImage,
+    this.trainerImage,
     required this.email,
     required this.birth,
     required this.gender,
@@ -31,6 +33,7 @@ class User {
       : name = "",
         surname = "",
         profileImage = null,
+        trainerImage = "",
         email = "",
         birth = -1,
         gender = "",
@@ -43,6 +46,7 @@ class User {
     String? name,
     String? surname,
     String? profileImage,
+    String? trainerImage,
     String? email,
     int? birth,
     String? gender,
@@ -55,6 +59,7 @@ class User {
       name: name ?? this.name,
       surname: surname ?? this.surname,
       profileImage: profileImage ?? this.profileImage,
+      trainerImage: trainerImage ?? this.trainerImage,
       email: email ?? this.email,
       birth: birth ?? this.birth,
       gender: gender ?? this.gender,
@@ -70,6 +75,7 @@ class User {
         'name': name,
         'surname': surname,
         'profileImage': profileImage,
+        'trainerImage': trainerImage,
         'email': email,
         'birth': birth,
         'gender': gender,
@@ -82,6 +88,7 @@ class User {
       : name = (json['name'] ?? "") as String,
         surname = (json['surname'] ?? "") as String,
         profileImage = (json['profileImage'] ?? "") as String,
+        trainerImage = (json['trainerImage'] ?? "") as String,
         email = (json['email'] ?? "") as String,
         birth = (json['birth'] ?? -1) as int,
         gender = (json['gender'] ?? "") as String,

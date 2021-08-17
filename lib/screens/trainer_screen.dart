@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/trainer.dart';
 import 'package:improove/widgets/edit_text.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/widgets/preview_card.dart';
+import 'package:improove/widgets/button_image_picker.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/screens/training_screen.dart';
 import 'package:improove/redux/models/app_state.dart';
@@ -71,10 +74,22 @@ class TrainerScreen extends StatelessWidget {
                           child: Image(
                             fit: BoxFit.cover,
                             image: NetworkImage(
-                              vm.trainer!.profileImage!,
+                              vm.trainer!.trainerImage!,
                             ),
                           ),
                         ),
+                      Positioned(
+                          top: 0,
+                          left: 200,
+                          right: 0,
+                          bottom: 210,
+                          child: SizedBox(
+                              width: 1,
+                              height: 1,
+                              child: ButtonImagePicker(
+                                  callback: (File fileToSave, int id) {
+                                vm.setTrainerPicture(fileToSave, id);
+                              }))),
                       Positioned(
                         bottom: 0,
                         left: 0,
@@ -189,12 +204,14 @@ class _ViewModel {
   final User user;
   final Map<int, Training?> trainings;
   final Function(int, String) setDescription;
+  final Function(File, int) setTrainerPicture;
 
   _ViewModel(
       {required this.trainer,
       required this.trainings,
       required this.user,
-      required this.setDescription});
+      required this.setDescription,
+      required this.setTrainerPicture});
 
   static _ViewModel fromStore(Store<AppState> store, int id) {
     final Map<int, Training?> trainings = {};
@@ -212,6 +229,8 @@ class _ViewModel {
     return _ViewModel(
         setDescription: (int id, String text) =>
             store.dispatch(setTrainerDescription(id, text)),
+        setTrainerPicture: (File fileToSave, int id) =>
+            store.dispatch(setTrainerImage(fileToSave, id)),
         trainer: store.state.trainers[id],
         trainings: trainings,
         user: store.state.user);

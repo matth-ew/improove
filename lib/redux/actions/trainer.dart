@@ -1,4 +1,5 @@
-import 'dart:async'; // Add the package
+import 'dart:async';
+import 'dart:io'; // Add the package
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:improove/redux/models/models.dart';
@@ -67,6 +68,29 @@ ThunkAction<AppState> setTrainerDescription(int id, String text,
     } catch (e) {
       debugPrint("Errore in getTrainerById ${e.toString()}");
       completer?.completeError(e); // Exception thrown, complete with error
+    }
+  };
+}
+
+ThunkAction<AppState> setTrainerImage(File image, int id,
+    [Completer? completer]) {
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r =
+            await TrainerService().setTrainerImage(image, token);
+        if (r?.data['success'] as bool) {
+          //debugPrint("UE RESP ${r?.data}");
+          final String image = r!.data!["image"] as String;
+          store.dispatch(SetTrainer(
+              store.state.trainers[id]!.copyWith(trainerImage: image), id));
+          store.dispatch(SetTrainerImage(image));
+        }
+      }
+      //
+    } catch (e) {
+      completer?.completeError(e);
     }
   };
 }
