@@ -202,7 +202,8 @@ class _ViewModel {
       // da ottimizzare (non ora)
       int index = 0;
       store.state.trainings.forEach((i, training) {
-        if (training.trainerId == store.state.trainers[id]!.id) {
+        if (store.state.trainers[id] != null &&
+            training.trainerId == store.state.trainers[id]!.id) {
           trainings.addAll({index: training});
           index++;
         }

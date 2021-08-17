@@ -140,7 +140,7 @@ class Training {
             ((json['exercises'] ?? const []) as List)
                 .map((t) => Exercise.fromJson(t as Map<String, dynamic>))),
         trainerId = (json['trainer_id'] ?? -1) as int,
-        trainerImage = "";
+        trainerImage = (json['trainer_image'] ?? "") as String;
 
   Training.fromJson(dynamic json)
       : id = (json['_id'] ?? -1) as int,

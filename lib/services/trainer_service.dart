@@ -11,6 +11,7 @@ class TrainerService {
 
   Future<Response?> getTrainerById(int id) async {
     try {
+      debugPrint("service getTrainerById");
       return await dio.post(
         '$backendUrl/api/getTrainerById',
         data: {'id': id},

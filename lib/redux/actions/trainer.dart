@@ -26,6 +26,7 @@ ThunkAction<AppState> getTrainerById(int id, [Completer? completer]) {
             User.fromJson(r.data!['trainer'] as Map<String, dynamic>);
         for (var i = 0; i < results.length; i++) {
           results[i]["trainer_id"] = id;
+          results[i]["trainer_image"] = u.profileImage;
           final Training t =
               Training.fromJsonUnpopulated(results[i] as Map<String, dynamic>);
           if (store.state.trainings[t.id]?.title != "") {

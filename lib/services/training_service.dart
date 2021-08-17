@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
-import 'package:improove/redux/models/models.dart';
+import 'package:flutter/material.dart';
 
 const backendUrl = 'http://10.0.2.2:3001';
 
@@ -10,6 +10,7 @@ class TrainingService {
 
   Future<Response?> getTrainings() async {
     try {
+      debugPrint("service getTrainings");
       return await dio.post(
         '$backendUrl/api/getTrainings',
         // data: {'id': 1},
@@ -30,6 +31,7 @@ class TrainingService {
 
   Future<Response?> getTrainingById(int id) async {
     try {
+      debugPrint("service getTrainingById");
       return await dio.post(
         '$backendUrl/api/getTrainingById',
         data: {'id': id},

@@ -156,7 +156,7 @@ ThunkAction<AppState> changeProfileImageThunk(File image, [Function? cb]) {
         final Response? r =
             await UserService().changeProfileImage(image, token);
         if (r?.data['success'] as bool) {
-          debugPrint("UE RESP ${r?.data}");
+          //debugPrint("UE RESP ${r?.data}");
           final String image = r!.data!["image"] as String;
           store.dispatch(SetProfileImage(image));
         }
@@ -175,11 +175,11 @@ ThunkAction<AppState> getInfoThunk([Function? cb]) {
       final token = await storage.read(key: "accessToken");
       if (token != null) {
         final Response? r = await UserService().getInfo(token);
-        debugPrint("UE RESP ${r?.data}");
+        //debugPrint("UE RESP ${r?.data}");
         if (r?.data['success'] as bool) {
           final User u =
               User.fromJson(r!.data!["user"] as Map<String, dynamic>);
-          debugPrint("UE USER ${u.toString()}");
+          //debugPrint("UE USER ${u.toString()}");
           store.dispatch(SetUser(u));
         }
       }
@@ -196,7 +196,7 @@ ThunkAction<AppState> saveTrainingThunk(int trainingId, [Function? cb]) {
       final token = await storage.read(key: "accessToken");
       if (token != null) {
         final Response? r = await UserService().saveTraining(trainingId, token);
-        debugPrint("UE RESP $r");
+        //debugPrint("UE RESP $r");
         if (r?.data['success'] as bool) {
           final SavedTraining s =
               SavedTraining(trainingId: trainingId, seenExercises: []);
