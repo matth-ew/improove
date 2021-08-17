@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/services/authservice.dart';
 import 'package:improove/services/user_service.dart';
@@ -169,6 +170,29 @@ ThunkAction<AppState> changeProfileImageThunk(File image, [Function? cb]) {
   };
 }
 
+ThunkAction<AppState> changeProfileInfoThunk(String name, String surname,
+    [Function? cb]) {
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r = await UserService().changeProfileInfo(
+          name,
+          surname,
+          token,
+        );
+        if (r?.data['success'] as bool) {
+          store.dispatch(SetFullName(name, surname));
+        }
+        cb?.call(null);
+      }
+      //
+    } catch (e) {
+      cb?.call(e.toString());
+    }
+  };
+}
+
 ThunkAction<AppState> getInfoThunk([Function? cb]) {
   return (Store<AppState> store) async {
     try {
@@ -181,6 +205,13 @@ ThunkAction<AppState> getInfoThunk([Function? cb]) {
               User.fromJson(r!.data!["user"] as Map<String, dynamic>);
           //debugPrint("UE USER ${u.toString()}");
           store.dispatch(SetUser(u));
+          if (u.savedTrainings.isNotEmpty || u.closedTrainings.isNotEmpty) {
+            final List<int> ids = {
+              ...u.savedTrainings.map((s) => s.trainingId),
+              ...u.closedTrainings.map((c) => c.trainingId),
+            }.toList();
+            store.dispatch(getTrainings(ids));
+          }
         }
       }
     } catch (e) {

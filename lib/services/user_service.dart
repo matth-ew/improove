@@ -63,4 +63,24 @@ class UserService {
       return e.response;
     }
   }
+
+  Future<Response?> changeProfileInfo(
+      String name, String surname, String token) async {
+    try {
+      dio.options.headers['Authorization'] = token;
+      return await dio.post(
+        '$backendUrl/api/userChangeProfileInfo',
+        data: {
+          'name': name,
+          "surname": surname,
+        },
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint("GETINFO ERROR ${e.response?.data?['msg']}");
+      return e.response;
+    }
+  }
 }
