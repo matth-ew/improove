@@ -8,12 +8,12 @@ const backendUrl = 'http://10.0.2.2:3001';
 class TrainingService {
   Dio dio = Dio();
 
-  Future<Response?> getTrainings() async {
+  Future<Response?> getTrainings([List<int>? ids]) async {
     try {
       debugPrint("service getTrainings");
       return await dio.post(
         '$backendUrl/api/getTrainings',
-        // data: {'id': 1},
+        data: {'ids': ids},
         options: Options(
           headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         ),

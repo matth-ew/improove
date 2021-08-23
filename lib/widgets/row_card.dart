@@ -9,14 +9,18 @@ import 'package:improove/redux/models/training.dart';
 const String previewPH = 'assets/images/undraw_pilates_gpdb.png';
 
 class CardRow extends StatelessWidget {
+  final String? name;
+  final String? category;
+  final String? preview;
+  final Function? onTap;
+
   const CardRow({
     Key? key,
-    required this.training,
+    this.name = '',
+    this.category = '',
+    this.preview,
     this.onTap,
   }) : super(key: key);
-
-  final Training training;
-  final Function? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +41,16 @@ class CardRow extends StatelessWidget {
                   aspectRatio: 1.54,
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
-                    child: FadeInImage(
-                      fit: BoxFit.cover,
-                      placeholder: const AssetImage(previewPH),
-                      image: NetworkImage(training.preview),
-                    ),
+                    child: preview != null
+                        ? FadeInImage(
+                            fit: BoxFit.cover,
+                            placeholder: const AssetImage(previewPH),
+                            image: NetworkImage(preview!),
+                          )
+                        : Image.asset(
+                            previewPH,
+                            fit: BoxFit.cover,
+                          ),
                   ),
                 ),
               ),
@@ -53,7 +62,7 @@ class CardRow extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        training.title,
+                        name ?? "",
                         textAlign: TextAlign.left,
                         maxLines: 1,
                         style: textTheme.headline6
@@ -61,7 +70,7 @@ class CardRow extends StatelessWidget {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        training.category,
+                        category ?? "",
                         textAlign: TextAlign.left,
                         maxLines: 1,
                         style:

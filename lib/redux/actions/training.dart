@@ -40,7 +40,7 @@ ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
             id,
           ),
         );
-        debugPrint("GET TRAININGS BY ID $store.state.trainings");
+        debugPrint("GET TRAININGS BY ID ${store.state.trainings}");
       }
       // final Training training = Training.fromJson(res.data!);
       // if (t != null) {
@@ -55,11 +55,11 @@ ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
   };
 }
 
-ThunkAction<AppState> getTrainings([Completer? completer]) {
+ThunkAction<AppState> getTrainings([List<int>? ids, Completer? completer]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final Response? r = await TrainingService().getTrainings();
+      final Response? r = await TrainingService().getTrainings(ids);
       if (r?.data['success'] as bool) {
         // debugPrint("UE GET TRAININGS IN");
         final Map<int, Training> trainings = {};
@@ -72,7 +72,7 @@ ThunkAction<AppState> getTrainings([Completer? completer]) {
           trainings.addAll({t.id: t});
         }
         store.dispatch(SetTrainings(trainings));
-        debugPrint("GET TRAININGS $store.state.trainings");
+        debugPrint("GET TRAININGS ${store.state.trainings}");
         // if (t != null) {
         //   store.dispatch(SetTrainings(t));
         //   completer?.complete();

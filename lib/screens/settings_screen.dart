@@ -8,6 +8,8 @@ import 'package:improove/widgets/image_picker_cropper.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
+import 'settings_widgets/change_personal_info.dart';
+
 class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -37,9 +39,24 @@ class SettingsScreen extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text('Change Personal Info'),
               onTap: () {
+                // showDialog(
+                //   context: context,
+                //   builder: (BuildContext context) {
+                //     return SimpleDialog(
+                //       title: Text("Change personal info"),
+                //       children: [
+                //         ChangePersonalInfo(),
+                //       ],
+                //     );
+                //   },
+                // );
                 pushNewScreen(
                   context,
-                  screen: ChangePersonalInfo(),
+                  screen: ChangePersonalInfo(
+                    name: vm.user.name,
+                    surname: vm.user.surname,
+                    submit: vm.changeProfileInfo,
+                  ),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
@@ -73,11 +90,13 @@ class _ViewModel {
   final User user;
   final Function([Function? cb]) logout;
   final Function(File image, [Function? cb]) changeProfileImage;
+  final Function(String name, String surname, [Function? cb]) changeProfileInfo;
 
   _ViewModel({
     required this.user,
     required this.logout,
     required this.changeProfileImage,
+    required this.changeProfileInfo,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -89,105 +108,8 @@ class _ViewModel {
       changeProfileImage: (image, [cb]) => store.dispatch(
         changeProfileImageThunk(image, cb),
       ),
-    );
-  }
-}
-
-class ChangePersonalInfo extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    // final buttonTheme = Theme.of(context).buttonTheme;
-    final textTheme = Theme.of(context).textTheme;
-    return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        title: Text(
-          "Change personal info",
-          style: textTheme.headline6?.copyWith(
-              color: colorScheme.primary, fontWeight: FontWeight.w600),
-        ),
-        leading: IconButton(
-          splashRadius: 25,
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          icon: Icon(Icons.close, color: colorScheme.onSurface),
-        ),
-        actions: [
-          IconButton(
-            splashRadius: 25,
-            onPressed: () {},
-            icon: Icon(Icons.done, color: colorScheme.secondary),
-          ),
-        ],
-        backgroundColor: colorScheme.background,
-      ),
-      body: Form(
-        child: Column(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-              child: TextFormField(
-                // key: _formEmailKey,
-                // controller: _emailController,
-                onFieldSubmitted: (value) {
-                  // _formEmailKey.currentState?.validate();
-                },
-                keyboardType: TextInputType.emailAddress,
-                // validator: validateEmail,
-                decoration: InputDecoration(
-                  errorMaxLines: 2,
-                  contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  labelText: 'Email',
-                ),
-                textInputAction: TextInputAction.next,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-              child: TextFormField(
-                // key: _formEmailKey,
-                // controller: _emailController,
-                onFieldSubmitted: (value) {
-                  // _formEmailKey.currentState?.validate();
-                },
-                keyboardType: TextInputType.emailAddress,
-                // validator: validateEmail,
-                decoration: InputDecoration(
-                  errorMaxLines: 2,
-                  contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  labelText: 'Email',
-                ),
-                textInputAction: TextInputAction.next,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 8.0, bottom: 8),
-              child: TextFormField(
-                // key: _formEmailKey,
-                // controller: _emailController,
-                onFieldSubmitted: (value) {
-                  // _formEmailKey.currentState?.validate();
-                },
-                keyboardType: TextInputType.emailAddress,
-                // validator: validateEmail,
-                decoration: InputDecoration(
-                  errorMaxLines: 2,
-                  contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(30.0)),
-                  labelText: 'Email',
-                ),
-                textInputAction: TextInputAction.next,
-              ),
-            ),
-          ],
-        ),
+      changeProfileInfo: (name, surname, [cb]) => store.dispatch(
+        changeProfileInfoThunk(name, surname, cb),
       ),
     );
   }

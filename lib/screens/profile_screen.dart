@@ -134,7 +134,8 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           _showSavedTrainings(
                               context, vm.user.savedTrainings, vm.trainings),
-                          _showClosedTrainings(context, vm.trainings),
+                          _showClosedTrainings(
+                              context, vm.user.closedTrainings, vm.trainings),
                         ],
                       ),
                     ),
@@ -154,8 +155,11 @@ class ProfileScreen extends StatelessWidget {
       // padding: EdgeInsets.all(5),
       children: [
         ...savedTrainings.map((s) {
+          final Training? t = trainings[s.trainingId];
           return CardRow(
-            training: trainings[s.trainingId]!,
+            preview: t?.preview,
+            name: t?.title,
+            category: t?.category,
             onTap: () {
               pushNewScreen(
                 context,
@@ -170,23 +174,27 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _showClosedTrainings(
-      BuildContext context, Map<int, Training> trainings) {
+  Widget _showClosedTrainings(BuildContext context,
+      List<ClosedTraining> closedTrainings, Map<int, Training> trainings) {
     return ListView(
       // padding: EdgeInsets.all(5),
       children: [
-        ...trainings.keys.map(
-          (index) {
+        ...closedTrainings.map(
+          (c) {
+            final Training? t = trainings[c.trainingId];
             return CardRow(
-                training: trainings[index]!,
-                onTap: () {
-                  pushNewScreen(
-                    context,
-                    screen: TrainingScreen(id: index),
-                    withNavBar: true,
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                  );
-                });
+              preview: t?.preview,
+              name: t?.title,
+              category: t?.category,
+              onTap: () {
+                pushNewScreen(
+                  context,
+                  screen: TrainingScreen(id: c.trainingId),
+                  withNavBar: true,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+              },
+            );
           },
         ),
       ],

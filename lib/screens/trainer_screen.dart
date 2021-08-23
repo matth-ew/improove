@@ -119,7 +119,7 @@ class TrainerScreen extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(left: 25.0),
+                        padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                         child: Text(
                           '${vm.trainer?.name} ${vm.trainer?.surname}',
                           style: textTheme.headline4
