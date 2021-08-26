@@ -1,4 +1,4 @@
-import 'package:expandable_text/expandable_text.dart';
+// import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/actions/user.dart';

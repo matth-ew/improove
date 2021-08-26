@@ -29,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
                 final File? fileToSave =
                     await showImagePickerCropper(context, 500, 500, "circle");
                 if (fileToSave != null) {
-                  vm.changeProfileImage(fileToSave, () {
+                  vm.changeProfileImage(fileToSave, (String? e) {
                     Navigator.pop(context);
                   });
                 }

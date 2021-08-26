@@ -78,18 +78,16 @@ class TrainerScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                      Positioned(
-                          top: 0,
-                          left: 200,
+                      if (vm.user.id == id)
+                        Positioned(
                           right: 0,
-                          bottom: 210,
-                          child: SizedBox(
-                              width: 1,
-                              height: 1,
-                              child: ButtonImagePicker(
-                                  callback: (File fileToSave, int id) {
-                                vm.setTrainerPicture(fileToSave, id);
-                              }))),
+                          bottom: 55,
+                          child: ButtonImagePicker(
+                            callback: (File fileToSave) {
+                              vm.setTrainerPicture(fileToSave, id);
+                            },
+                          ),
+                        ),
                       Positioned(
                         bottom: 0,
                         left: 0,
