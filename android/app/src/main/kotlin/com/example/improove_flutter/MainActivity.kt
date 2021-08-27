@@ -1,4 +1,4 @@
-package com.example.improove
+package fit.improove.app
 
 import io.flutter.embedding.android.FlutterActivity
 import android.content.Context
