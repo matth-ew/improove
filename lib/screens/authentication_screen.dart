@@ -7,6 +7,7 @@ import 'package:improove/redux/actions/user.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/nav_screen.dart';
 import 'package:redux/redux.dart';
+import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'authentication_widgets/login_form.dart';
 import 'authentication_widgets/signup_form.dart';
@@ -73,7 +74,24 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
   }
 
-  // _appleLogin() async {}
+  _appleLogin(Function thunkAction, [Function? cb]) async {
+    try {
+      final credential = await SignInWithApple.getAppleIDCredential(
+        scopes: [
+          AppleIDAuthorizationScopes.email,
+          AppleIDAuthorizationScopes.fullName,
+        ],
+      );
+
+      debugPrint("APPLE CRED: $credential");
+      thunkAction(credential.authorizationCode, cb);
+    } catch (error) {
+      debugPrint(error.toString());
+    }
+
+    // Now send the credential (especially `credential.authorizationCode`) to your server to create a session
+    // after they have been validated with Apple (see `Integration` section for more information on how to do this)
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -114,6 +132,23 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             style: textTheme.overline?.copyWith(
                               color: colorScheme.onSurface,
                             ),
+                          ),
+                        ),
+                        SignInWithAppleButton(
+                          onPressed: () => _appleLogin(
+                            vm.appleLogin,
+                            (String? e) {
+                              if (e == null) {
+                                debugPrint("NOT ERROR");
+                              } else {
+                                debugPrint("ERROR ${e.toString()}");
+                              }
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (_) => NavScreen(),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         Row(
@@ -230,11 +265,13 @@ class _ViewModel {
   final User user;
   final Function(String accessToken, [Function? cb]) facebookLogin;
   final Function(String accessToken, [Function? cb]) googleLogin;
+  final Function(String accessToken, [Function? cb]) appleLogin;
 
   _ViewModel({
     required this.user,
     required this.googleLogin,
     required this.facebookLogin,
+    required this.appleLogin,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -243,6 +280,7 @@ class _ViewModel {
       facebookLogin: (token, [cb]) =>
           store.dispatch(loginFacebookThunk(token, cb)),
       googleLogin: (token, [cb]) => store.dispatch(loginGoogleThunk(token, cb)),
+      appleLogin: (token, [cb]) => store.dispatch(loginAppleThunk(token, cb)),
     );
   }
 }

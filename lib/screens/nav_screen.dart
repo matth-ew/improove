@@ -91,7 +91,7 @@ class _NavScreenState extends State<NavScreen> {
       controller: _controller,
       screens: _buildScreens(),
       items: _navBarsItems(colorScheme),
-      confineInSafeArea: false,
+      confineInSafeArea: true,
       backgroundColor: colorScheme.background, // Default is Colors.white.
       // handleAndroidBackButtonPress: true, // Default is true.
       resizeToAvoidBottomInset:

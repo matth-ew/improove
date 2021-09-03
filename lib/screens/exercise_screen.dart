@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/widgets/edit_text.dart';
@@ -101,7 +103,7 @@ class ExerciseScreen extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        top: 0,
+                        top: Platform.isIOS ? 35 : 0,
                         left: 0,
                         right: 0,
                         bottom: 35,

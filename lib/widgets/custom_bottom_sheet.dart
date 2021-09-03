@@ -20,7 +20,7 @@ Future<dynamic> showCustomBottomSheet(BuildContext context, Widget widget) {
               painter: ShapePainter(),
             ),
           ),
-          widget,
+          SafeArea(child: widget),
         ],
       );
     },

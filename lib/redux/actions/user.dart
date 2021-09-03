@@ -118,6 +118,27 @@ ThunkAction<AppState> loginGoogleThunk(String accessToken, [Function? cb]) {
   };
 }
 
+ThunkAction<AppState> loginAppleThunk(String accessToken, [Function? cb]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final Response? r = await AuthService().loginApple(accessToken);
+      if (r?.data['success'] as bool) {
+        final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
+        store.dispatch(SetUser(u));
+        await storage.write(
+            key: "accessToken", value: r.data!["token"] as String);
+        cb?.call(null);
+      } else {
+        cb?.call(r?.data['msg']);
+      }
+    } catch (e) {
+      debugPrint("ERR LOGIN APPLE ${e.toString()}");
+      cb?.call(e.toString());
+    }
+  };
+}
+
 ThunkAction<AppState> signupThunk(String email, String password,
     [Function? cb]) {
   // Define the parameter

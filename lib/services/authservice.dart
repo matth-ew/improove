@@ -50,6 +50,21 @@ class AuthService {
     }
   }
 
+  Future<Response?> loginApple(String accessToken) async {
+    try {
+      return await dio.post(
+        '$backendUrl/api/authenticate-apple',
+        data: {'access_token': accessToken},
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      print(e.response?.data['msg']);
+      return e.response;
+    }
+  }
+
   Future<Response?> signup(String email, String password) async {
     try {
       return await dio.post('$backendUrl/api/adduser',
