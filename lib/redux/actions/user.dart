@@ -118,11 +118,12 @@ ThunkAction<AppState> loginGoogleThunk(String accessToken, [Function? cb]) {
   };
 }
 
-ThunkAction<AppState> loginAppleThunk(String accessToken, [Function? cb]) {
+ThunkAction<AppState> loginAppleThunk(String authorizationCode,
+    [Function? cb]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final Response? r = await AuthService().loginApple(accessToken);
+      final Response? r = await AuthService().loginApple(authorizationCode);
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));

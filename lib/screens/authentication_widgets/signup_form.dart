@@ -1,8 +1,12 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/nav_screen.dart';
+import 'package:improove/screens/terms_screen.dart';
+import 'package:improove/screens/privacy_screen.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
 class SignupForm extends StatefulWidget {
@@ -189,65 +193,108 @@ class _SignupFormState extends State<SignupForm> {
                     ),
                   ),
                   Padding(
-                    padding: const EdgeInsets.only(top: 20.0),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Validate returns true if the form is valid, or false otherwise.
-                        if (_formKey.currentState!.validate()) {
-                          // If the form is valid, display a snackbar. In the real world,
-                          // you'd often call a server or save the information in a database.
-                          vm.signup(
-                            _emailController.text,
-                            _passwordController.text,
-                            (String? e) {
-                              if (e == null) {
-                                Navigator.of(context).pushReplacement(
-                                  MaterialPageRoute(
-                                    builder: (_) => NavScreen(),
-                                  ),
+                    padding: const EdgeInsets.only(
+                        top: 15.0, bottom: 10, left: 20, right: 20),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        style: textTheme.caption,
+                        children: [
+                          const TextSpan(
+                            text: 'By entering, I accept Improove’s ',
+                          ),
+                          TextSpan(
+                            text: 'Terms & Conditions of Use',
+                            style: const TextStyle(color: Colors.blue),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                pushNewScreen(
+                                  context,
+                                  screen: TermsScreen(),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino,
                                 );
-                              } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                      content: Text('Processing Data: $e'),
-                                      behavior: SnackBarBehavior.floating),
+                              },
+                          ),
+                          const TextSpan(
+                            text: ' and ',
+                          ),
+                          TextSpan(
+                            text: 'Privacy Policy',
+                            style: const TextStyle(color: Colors.blue),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                pushNewScreen(
+                                  context,
+                                  screen: PrivacyScreen(),
+                                  withNavBar: false,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino,
                                 );
-                              }
-                            },
-                          );
-                          // AuthService()
-                          //     .addUser(
-                          //   _emailController.text,
-                          //   _passwordController.text,
-                          // )
-                          //     .then(
-                          //   (val) {
-                          //     if (val?.data['success'] as bool) {
-                          //       final token = val?.data['token'];
-                          //       ScaffoldMessenger.of(context).showSnackBar(
-                          //         SnackBar(
-                          //           content: Text(
-                          //               'Processing Data: ${_emailController.text} ${_passwordController.text} $token'),
-                          //         ),
-                          //       );
-                          //     } else {
-                          //       ScaffoldMessenger.of(context).showSnackBar(
-                          //         SnackBar(
-                          //           content: Text(
-                          //               'Processing Data: ${_emailController.text} ${_passwordController.text} ${val?.data['msg']}'),
-                          //         ),
-                          //       );
-                          //     }
-                          //   },
-                          // );
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size(double.infinity, 50),
-                        shape: const StadiumBorder(),
+                              },
+                          ),
+                        ],
                       ),
-                      child: const Text('Sign Up'),
                     ),
+                  ),
+                  ElevatedButton(
+                    onPressed: () {
+                      // Validate returns true if the form is valid, or false otherwise.
+                      if (_formKey.currentState!.validate()) {
+                        // If the form is valid, display a snackbar. In the real world,
+                        // you'd often call a server or save the information in a database.
+                        vm.signup(
+                          _emailController.text,
+                          _passwordController.text,
+                          (String? e) {
+                            if (e == null) {
+                              Navigator.of(context).pushReplacement(
+                                MaterialPageRoute(
+                                  builder: (_) => NavScreen(),
+                                ),
+                              );
+                            } else {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    content: Text('Processing Data: $e'),
+                                    behavior: SnackBarBehavior.floating),
+                              );
+                            }
+                          },
+                        );
+                        // AuthService()
+                        //     .addUser(
+                        //   _emailController.text,
+                        //   _passwordController.text,
+                        // )
+                        //     .then(
+                        //   (val) {
+                        //     if (val?.data['success'] as bool) {
+                        //       final token = val?.data['token'];
+                        //       ScaffoldMessenger.of(context).showSnackBar(
+                        //         SnackBar(
+                        //           content: Text(
+                        //               'Processing Data: ${_emailController.text} ${_passwordController.text} $token'),
+                        //         ),
+                        //       );
+                        //     } else {
+                        //       ScaffoldMessenger.of(context).showSnackBar(
+                        //         SnackBar(
+                        //           content: Text(
+                        //               'Processing Data: ${_emailController.text} ${_passwordController.text} ${val?.data['msg']}'),
+                        //         ),
+                        //       );
+                        //     }
+                        //   },
+                        // );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: const Size(double.infinity, 50),
+                      shape: const StadiumBorder(),
+                    ),
+                    child: const Text('Sign Up'),
                   ),
                 ],
               ),

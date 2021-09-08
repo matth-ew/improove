@@ -24,7 +24,7 @@ class TrainingService {
       //     res.data["result.duration"].toString(),
       //     res.data["result.preview"].toString());
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return null;
     }
   }
@@ -40,7 +40,7 @@ class TrainingService {
         ),
       );
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return null;
     }
   }
@@ -57,7 +57,7 @@ class TrainingService {
         ),
       );
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return null;
     }
   }
@@ -74,7 +74,7 @@ class TrainingService {
         ),
       );
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return null;
     }
   }
@@ -91,7 +91,7 @@ class TrainingService {
         ),
       );
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return null;
     }
   }
@@ -108,7 +108,7 @@ class TrainingService {
         ),
       );
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return null;
     }
   }

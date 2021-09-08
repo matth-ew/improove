@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:improove/screens/trainer_screen.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class PreviewCard extends StatelessWidget {
   final String name;
@@ -12,6 +13,8 @@ class PreviewCard extends StatelessWidget {
   final Function? onTapAvatar;
   final int? id;
   final int trainerId;
+  final double? widthRatio;
+  final double? heightRatio;
 
   const PreviewCard({
     Key? key,
@@ -24,6 +27,8 @@ class PreviewCard extends StatelessWidget {
     this.trainerId = -1,
     this.onTapCard,
     this.onTapAvatar,
+    this.widthRatio,
+    this.heightRatio,
   }) : super(key: key);
 
   @override
@@ -34,8 +39,8 @@ class PreviewCard extends StatelessWidget {
     // final double hightScreen = MediaQuery.of(context).size.height;
     final double widthScreen = MediaQuery.of(context).size.width;
 
-    const widthScreenRatio = 105 / 254;
-    const heightScreenRatio = 119 / 92;
+    final widthScreenRatio = widthRatio ?? 105 / 254;
+    final heightScreenRatio = heightRatio ?? 119 / 92;
     const heightInnerScreenRatio = 20 / 99;
     const radiusAvatarRatio = 12 / 32;
     const paddingTopAvatarRatio = 88 / 119;
@@ -85,13 +90,21 @@ class PreviewCard extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(radius)),
                 child: preview != null
-                    ? FadeInImage(
+                    ? CachedNetworkImage(
+                        fit: BoxFit.cover,
                         width: double.infinity,
                         height: double.infinity,
-                        fit: BoxFit.cover,
-                        placeholder: const AssetImage(previewPH),
-                        image: NetworkImage(preview!),
+                        placeholder: (context, url) =>
+                            ColoredBox(color: colorScheme.primary),
+                        imageUrl: preview!,
                       )
+                    // FadeInImage(
+                    //     width: double.infinity,
+                    //     height: double.infinity,
+                    //     fit: BoxFit.cover,
+                    //     placeholder: const AssetImage(previewPH),
+                    //     image: NetworkImage(preview!),
+                    //   )
                     : Image.asset(previewPH),
                 // boxShadow: [
                 //   new BoxShadow(
@@ -152,8 +165,10 @@ class PreviewCard extends StatelessWidget {
                     backgroundColor: colorScheme.background,
                     child: CircleAvatar(
                       radius: radiusAvatar,
-                      backgroundImage: NetworkImage(avatar!),
-                      backgroundColor: Colors.transparent,
+                      backgroundImage: CachedNetworkImageProvider(
+                        avatar!,
+                      ),
+                      backgroundColor: Colors.grey,
                       // FadeInImage(
                       //   width: double.infinity,
                       //   fit: BoxFit.cover,

@@ -15,10 +15,14 @@ class ButtonImagePicker extends StatelessWidget {
       shape: const CircleBorder(),
       padding: const EdgeInsets.all(10),
       onPressed: () async {
-        final File? fileToSave =
-            await showImagePickerCropper(context, 500, 500, "rectangle");
-        if (fileToSave != null) {
-          await callback!(fileToSave);
+        try {
+          final File? fileToSave =
+              await showImagePickerCropper(context, 500, 500, "rectangle");
+          if (fileToSave != null) {
+            await callback!(fileToSave);
+          }
+        } catch (e) {
+          debugPrint("Errore in selezione immagine ${e.toString()}");
         }
       },
       child: const Icon(Icons.photo_camera, color: Colors.white),

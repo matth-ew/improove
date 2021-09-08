@@ -12,6 +12,7 @@ import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 class TrainingScreen extends StatelessWidget {
   final int id;
@@ -52,14 +53,14 @@ class TrainingScreen extends StatelessWidget {
                 SliverAppBar(
                   elevation: 0,
                   expandedHeight: size.height * 0.45,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 32,
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
+                  // leading: IconButton(
+                  //   icon: const Icon(Icons.arrow_back),
+                  //   iconSize: 32,
+                  //   color: Colors.white,
+                  //   onPressed: () {
+                  //     Navigator.of(context).pop();
+                  //   },
+                  // ),
                   actions: [
                     if (vm.savedTrainings.any((s) => s.trainingId == id))
                       IconButton(
@@ -88,9 +89,13 @@ class TrainingScreen extends StatelessWidget {
                         left: 0,
                         right: 0,
                         bottom: 0,
-                        child: Image(
+                        child: CachedNetworkImage(
                           fit: BoxFit.cover,
-                          image: NetworkImage(vm.training!.preview),
+                          placeholder: (context, url) =>
+                              ColoredBox(color: colorScheme.primary),
+                          imageUrl: vm.training!.preview,
+                          errorWidget: (context, url, error) =>
+                              ColoredBox(color: Colors.grey),
                         ),
                       ),
                       Positioned(
@@ -132,13 +137,17 @@ class TrainingScreen extends StatelessWidget {
                                     PageTransitionAnimation.cupertino,
                               )
                             },
-                            child: FadeInImage(
+                            child: CachedNetworkImage(
                                 width: 60,
                                 height: 60,
                                 fit: BoxFit.cover,
-                                placeholder: const AssetImage(
-                                    "assets/images/trainer_avatar.jpg"),
-                                image: NetworkImage(vm.training!.trainerImage)),
+                                placeholder: (context, url) =>
+                                    CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    Icon(Icons.error),
+                                // placeholder: const AssetImage(
+                                //     "assets/images/trainer_avatar.jpg"),
+                                imageUrl: vm.training!.trainerImage),
                           ),
                         ),
                         // Container(

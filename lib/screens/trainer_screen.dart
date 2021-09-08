@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/trainer.dart';
 import 'package:improove/widgets/edit_text.dart';
@@ -54,14 +55,14 @@ class TrainerScreen extends StatelessWidget {
                 SliverAppBar(
                   elevation: 0,
                   expandedHeight: size.height * 0.35,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 32,
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
+                  // leading: IconButton(
+                  //   icon: const Icon(Icons.arrow_back),
+                  //   iconSize: 25,
+                  //   color: Colors.white,
+                  //   onPressed: () {
+                  //     Navigator.of(context).pop();
+                  //   },
+                  // ),
                   flexibleSpace: Stack(
                     children: [
                       if (vm.trainer != null &&
@@ -71,11 +72,13 @@ class TrainerScreen extends StatelessWidget {
                           left: 0,
                           right: 0,
                           bottom: 0,
-                          child: Image(
+                          child: CachedNetworkImage(
                             fit: BoxFit.cover,
-                            image: NetworkImage(
-                              vm.trainer!.trainerImage!,
-                            ),
+                            placeholder: (context, url) =>
+                                ColoredBox(color: colorScheme.primary),
+                            imageUrl: vm.trainer!.trainerImage!,
+                            errorWidget: (context, url, error) =>
+                                ColoredBox(color: colorScheme.primary),
                           ),
                         ),
                       if (vm.user.id == id)

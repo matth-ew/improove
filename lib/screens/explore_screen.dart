@@ -48,16 +48,20 @@ class ExploreScreen extends StatelessWidget {
                 ),
                 SliverGrid(
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, mainAxisSpacing: 30),
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 30,
+                    // crossAxisSpacing: 0,
+                    childAspectRatio: 0.92,
+                  ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
-                      return SizedBox(
-                        child: Center(
-                            child: PreviewCard(
+                      return Center(
+                        child: PreviewCard(
                           name: trainingList[index].title,
                           preview: trainingList[index].preview,
                           category: trainingList[index].category,
                           avatar: trainingList[index].trainerImage,
+                          widthRatio: 0.45,
                           id: index,
                           trainerId: trainingList[index].trainerId,
                           onTapCard: (int index) {
@@ -70,12 +74,13 @@ class ExploreScreen extends StatelessWidget {
                                   PageTransitionAnimation.cupertino,
                             );
                           },
-                        )),
+                        ),
                       );
                     },
                     childCount: trainingList.length,
                   ),
                 ),
+                const SliverPadding(padding: EdgeInsets.all(15)),
                 SliverToBoxAdapter(
                     child: SizedBox(
                         height: size.width * (198 / 254) * (135 / 198),

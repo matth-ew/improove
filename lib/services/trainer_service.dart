@@ -21,7 +21,7 @@ class TrainerService {
       );
     } on DioError catch (e) {
       debugPrint("UE DIOERROR");
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return null;
     }
   }
@@ -54,7 +54,7 @@ class TrainerService {
       );
     } on DioError catch (e) {
       debugPrint("UE DIOERROR");
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return null;
     }
   }

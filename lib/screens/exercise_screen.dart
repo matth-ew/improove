@@ -83,14 +83,14 @@ class ExerciseScreen extends StatelessWidget {
                   elevation: 0,
                   collapsedHeight: size.height * 0.38,
                   expandedHeight: size.height * 0.58,
-                  leading: IconButton(
-                    icon: const Icon(Icons.arrow_back),
-                    iconSize: 32,
-                    color: Colors.white,
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                  ),
+                  // leading: IconButton(
+                  //   icon: const Icon(Icons.arrow_back),
+                  //   iconSize: 32,
+                  //   color: Colors.white,
+                  //   onPressed: () {
+                  //     Navigator.of(context).pop();
+                  //   },
+                  // ),
                   flexibleSpace: Stack(
                     children: [
                       Positioned(

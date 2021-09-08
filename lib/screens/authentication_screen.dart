@@ -74,16 +74,23 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
   }
 
-  _appleLogin(Function thunkAction, [Function? cb]) async {
+  Future<void> _appleLogin(Function thunkAction, [Function? cb]) async {
     try {
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
           AppleIDAuthorizationScopes.email,
           AppleIDAuthorizationScopes.fullName,
         ],
+        webAuthenticationOptions: WebAuthenticationOptions(
+          // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
+          clientId: 'fit.improove',
+          redirectUri: Uri.parse(
+            'https://improove.fit/api/redirect-apple',
+          ),
+        ),
       );
 
-      debugPrint("APPLE CRED: $credential");
+      debugPrint("APPLE CRED: ${credential.authorizationCode}");
       thunkAction(credential.authorizationCode, cb);
     } catch (error) {
       debugPrint(error.toString());
@@ -134,21 +141,24 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             ),
                           ),
                         ),
-                        SignInWithAppleButton(
-                          onPressed: () => _appleLogin(
-                            vm.appleLogin,
-                            (String? e) {
-                              if (e == null) {
-                                debugPrint("NOT ERROR");
-                              } else {
-                                debugPrint("ERROR ${e.toString()}");
-                              }
-                              Navigator.of(context).pushReplacement(
-                                MaterialPageRoute(
-                                  builder: (_) => NavScreen(),
-                                ),
-                              );
-                            },
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: SignInWithAppleButton(
+                            onPressed: () => _appleLogin(
+                              vm.appleLogin,
+                              (String? e) {
+                                if (e == null) {
+                                  debugPrint("NOT ERROR");
+                                  Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                      builder: (_) => NavScreen(),
+                                    ),
+                                  );
+                                } else {
+                                  debugPrint("ERROR ${e.toString()}");
+                                }
+                              },
+                            ),
                           ),
                         ),
                         Row(
@@ -160,14 +170,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 (String? e) {
                                   if (e == null) {
                                     debugPrint("NOT ERROR");
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => NavScreen(),
+                                      ),
+                                    );
                                   } else {
                                     debugPrint("ERROR ${e.toString()}");
                                   }
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (_) => NavScreen(),
-                                    ),
-                                  );
                                 },
                               ),
                               style: ButtonStyle(
@@ -191,14 +201,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                 (String? e) {
                                   if (e == null) {
                                     debugPrint("NOT ERROR");
+                                    Navigator.of(context).pushReplacement(
+                                      MaterialPageRoute(
+                                        builder: (_) => NavScreen(),
+                                      ),
+                                    );
                                   } else {
                                     debugPrint("ERROR ${e.toString()}");
                                   }
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (_) => NavScreen(),
-                                    ),
-                                  );
                                 },
                               ),
                               style: ButtonStyle(

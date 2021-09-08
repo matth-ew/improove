@@ -1,10 +1,6 @@
-/// Flutter code sample for Card
-
-// This sample shows creation of a [Card] widget that shows album information
-// and two actions.
-
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:improove/redux/models/training.dart';
+// import 'package:improove/redux/models/training.dart';
 
 const String previewPH = 'assets/images/undraw_pilates_gpdb.png';
 
@@ -42,10 +38,11 @@ class CardRow extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: preview != null
-                        ? FadeInImage(
+                        ? CachedNetworkImage(
                             fit: BoxFit.cover,
-                            placeholder: const AssetImage(previewPH),
-                            image: NetworkImage(preview!),
+                            placeholder: (context, url) =>
+                                ColoredBox(color: Colors.grey),
+                            imageUrl: preview!,
                           )
                         : Image.asset(
                             previewPH,

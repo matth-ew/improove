@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 
 const backendUrl = 'http://10.0.2.2:3001';
 
@@ -15,7 +16,7 @@ class AuthService {
         ),
       );
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return e.response;
     }
   }
@@ -30,7 +31,7 @@ class AuthService {
         ),
       );
     } on DioError catch (e) {
-      print("ERRORE" + e.toString());
+      debugPrint("ERRORE" + e.toString());
       return e.response;
     }
   }
@@ -45,22 +46,25 @@ class AuthService {
         ),
       );
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return e.response;
     }
   }
 
-  Future<Response?> loginApple(String accessToken) async {
+  Future<Response?> loginApple(String authorizationCode) async {
     try {
       return await dio.post(
         '$backendUrl/api/authenticate-apple',
-        data: {'access_token': accessToken},
+        data: {
+          'code': authorizationCode,
+          'useBundleId': Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
+        },
         options: Options(
           headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         ),
       );
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return e.response;
     }
   }
@@ -71,7 +75,7 @@ class AuthService {
           data: {'email': email, 'password': password},
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
-      print(e.response?.data['msg'] as String);
+      debugPrint(e.response?.data['msg'] as String);
       return e.response;
     }
   }
@@ -82,7 +86,7 @@ class AuthService {
       return await dio.get('$backendUrl/api/token',
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
-      print(e.response?.data['msg']);
+      debugPrint(e.response?.data['msg'].toString());
       return e.response;
     }
   }

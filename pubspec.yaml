@@ -25,6 +25,8 @@ dependencies:
     sdk: flutter
 
   introduction_screen: ^2.1.0
+  webview_flutter: ^2.0.12
+  cached_network_image: ^3.1.0
   shared_preferences: ^2.0.6
   cupertino_icons: ^1.0.3
   expandable_text: ^2.2.0
@@ -44,6 +46,8 @@ dependencies:
   persistent_bottom_nav_bar: ^4.0.2
   image_cropper: ^1.4.1
   file_picker: ^4.0.0
+  firebase_analytics: ^8.3.0
+  # firebase_messaging: ^10.0.5
 
   #auth plugins
   flutter_facebook_auth: ^3.5.0

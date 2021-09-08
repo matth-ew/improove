@@ -4,6 +4,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
+import 'package:improove/screens/privacy_screen.dart';
+import 'package:improove/screens/terms_screen.dart';
 import 'package:improove/widgets/image_picker_cropper.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
@@ -26,12 +28,16 @@ class SettingsScreen extends StatelessWidget {
               leading: const Icon(Icons.photo),
               title: const Text('Change Profile Image'),
               onTap: () async {
-                final File? fileToSave =
-                    await showImagePickerCropper(context, 500, 500, "circle");
-                if (fileToSave != null) {
-                  vm.changeProfileImage(fileToSave, (String? e) {
-                    Navigator.pop(context);
-                  });
+                try {
+                  final File? fileToSave =
+                      await showImagePickerCropper(context, 500, 500, "circle");
+                  if (fileToSave != null) {
+                    vm.changeProfileImage(fileToSave, (String? e) {
+                      Navigator.pop(context);
+                    });
+                  }
+                } catch (e) {
+                  debugPrint("Errore in selezione immagine ${e.toString()}");
                 }
               },
             ),
@@ -57,6 +63,30 @@ class SettingsScreen extends StatelessWidget {
                     surname: vm.user.surname,
                     submit: vm.changeProfileInfo,
                   ),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.description),
+              title: const Text('Terms & Conditions'),
+              onTap: () {
+                pushNewScreen(
+                  context,
+                  screen: TermsScreen(),
+                  withNavBar: false,
+                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.security),
+              title: const Text('Privacy Policy'),
+              onTap: () {
+                pushNewScreen(
+                  context,
+                  screen: PrivacyScreen(),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );

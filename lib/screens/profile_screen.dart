@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
@@ -91,8 +92,9 @@ class ProfileScreen extends StatelessWidget {
                                 if (vm.user.profileImage != null)
                                   CircleAvatar(
                                     backgroundColor: Colors.grey,
-                                    backgroundImage:
-                                        NetworkImage(vm.user.profileImage!),
+                                    backgroundImage: CachedNetworkImageProvider(
+                                      vm.user.profileImage!,
+                                    ),
                                     minRadius: 20.0,
                                     maxRadius: 50.0,
                                   )
