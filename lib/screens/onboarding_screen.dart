@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({Key? key}) : super(key: key);
+
   @override
   _OnboardingScreenState createState() => _OnboardingScreenState();
 }
@@ -44,7 +46,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   void _goToAuthScreen() {
     //Navigator.of(context).pushReplacementNamed('/HomePage');
     Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => AuthenticationScreen()));
+        MaterialPageRoute(builder: (_) => const AuthenticationScreen()));
   }
 
   // Widget _buildFullscrenImage() {

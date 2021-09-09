@@ -34,10 +34,10 @@ class ShapePainter extends CustomPainter {
       ..color = Colors.grey
       ..strokeWidth = 15;
 
-    Offset start = Offset(0, 0);
+    Offset start = const Offset(0, 0);
     Offset end = Offset(size.width, size.height);
     Rect rect = Rect.fromPoints(start, end);
-    RRect rrect = RRect.fromRectAndRadius(rect, Radius.circular(15));
+    RRect rrect = RRect.fromRectAndRadius(rect, const Radius.circular(15));
 
     canvas.drawRRect(rrect, paint);
   }

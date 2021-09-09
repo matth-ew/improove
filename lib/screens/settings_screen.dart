@@ -13,6 +13,8 @@ import 'package:redux/redux.dart';
 import 'settings_widgets/change_personal_info.dart';
 
 class SettingsScreen extends StatelessWidget {
+  const SettingsScreen({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     // final colorScheme = Theme.of(context).colorScheme;
@@ -74,7 +76,7 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {
                 pushNewScreen(
                   context,
-                  screen: TermsScreen(),
+                  screen: const TermsScreen(),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
@@ -86,7 +88,7 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {
                 pushNewScreen(
                   context,
-                  screen: PrivacyScreen(),
+                  screen: const PrivacyScreen(),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
@@ -102,7 +104,7 @@ class SettingsScreen extends StatelessWidget {
                     Navigator.of(context).pushAndRemoveUntil<void>(
                       MaterialPageRoute<void>(
                           builder: (BuildContext context) =>
-                              AuthenticationScreen()),
+                              const AuthenticationScreen()),
                       (Route<dynamic> route) => false,
                     );
                   },

@@ -25,7 +25,7 @@ class AppState {
         //'trainings': trainings.entries.map((e) => {e.key: e.value.toJson()}),
       };
   static AppState fromJson(dynamic json) {
-    if (json == null) return AppState.initial();
+    if (json == null) return const AppState.initial();
     return AppState(
       user: User.fromJson(json['user']),
       trainers: const {},

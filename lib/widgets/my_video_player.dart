@@ -6,9 +6,13 @@ class MyVideoPlayer extends StatefulWidget {
   const MyVideoPlayer({
     Key? key,
     this.video = '',
+    // this.onStart,
+    this.onEnd,
   }) : super(key: key);
 
   final String video;
+  // final Function? onStart;
+  final Function? onEnd;
 
   @override
   State<StatefulWidget> createState() {
@@ -38,6 +42,20 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
     await Future.wait([
       _videoPlayerController.initialize(),
     ]);
+    if (widget.onEnd != null) {
+      _videoPlayerController.addListener(() {
+        if (!_videoPlayerController.value.isPlaying &&
+            _videoPlayerController.value.isInitialized &&
+            (_videoPlayerController.value.duration ==
+                _videoPlayerController.value.position)) {
+          //checking the duration and position every time
+          //Video Completed//
+          debugPrint("VIDEO FINITO");
+          widget.onEnd?.call();
+        }
+      });
+    }
+
     _createChewieController();
     setState(() {});
   }

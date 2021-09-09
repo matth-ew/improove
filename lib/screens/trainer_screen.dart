@@ -66,7 +66,8 @@ class TrainerScreen extends StatelessWidget {
                   flexibleSpace: Stack(
                     children: [
                       if (vm.trainer != null &&
-                          vm.trainer!.profileImage != null)
+                          vm.trainer!.trainerImage != null &&
+                          vm.trainer!.trainerImage != "")
                         Positioned(
                           top: 0,
                           left: 0,

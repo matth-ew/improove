@@ -7,6 +7,8 @@ import 'package:redux/redux.dart';
 import '../nav_screen.dart';
 
 class LoginForm extends StatefulWidget {
+  const LoginForm({Key? key}) : super(key: key);
+
   @override
   _LoginFormState createState() => _LoginFormState();
 }
@@ -129,7 +131,7 @@ class _LoginFormState extends State<LoginForm> {
                               if (e == null) {
                                 Navigator.of(context).pushReplacement(
                                   MaterialPageRoute(
-                                    builder: (_) => NavScreen(),
+                                    builder: (_) => const NavScreen(),
                                   ),
                                 );
                               } else {

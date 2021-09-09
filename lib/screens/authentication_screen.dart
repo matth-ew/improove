@@ -13,6 +13,8 @@ import 'authentication_widgets/login_form.dart';
 import 'authentication_widgets/signup_form.dart';
 
 class AuthenticationScreen extends StatefulWidget {
+  const AuthenticationScreen({Key? key}) : super(key: key);
+
   @override
   _AuthenticationScreenState createState() => _AuthenticationScreenState();
 }
@@ -82,7 +84,6 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
           AppleIDAuthorizationScopes.fullName,
         ],
         webAuthenticationOptions: WebAuthenticationOptions(
-          // TODO: Set the `clientId` and `redirectUri` arguments to the values you entered in the Apple Developer portal during the setup
           clientId: 'fit.improove',
           redirectUri: Uri.parse(
             'https://improove.fit/api/redirect-apple',
@@ -127,7 +128,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         ),
                       ),
                     ),
-                    if (signIn) LoginForm() else SignupForm(),
+                    if (signIn) const LoginForm() else const SignupForm(),
                     Column(
                       children: [
                         Padding(
@@ -151,7 +152,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                   debugPrint("NOT ERROR");
                                   Navigator.of(context).pushReplacement(
                                     MaterialPageRoute(
-                                      builder: (_) => NavScreen(),
+                                      builder: (_) => const NavScreen(),
                                     ),
                                   );
                                 } else {
@@ -172,7 +173,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     debugPrint("NOT ERROR");
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                        builder: (_) => NavScreen(),
+                                        builder: (_) => const NavScreen(),
                                       ),
                                     );
                                   } else {
@@ -203,7 +204,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                     debugPrint("NOT ERROR");
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
-                                        builder: (_) => NavScreen(),
+                                        builder: (_) => const NavScreen(),
                                       ),
                                     );
                                   } else {

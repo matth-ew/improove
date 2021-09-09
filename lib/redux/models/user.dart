@@ -135,7 +135,7 @@ class SavedTraining {
 
   SavedTraining.fromJson(Map<String, dynamic> json)
       : trainingId = (json['trainingId'] ?? -1) as int,
-        seenExercises = (const <String>[]) as List<String>;
+        seenExercises = (const <String>[]);
 }
 
 @immutable

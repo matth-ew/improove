@@ -95,7 +95,7 @@ class TrainingScreen extends StatelessWidget {
                               ColoredBox(color: colorScheme.primary),
                           imageUrl: vm.training!.preview,
                           errorWidget: (context, url, error) =>
-                              ColoredBox(color: Colors.grey),
+                              const ColoredBox(color: Colors.grey),
                         ),
                       ),
                       Positioned(
@@ -142,11 +142,9 @@ class TrainingScreen extends StatelessWidget {
                                 height: 60,
                                 fit: BoxFit.cover,
                                 placeholder: (context, url) =>
-                                    CircularProgressIndicator(),
+                                    const CircularProgressIndicator(),
                                 errorWidget: (context, url, error) =>
-                                    Icon(Icons.error),
-                                // placeholder: const AssetImage(
-                                //     "assets/images/trainer_avatar.jpg"),
+                                    const Icon(Icons.error),
                                 imageUrl: vm.training!.trainerImage),
                           ),
                         ),

@@ -10,6 +10,8 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
 class SignupForm extends StatefulWidget {
+  const SignupForm({Key? key}) : super(key: key);
+
   @override
   _SignupFormState createState() => _SignupFormState();
 }
@@ -210,7 +212,7 @@ class _SignupFormState extends State<SignupForm> {
                               ..onTap = () {
                                 pushNewScreen(
                                   context,
-                                  screen: TermsScreen(),
+                                  screen: const TermsScreen(),
                                   withNavBar: false,
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino,
@@ -227,7 +229,7 @@ class _SignupFormState extends State<SignupForm> {
                               ..onTap = () {
                                 pushNewScreen(
                                   context,
-                                  screen: PrivacyScreen(),
+                                  screen: const PrivacyScreen(),
                                   withNavBar: false,
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino,
@@ -251,7 +253,7 @@ class _SignupFormState extends State<SignupForm> {
                             if (e == null) {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (_) => NavScreen(),
+                                  builder: (_) => const NavScreen(),
                                 ),
                               );
                             } else {

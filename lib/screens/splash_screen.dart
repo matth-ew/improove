@@ -7,6 +7,8 @@ import 'package:improove/screens/nav_screen.dart';
 import 'package:improove/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -45,7 +47,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // this is route builder without any animation
       PageRouteBuilder(
         pageBuilder: (context, animation1, animation2) =>
-            AuthenticationScreen(),
+            const AuthenticationScreen(),
       ),
     );
   }
@@ -54,7 +56,7 @@ class _SplashScreenState extends State<SplashScreen> {
     Navigator.of(context).pushReplacement(
       // this is route builder without any animation
       PageRouteBuilder(
-        pageBuilder: (context, animation1, animation2) => NavScreen(),
+        pageBuilder: (context, animation1, animation2) => const NavScreen(),
       ),
     );
   }
@@ -64,6 +66,6 @@ class _SplashScreenState extends State<SplashScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     return isLoading
         ? Container(color: colorScheme.background)
-        : OnboardingScreen();
+        : const OnboardingScreen();
   }
 }

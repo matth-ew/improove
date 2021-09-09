@@ -3,6 +3,7 @@
 // This sample shows creation of a [Card] widget that shows album information
 // and two actions.
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CtaCard extends StatelessWidget {
@@ -30,7 +31,6 @@ class CtaCard extends StatelessWidget {
     // const borderSize = 2.0;
 
     //placeholders
-    const String previewPH = 'assets/images/undraw_pilates_gpdb.png';
 
     final double widthCard = widthScreen * widthScreenRatio;
     final double heightCard = widthCard * heightScreenRatio;
@@ -45,12 +45,15 @@ class CtaCard extends StatelessWidget {
           alignment: Alignment.bottomCenter,
           child: ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(radius)),
-            child: FadeInImage(
+            child: CachedNetworkImage(
               width: double.infinity,
               height: double.infinity,
               fit: BoxFit.cover,
-              placeholder: const AssetImage(previewPH),
-              image: NetworkImage(preview),
+              placeholder: (context, url) =>
+                  const ColoredBox(color: Colors.grey),
+              imageUrl: preview,
+              errorWidget: (context, url, error) =>
+                  const ColoredBox(color: Colors.grey),
             ),
             // boxShadow: [
             //   new BoxShadow(

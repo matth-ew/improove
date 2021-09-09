@@ -23,7 +23,7 @@ Future<File?> showImagePickerCropper(
         : myCrop = CropStyle.rectangle;
     //final File file = File(result.files.single.path!);
     return ImageCropper.cropImage(
-      sourcePath: result.files.single.path!,
+      sourcePath: result.files.single.path,
       cropStyle: myCrop,
       maxHeight: maxHeight,
       maxWidth: maxWidth,

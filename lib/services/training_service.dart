@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 
-const backendUrl = 'http://10.0.2.2:3001';
+const backendUrl = 'https://improove.fit';
 
 class TrainingService {
   Dio dio = Dio();

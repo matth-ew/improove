@@ -1,4 +1,3 @@
-import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
 

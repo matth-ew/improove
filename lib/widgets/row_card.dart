@@ -2,8 +2,6 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:improove/redux/models/training.dart';
 
-const String previewPH = 'assets/images/undraw_pilates_gpdb.png';
-
 class CardRow extends StatelessWidget {
   final String? name;
   final String? category;
@@ -41,13 +39,12 @@ class CardRow extends StatelessWidget {
                         ? CachedNetworkImage(
                             fit: BoxFit.cover,
                             placeholder: (context, url) =>
-                                ColoredBox(color: Colors.grey),
+                                const ColoredBox(color: Colors.grey),
                             imageUrl: preview!,
+                            errorWidget: (context, url, error) =>
+                                const ColoredBox(color: Colors.grey),
                           )
-                        : Image.asset(
-                            previewPH,
-                            fit: BoxFit.cover,
-                          ),
+                        : const ColoredBox(color: Colors.grey),
                   ),
                 ),
               ),

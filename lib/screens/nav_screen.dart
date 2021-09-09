@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:improove/screens/home_screen.dart';
 import 'package:improove/screens/explore_screen.dart';
 import 'package:improove/screens/profile_screen.dart';
@@ -16,6 +15,8 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 // );
 
 class NavScreen extends StatefulWidget {
+  const NavScreen({Key? key}) : super(key: key);
+
   @override
   _NavScreenState createState() => _NavScreenState();
 }
@@ -31,9 +32,9 @@ class _NavScreenState extends State<NavScreen> {
 
   List<Widget> _buildScreens() {
     return [
-      HomeScreen(),
-      ExploreScreen(),
-      ProfileScreen(),
+      const HomeScreen(),
+      const ExploreScreen(),
+      const ProfileScreen(),
     ];
   }
   //       BottomNavigationBarItem(

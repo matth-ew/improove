@@ -10,6 +10,8 @@ class HomeScreen extends StatelessWidget {
   final int trainerId = 4;
   final int trainingId = -1;
   final int progressionId = 0;
+
+  const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // var size = MediaQuery.of(context).size;
@@ -55,7 +57,7 @@ class HomeScreen extends StatelessWidget {
               onPressed: () {
                 pushNewScreen(
                   context,
-                  screen: AuthenticationScreen(),
+                  screen: const AuthenticationScreen(),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );

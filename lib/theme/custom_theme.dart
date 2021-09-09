@@ -17,7 +17,7 @@ class CustomTheme {
         backgroundColor: kBackgroundColor,
         scaffoldBackgroundColor: kBackgroundColor,
         textTheme: ThemeData.light().textTheme.apply(displayColor: kTextColor),
-        colorScheme: ColorScheme.light().copyWith(
+        colorScheme: const ColorScheme.light().copyWith(
           primary: kBlueColor,
           // primaryVariant: primaryVariant,
           // secondary: secondary,
@@ -48,7 +48,7 @@ class CustomTheme {
         backgroundColor: kBackgroundColor,
         scaffoldBackgroundColor: kBackgroundColor,
         textTheme: ThemeData.dark().textTheme.apply(displayColor: kTextColor),
-        colorScheme: ColorScheme.dark().copyWith(
+        colorScheme: const ColorScheme.dark().copyWith(
           primary: Colors.white,
           // primaryVariant: primaryVariant,
           // secondary: secondary,

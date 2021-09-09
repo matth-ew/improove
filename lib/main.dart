@@ -8,10 +8,12 @@ import 'package:improove/redux/store.dart';
 Future<void> main() async {
   final store = await createStore();
   // runApp(App(store: store));
-  runApp(StoreProvider(store: store, child: App()));
+  runApp(StoreProvider(store: store, child: const App()));
 }
 
 class App extends StatelessWidget {
+  const App({Key? key}) : super(key: key);
+
   //App({this.store});
   // This widget is the root of your application.
   @override
@@ -30,7 +32,7 @@ class App extends StatelessWidget {
         title: 'Improove',
         theme: CustomTheme.lightTheme,
         // darkTheme: CustomTheme.darkTheme,
-        home: SplashScreen(),
+        home: const SplashScreen(),
       ),
     );
   }

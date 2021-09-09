@@ -1,7 +1,6 @@
 import 'dart:io';
-
-import 'package:expandable_text/expandable_text.dart';
 import 'package:flutter/material.dart';
+import 'package:improove/redux/actions/user.dart';
 import 'package:improove/widgets/edit_text.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/widgets/my_video_player.dart';
@@ -107,8 +106,15 @@ class ExerciseScreen extends StatelessWidget {
                         left: 0,
                         right: 0,
                         bottom: 35,
-                        child:
-                            MyVideoPlayer(video: getVideo(vm.exercise!.video)),
+                        child: MyVideoPlayer(
+                          video: getVideo(vm.exercise!.video),
+                          onEnd: () {
+                            vm.setCompleted(
+                              trainingId,
+                              "OBJECTID", //TODO: qui serve vm.exercise!.id
+                            );
+                          },
+                        ),
                       ),
                       Positioned(
                         bottom: 0,
@@ -214,14 +220,17 @@ class _ViewModel {
   final Function(int, String, String) setTips;
   final Function(int, String, String) setHow;
   final Function(int, String, String) setMistakes;
+  final Function(int, String) setCompleted;
 
-  _ViewModel(
-      {required this.exercise,
-      required this.training,
-      required this.userId,
-      required this.setTips,
-      required this.setHow,
-      required this.setMistakes});
+  _ViewModel({
+    required this.exercise,
+    required this.training,
+    required this.userId,
+    required this.setTips,
+    required this.setHow,
+    required this.setMistakes,
+    required this.setCompleted,
+  });
 
   static _ViewModel fromStore(Store<AppState> store, int trainingId, int id) {
     return _ViewModel(
@@ -234,6 +243,8 @@ class _ViewModel {
           store.dispatch(setExerciseHow(id, title, text)),
       setMistakes: (int id, String title, String text) =>
           store.dispatch(setExerciseMistakes(id, title, text)),
+      setCompleted: (int trainingId, String exerciseId) =>
+          store.dispatch(setExerciseCompleted(trainingId, exerciseId)),
     );
   }
 }

@@ -12,6 +12,8 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
 class ProfileScreen extends StatelessWidget {
+  const ProfileScreen({Key? key}) : super(key: key);
+
   Widget textElem(String first, String second, BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
@@ -67,7 +69,7 @@ class ProfileScreen extends StatelessWidget {
               IconButton(
                 splashRadius: 25,
                 onPressed: () {
-                  showCustomBottomSheet(context, SettingsScreen());
+                  showCustomBottomSheet(context, const SettingsScreen());
                 },
                 icon: Icon(Icons.settings, color: colorScheme.primary),
               ),

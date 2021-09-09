@@ -51,8 +51,6 @@ class PreviewCard extends StatelessWidget {
     const borderSize = 2.0;
 
     //placeholders
-    const String previewPH = 'assets/images/undraw_pilates_gpdb.png';
-    // const String avatarPH = 'assets/images/meditation_bg.png';
 
     final double widthCard = widthScreen * widthScreenRatio;
     final double heightCard = widthCard * heightScreenRatio;
@@ -89,7 +87,7 @@ class PreviewCard extends StatelessWidget {
               alignment: Alignment.bottomCenter,
               child: ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(radius)),
-                child: preview != null
+                child: preview != null && preview != ""
                     ? CachedNetworkImage(
                         fit: BoxFit.cover,
                         width: double.infinity,
@@ -97,15 +95,10 @@ class PreviewCard extends StatelessWidget {
                         placeholder: (context, url) =>
                             ColoredBox(color: colorScheme.primary),
                         imageUrl: preview!,
+                        errorWidget: (context, url, error) =>
+                            ColoredBox(color: colorScheme.primary),
                       )
-                    // FadeInImage(
-                    //     width: double.infinity,
-                    //     height: double.infinity,
-                    //     fit: BoxFit.cover,
-                    //     placeholder: const AssetImage(previewPH),
-                    //     image: NetworkImage(preview!),
-                    //   )
-                    : Image.asset(previewPH),
+                    : const ColoredBox(color: Colors.grey),
                 // boxShadow: [
                 //   new BoxShadow(
                 //     color: Colors.black,
@@ -146,7 +139,7 @@ class PreviewCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (avatar != null)
+            if (avatar != null && avatar != "")
               Positioned(
                 top: paddingTopAvatar,
                 left: paddingLeftAvatar,

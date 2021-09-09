@@ -249,6 +249,30 @@ ThunkAction<AppState> getInfoThunk([Function? cb]) {
   };
 }
 
+ThunkAction<AppState> setExerciseCompleted(int trainingId, String exerciseId,
+    [Function? cb]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        // final Response? r =
+        //     await TrainingService().setExerciseMistakes(id, title, text, token);
+        // if (r?.data['success'] as bool) {
+        //   final Exercise e = store.state.trainings[id]!.exercises
+        //       .firstWhere((element) => element.title == title)
+        //       .copyWith(mistakes: text);
+        //   store.dispatch(SetExercise(e, id));
+        // }
+        cb?.call(null);
+      }
+    } catch (e) {
+      debugPrint("Errore in setExercise ${e.toString()}");
+      cb?.call(e.toString());
+    }
+  };
+}
+
 ThunkAction<AppState> saveTrainingThunk(int trainingId, [Function? cb]) {
   return (Store<AppState> store) async {
     try {
@@ -258,7 +282,7 @@ ThunkAction<AppState> saveTrainingThunk(int trainingId, [Function? cb]) {
         //debugPrint("UE RESP $r");
         if (r?.data['success'] as bool) {
           final SavedTraining s =
-              SavedTraining(trainingId: trainingId, seenExercises: []);
+              SavedTraining(trainingId: trainingId, seenExercises: const []);
           store.dispatch(AddSavedTraining(s));
           // final User u =
           //     User.fromJson(r!.data!["user"] as Map<String, dynamic>);
