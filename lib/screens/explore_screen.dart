@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/screens/training_screen.dart';
@@ -18,17 +21,25 @@ class ExploreScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final double heightScreen = MediaQuery.of(context).size.height;
     final Size size = MediaQuery.of(context).size;
+    final colorScheme = Theme.of(context).colorScheme;
+
+    Future<void> _refresh(Function load) {
+      final completer = Completer();
+      load(completer);
+      return completer.future;
+    }
 
     return StoreConnector(
-        converter: (Store<AppState> store) => _ViewModel.fromStore(store),
-        onInit: (store) {
-          store.dispatch(getTrainings());
-        },
-        builder: (BuildContext context, _ViewModel vm) {
-          final List<Training> trainingList = vm.trainings.values.toList();
-          return Scaffold(
-            body: CustomScrollView(
-              slivers: [
+      converter: (Store<AppState> store) => _ViewModel.fromStore(store),
+      onInit: (store) {
+        store.dispatch(getTrainings());
+      },
+      builder: (BuildContext context, _ViewModel vm) {
+        final List<Training> trainingList = vm.trainings.values.toList();
+        return Scaffold(
+          body: NestedScrollView(
+            headerSliverBuilder: (context, _) {
+              return [
                 SliverAppBar(
                   ///Properties of app bar
                   backgroundColor: Colors.white,
@@ -46,15 +57,24 @@ class ExploreScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 30,
-                    // crossAxisSpacing: 0,
-                    childAspectRatio: 0.92,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
+              ];
+            },
+            body: RefreshIndicator(
+              backgroundColor: colorScheme.primary,
+              color: colorScheme.background,
+              onRefresh: () => _refresh(vm.loadTrainings),
+              child: CustomScrollView(
+                slivers: [
+                  SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 30,
+                      // crossAxisSpacing: 0,
+                      childAspectRatio: 0.92,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
                       return Center(
                         child: PreviewCard(
                           name: trainingList[index].title,
@@ -76,31 +96,40 @@ class ExploreScreen extends StatelessWidget {
                           },
                         ),
                       );
-                    },
-                    childCount: trainingList.length,
+                    }, childCount: trainingList.length),
                   ),
-                ),
-                const SliverPadding(padding: EdgeInsets.all(15)),
-                SliverToBoxAdapter(
-                    child: SizedBox(
-                        height: size.width * (198 / 254) * (135 / 198),
-                        width: size.width * (198 / 254),
-                        child: const CtaCard()))
-              ],
+                  const SliverPadding(padding: EdgeInsets.all(15)),
+                  SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 8, right: 8),
+                      height: size.width * (198 / 254) * (135 / 198),
+                      width: size.width * (198 / 254),
+                      child: const CtaCard(),
+                    ),
+                  ),
+                  const SliverPadding(padding: EdgeInsets.all(15)),
+                ],
+              ),
             ),
-          );
-        });
+          ),
+        );
+      },
+    );
   }
 }
 
 class _ViewModel {
   final Map<int, Training> trainings;
+  final Function([Completer? cb]) loadTrainings;
 
-  _ViewModel({required this.trainings});
+  _ViewModel({required this.trainings, required this.loadTrainings});
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       trainings: store.state.trainings,
+      loadTrainings: ([cb]) => store.dispatch(
+        getTrainings([], cb),
+      ),
     );
   }
 }

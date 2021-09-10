@@ -10,7 +10,7 @@ final trainingReducer = combineReducers<Map<int, Training>>([
 
 Map<int, Training> _setAllTrainings(
     Map<int, Training> trainings, SetTrainings action) {
-  return action.trainings;
+  return Map.from(trainings)..addAll(action.trainings);
 }
 
 Map<int, Training> _setTrainingById(

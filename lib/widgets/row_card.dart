@@ -7,6 +7,7 @@ class CardRow extends StatelessWidget {
   final String? category;
   final String? preview;
   final Function? onTap;
+  final Widget? action;
 
   const CardRow({
     Key? key,
@@ -14,6 +15,7 @@ class CardRow extends StatelessWidget {
     this.category = '',
     this.preview,
     this.onTap,
+    this.action,
   }) : super(key: key);
 
   @override
@@ -74,13 +76,7 @@ class CardRow extends StatelessWidget {
                   ),
                 ),
               ),
-              IconButton(
-                onPressed: () {},
-                iconSize: 30,
-                color: Colors.grey,
-                icon: const Icon(Icons.more_vert),
-                splashRadius: 25,
-              ),
+              if (action != null) action!,
             ],
           ),
         ),
