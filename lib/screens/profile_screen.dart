@@ -136,8 +136,8 @@ class ProfileScreen extends StatelessWidget {
                     Expanded(
                       child: TabBarView(
                         children: [
-                          _showSavedTrainings(
-                              context, vm.user.savedTrainings, vm.trainings),
+                          _showSavedTrainings(context, vm.user.savedTrainings,
+                              vm.trainings, vm.removeTraining),
                           _showClosedTrainings(
                               context, vm.user.closedTrainings, vm.trainings),
                         ],
@@ -153,8 +153,11 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _showSavedTrainings(BuildContext context,
-      List<SavedTraining> savedTrainings, Map<int, Training> trainings) {
+  Widget _showSavedTrainings(
+      BuildContext context,
+      List<SavedTraining> savedTrainings,
+      Map<int, Training> trainings,
+      Function removeTraining) {
     return ListView(
       // padding: EdgeInsets.all(5),
       children: [
@@ -172,6 +175,23 @@ class ProfileScreen extends StatelessWidget {
                 pageTransitionAnimation: PageTransitionAnimation.cupertino,
               );
             },
+            action: PopupMenuButton(
+              itemBuilder: (BuildContext context) {
+                return [
+                  PopupMenuItem(
+                    child: Text("Remove"),
+                    onTap: () {
+                      removeTraining(t!.id);
+                    },
+                  )
+                ];
+              },
+              child: const Icon(
+                Icons.more_vert,
+                size: 30,
+                color: Colors.grey,
+              ),
+            ),
           );
         }),
       ],
@@ -209,16 +229,21 @@ class ProfileScreen extends StatelessWidget {
 class _ViewModel {
   final Map<int, Training> trainings;
   final User user;
+  final Function(int, [Function? cb]) removeTraining;
 
   _ViewModel({
     required this.trainings,
     required this.user,
+    required this.removeTraining,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       trainings: store.state.trainings,
       user: store.state.user,
+      removeTraining: (id, [cb]) => store.dispatch(
+        removeTrainingThunk(id, cb),
+      ),
     );
   }
 }

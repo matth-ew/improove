@@ -73,6 +73,7 @@ ThunkAction<AppState> getTrainings([List<int>? ids, Completer? completer]) {
         }
         store.dispatch(SetTrainings(trainings));
         debugPrint("GET TRAININGS ${store.state.trainings}");
+        completer?.complete();
         // if (t != null) {
         //   store.dispatch(SetTrainings(t));
         //   completer?.complete();
