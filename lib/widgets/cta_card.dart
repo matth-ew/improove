@@ -7,23 +7,25 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class CtaCard extends StatelessWidget {
-  final String name;
-  final String duration;
-  final String avatar;
+  final String tag;
   final String preview;
   const CtaCard(
       {Key? key,
-      this.name = 'Nome video',
-      this.duration = 'durata video',
+      this.tag = "",
       this.preview =
-          'https://www.ispo.com/sites/default/files/styles/facebook/public/2020-04/Fitness%20App%20Training.jpg?h=1c9b88c9&itok=LpbSkBks',
-      this.avatar = ''})
+          'https://www.ispo.com/sites/default/files/styles/facebook/public/2020-04/Fitness%20App%20Training.jpg?h=1c9b88c9&itok=LpbSkBks'})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     // final double hightScreen = MediaQuery.of(context).size.height;
     final double widthScreen = MediaQuery.of(context).size.width;
+
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
+    const double paddingBottomCategory = 2;
+    const double paddingRightCategory = 6;
 
     const widthScreenRatio = 198 / 254;
     const heightScreenRatio = 135 / 198;
@@ -39,29 +41,39 @@ class CtaCard extends StatelessWidget {
     // 92 119 -> 198 135
 
     return SizedBox(
-      height: heightCard,
-      width: widthCard,
-      child: Container(
-          alignment: Alignment.bottomCenter,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.all(Radius.circular(radius)),
-            child: CachedNetworkImage(
-              width: double.infinity,
-              height: double.infinity,
-              fit: BoxFit.cover,
-              placeholder: (context, url) =>
-                  const ColoredBox(color: Colors.grey),
-              imageUrl: preview,
-              errorWidget: (context, url, error) =>
-                  const ColoredBox(color: Colors.grey),
+        height: heightCard,
+        width: widthCard,
+        child: Stack(children: <Widget>[
+          Container(
+              alignment: Alignment.bottomCenter,
+              child: ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(radius)),
+                child: CachedNetworkImage(
+                  width: double.infinity,
+                  height: double.infinity,
+                  fit: BoxFit.cover,
+                  placeholder: (context, url) =>
+                      const ColoredBox(color: Colors.grey),
+                  imageUrl: preview,
+                  errorWidget: (context, url, error) =>
+                      const ColoredBox(color: Colors.grey),
+                ),
+                // boxShadow: [
+                //   new BoxShadow(
+                //     color: Colors.black,
+                //     blurRadius: 2.0,
+                //   ),
+                // ],
+              )),
+          Positioned(
+            bottom: paddingBottomCategory,
+            right: paddingRightCategory,
+            child: Chip(
+              backgroundColor: colorScheme.primary,
+              label: Text(tag,
+                  style: textTheme.bodyText2?.copyWith(color: Colors.white)),
             ),
-            // boxShadow: [
-            //   new BoxShadow(
-            //     color: Colors.black,
-            //     blurRadius: 2.0,
-            //   ),
-            // ],
-          )),
-    );
+          )
+        ]));
   }
 }
