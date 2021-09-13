@@ -6,6 +6,8 @@ import 'package:improove/theme/custom_theme.dart';
 import 'package:improove/redux/store.dart';
 
 Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   final store = await createStore();
   // runApp(App(store: store));
   runApp(StoreProvider(store: store, child: const App()));

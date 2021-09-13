@@ -13,7 +13,6 @@ class ChangePersonalInfo extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  @override
   _ChangePersonalInfoState createState() => _ChangePersonalInfoState();
 }
 

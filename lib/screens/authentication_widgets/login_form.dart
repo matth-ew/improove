@@ -7,7 +7,11 @@ import 'package:redux/redux.dart';
 import '../nav_screen.dart';
 
 class LoginForm extends StatefulWidget {
-  const LoginForm({Key? key}) : super(key: key);
+  final double? fontSize;
+  const LoginForm({
+    Key? key,
+    this.fontSize = 24,
+  }) : super(key: key);
 
   @override
   _LoginFormState createState() => _LoginFormState();
@@ -184,7 +188,8 @@ class _LoginFormState extends State<LoginForm> {
                         minimumSize: const Size(double.infinity, 50),
                         shape: const StadiumBorder(),
                       ),
-                      child: const Text('Sign In'),
+                      child: Text('Sign In',
+                          style: TextStyle(fontSize: widget.fontSize)),
                     ),
                   ),
                 ],

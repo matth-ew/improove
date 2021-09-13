@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -22,14 +23,28 @@ class AuthenticationScreen extends StatefulWidget {
 class _AuthenticationScreenState extends State<AuthenticationScreen> {
   bool signIn = true;
 
-  Future<void> _facebookLogin(Function thunkAction, [Function? cb]) async {
+  Future<void> _facebookLogin(Function thunkAction) async {
     try {
       final LoginResult result = await FacebookAuth.instance.login();
       if (result.status == LoginStatus.success) {
         // you are logged
         final AccessToken accessToken = result.accessToken!;
         debugPrint("LOGIN ${accessToken.token}");
-        thunkAction(accessToken.token, cb);
+        thunkAction(
+          accessToken.token,
+          (String? e) {
+            if (e == null) {
+              debugPrint("NOT ERROR");
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (_) => const NavScreen(),
+                ),
+              );
+            } else {
+              debugPrint("ERROR ${e.toString()}");
+            }
+          },
+        );
         // .then((val) {
         //   final String? token = val?.data['token'] as String?;
         //   final String? msg = val?.data['msg'] as String?;
@@ -45,7 +60,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
   }
 
-  Future<void> _googleLogin(Function thunkAction, [Function? cb]) async {
+  Future<void> _googleLogin(Function thunkAction) async {
     try {
       final GoogleSignIn _googleSignIn = GoogleSignIn(
         scopes: [
@@ -58,7 +73,21 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       await _googleSignIn.signIn().then((result) {
         result?.authentication.then((googleKey) {
           if (googleKey.accessToken != null) {
-            thunkAction(googleKey.accessToken!, cb);
+            thunkAction(
+              googleKey.accessToken!,
+              (String? e) {
+                if (e == null) {
+                  debugPrint("NOT ERROR");
+                  Navigator.of(context).pushReplacement(
+                    MaterialPageRoute(
+                      builder: (_) => const NavScreen(),
+                    ),
+                  );
+                } else {
+                  debugPrint("ERROR ${e.toString()}");
+                }
+              },
+            );
             // .then((val) {
             //   final String? token = val?.data['token'] as String?;
             //   final String? msg = val?.data['msg'] as String?;
@@ -76,7 +105,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     }
   }
 
-  Future<void> _appleLogin(Function thunkAction, [Function? cb]) async {
+  Future<void> _appleLogin(Function thunkAction) async {
     try {
       final credential = await SignInWithApple.getAppleIDCredential(
         scopes: [
@@ -92,7 +121,21 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       );
 
       debugPrint("APPLE CRED: ${credential.authorizationCode}");
-      thunkAction(credential.authorizationCode, cb);
+      thunkAction(
+        credential.authorizationCode,
+        (String? e) {
+          if (e == null) {
+            debugPrint("NOT ERROR");
+            Navigator.of(context).pushReplacement(
+              MaterialPageRoute(
+                builder: (_) => const NavScreen(),
+              ),
+            );
+          } else {
+            debugPrint("ERROR ${e.toString()}");
+          }
+        },
+      );
     } catch (error) {
       debugPrint(error.toString());
     }
@@ -106,6 +149,8 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
     final colorScheme = Theme.of(context).colorScheme;
     // final buttonTheme = Theme.of(context).buttonTheme;
     final textTheme = Theme.of(context).textTheme;
+    const height = 44.0;
+    const fontSize = height * 0.40;
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       builder: (BuildContext context, _ViewModel vm) {
@@ -128,7 +173,10 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                         ),
                       ),
                     ),
-                    if (signIn) const LoginForm() else const SignupForm(),
+                    if (signIn)
+                      const LoginForm(fontSize: fontSize)
+                    else
+                      const SignupForm(fontSize: fontSize),
                     Column(
                       children: [
                         Padding(
@@ -143,122 +191,108 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                           ),
                         ),
                         Padding(
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: SignInWithAppleButton(
-                            onPressed: () => _appleLogin(
-                              vm.appleLogin,
-                              (String? e) {
-                                if (e == null) {
-                                  debugPrint("NOT ERROR");
-                                  Navigator.of(context).pushReplacement(
-                                    MaterialPageRoute(
-                                      builder: (_) => const NavScreen(),
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: SizedBox(
+                            height: height,
+                            child: SizedBox.expand(
+                              child: OutlinedButton(
+                                onPressed: () =>
+                                    _facebookLogin(vm.facebookLogin),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    const Color.fromRGBO(25, 119, 243, 1),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/facebook.svg',
+                                      height: 24,
                                     ),
-                                  );
-                                } else {
-                                  debugPrint("ERROR ${e.toString()}");
-                                }
-                              },
+                                    const Text(
+                                      "  Login with Facebook",
+                                      style: TextStyle(
+                                        fontSize: fontSize,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            ElevatedButton(
-                              onPressed: () => _facebookLogin(
-                                vm.facebookLogin,
-                                (String? e) {
-                                  if (e == null) {
-                                    debugPrint("NOT ERROR");
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (_) => const NavScreen(),
-                                      ),
-                                    );
-                                  } else {
-                                    debugPrint("ERROR ${e.toString()}");
-                                  }
-                                },
-                              ),
-                              style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                    const EdgeInsets.fromLTRB(15, 10, 15, 10)),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        colorScheme.background),
-                              ),
-                              child: SvgPicture.asset(
-                                'assets/icons/facebook.svg',
-                                height: 24,
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: SizedBox(
+                            height: height,
+                            child: SizedBox.expand(
+                              child: OutlinedButton(
+                                onPressed: () => _googleLogin(vm.googleLogin),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          colorScheme.background),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/google.svg',
+                                      height: 24,
+                                    ),
+                                    Text(
+                                      "  Login with Google",
+                                      style: TextStyle(
+                                          fontSize: fontSize,
+                                          color: colorScheme.onSecondary),
+                                    ),
+                                  ],
+                                ),
                               ),
                             ),
-                            const SizedBox(
-                              width: 40,
-                            ),
-                            ElevatedButton(
-                              onPressed: () => _googleLogin(
-                                vm.googleLogin,
-                                (String? e) {
-                                  if (e == null) {
-                                    debugPrint("NOT ERROR");
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (_) => const NavScreen(),
-                                      ),
-                                    );
-                                  } else {
-                                    debugPrint("ERROR ${e.toString()}");
-                                  }
-                                },
-                              ),
-                              style: ButtonStyle(
-                                padding: MaterialStateProperty.all(
-                                    const EdgeInsets.fromLTRB(15, 10, 15, 10)),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                        colorScheme.background),
-                              ),
-                              child: SvgPicture.asset(
-                                'assets/icons/google.svg',
-                                height: 24,
-                              ),
-                            ),
-                            // ElevatedButton(
-                            //   onPressed: _appleLogin,
-                            //   child: SvgPicture.asset('assets/icons/apple.svg'),
-                            // ),
-                          ],
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15),
+                          child: SignInWithAppleButton(
+                            height: height,
+                            onPressed: () => _appleLogin(vm.appleLogin),
+                          ),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            signIn
-                                ? "Don't have an account? "
-                                : "Already have an account? ",
-                            style: textTheme.overline?.copyWith(
-                              color: colorScheme.onSurface,
-                            ),
-                          ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                signIn = !signIn;
-                              });
-                            },
-                            child: Text(
-                              signIn ? "Sign up" : "Sign in",
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          signIn = !signIn;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              signIn
+                                  ? "Don't have an account? "
+                                  : "Already have an account? ",
                               style: textTheme.overline?.copyWith(
-                                color: Colors.blueAccent,
+                                color: colorScheme.onSurface,
                               ),
                             ),
-                          ),
-                        ],
+                            InkWell(
+                              child: Text(
+                                signIn ? "Sign up" : "Sign in",
+                                style: textTheme.overline?.copyWith(
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ],

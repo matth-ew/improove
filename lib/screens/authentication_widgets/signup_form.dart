@@ -10,7 +10,12 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
 class SignupForm extends StatefulWidget {
-  const SignupForm({Key? key}) : super(key: key);
+  final double? fontSize;
+
+  const SignupForm({
+    Key? key,
+    this.fontSize = 24,
+  }) : super(key: key);
 
   @override
   _SignupFormState createState() => _SignupFormState();
@@ -296,7 +301,10 @@ class _SignupFormState extends State<SignupForm> {
                       minimumSize: const Size(double.infinity, 50),
                       shape: const StadiumBorder(),
                     ),
-                    child: const Text('Sign Up'),
+                    child: Text(
+                      'Sign Up',
+                      style: TextStyle(fontSize: widget.fontSize),
+                    ),
                   ),
                 ],
               ),
