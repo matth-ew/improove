@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
@@ -255,13 +257,14 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                             ),
                           ),
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 15),
-                          child: SignInWithAppleButton(
-                            height: height,
-                            onPressed: () => _appleLogin(vm.appleLogin),
+                        if (Platform.isIOS || Platform.isMacOS)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: SignInWithAppleButton(
+                              height: height,
+                              onPressed: () => _appleLogin(vm.appleLogin),
+                            ),
                           ),
-                        ),
                       ],
                     ),
                     GestureDetector(
