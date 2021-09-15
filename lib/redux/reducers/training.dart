@@ -4,6 +4,7 @@ import 'package:improove/redux/models/models.dart';
 
 final trainingReducer = combineReducers<Map<int, Training>>([
   TypedReducer<Map<int, Training>, SetTrainings>(_setAllTrainings),
+  TypedReducer<Map<int, Training>, SetNewTrainings>(_setNewTrainings),
   TypedReducer<Map<int, Training>, SetTraining>(_setTrainingById),
   TypedReducer<Map<int, Training>, SetExercise>(_setExerciseByTitle)
 ]);
@@ -11,6 +12,11 @@ final trainingReducer = combineReducers<Map<int, Training>>([
 Map<int, Training> _setAllTrainings(
     Map<int, Training> trainings, SetTrainings action) {
   return Map.from(trainings)..addAll(action.trainings);
+}
+
+Map<int, Training> _setNewTrainings(
+    Map<int, Training> newTrainings, SetNewTrainings action) {
+  return Map.from(newTrainings)..addAll(action.trainings);
 }
 
 Map<int, Training> _setTrainingById(

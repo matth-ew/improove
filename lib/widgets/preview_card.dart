@@ -4,15 +4,15 @@ import 'package:improove/screens/trainer_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class PreviewCard extends StatelessWidget {
-  final String name;
-  final String duration;
+  final String? name;
+  final String? duration;
   final String? category;
   final String? avatar;
   final String? preview;
   final Function? onTapCard;
   final Function? onTapAvatar;
   final int? id;
-  final int trainerId;
+  final int? trainerId;
   final double? widthRatio;
   final double? heightRatio;
 
@@ -128,11 +128,11 @@ class PreviewCard extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
                     Text(
-                      name,
+                      name ?? "",
                       style: textTheme.subtitle2
                           ?.copyWith(color: colorScheme.primary),
                     ),
-                    Text(duration,
+                    Text(duration ?? "",
                         style: textTheme.bodyText2
                             ?.copyWith(fontSize: 10, color: Colors.grey)),
                   ],
@@ -147,7 +147,7 @@ class PreviewCard extends StatelessWidget {
                   onTap: () {
                     pushNewScreen(
                       context,
-                      screen: TrainerScreen(id: trainerId),
+                      screen: TrainerScreen(id: trainerId ?? -1),
                       withNavBar: true,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino,

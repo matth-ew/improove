@@ -129,7 +129,7 @@ class _ViewModel {
     return _ViewModel(
       trainings: store.state.trainings,
       loadTrainings: ([cb]) => store.dispatch(
-        getTrainings([], cb),
+        getTrainings([], 0, cb),
       ),
     );
   }

@@ -13,6 +13,12 @@ class SetTrainings {
   SetTrainings(this.trainings);
 }
 
+class SetNewTrainings {
+  final Map<int, Training> trainings;
+
+  SetNewTrainings(this.trainings);
+}
+
 class SetTraining {
   final Training training;
   final int id;
@@ -55,11 +61,12 @@ ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
   };
 }
 
-ThunkAction<AppState> getTrainings([List<int>? ids, Completer? completer]) {
+ThunkAction<AppState> getTrainings(
+    [List<int>? ids, int? newest, Completer? completer]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final Response? r = await TrainingService().getTrainings(ids);
+      final Response? r = await TrainingService().getTrainings(ids, newest);
       if (r?.data['success'] as bool) {
         // debugPrint("UE GET TRAININGS IN");
         final Map<int, Training> trainings = {};
@@ -68,11 +75,14 @@ ThunkAction<AppState> getTrainings([List<int>? ids, Completer? completer]) {
         for (var i = 0; i < results.length; i++) {
           final Training t =
               Training.fromJson(results[i] as Map<String, dynamic>);
-          // debugPrint("INDEX $i ${t.toString()}");
           trainings.addAll({t.id: t});
         }
-        store.dispatch(SetTrainings(trainings));
-        debugPrint("GET TRAININGS ${store.state.trainings}");
+        debugPrint("action" + trainings.toString());
+        if (newest! > 0) {
+          store.dispatch(SetNewTrainings(trainings));
+        } else {
+          store.dispatch(SetTrainings(trainings));
+        }
         completer?.complete();
         // if (t != null) {
         //   store.dispatch(SetTrainings(t));

@@ -65,13 +65,41 @@ class CtaCard extends StatelessWidget {
                 //   ),
                 // ],
               )),
-          Positioned(
-            bottom: paddingBottomCategory,
-            right: paddingRightCategory,
-            child: Chip(
-              backgroundColor: colorScheme.primary,
-              label: Text(tag,
-                  style: textTheme.bodyText2?.copyWith(color: Colors.white)),
+          Padding(
+            padding: const EdgeInsets.all(11.0),
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Positioned(
+                bottom: paddingBottomCategory,
+                right: paddingRightCategory,
+                child: OutlinedButton(
+                  onPressed: () {},
+                  style: ButtonStyle(
+                    minimumSize:
+                        MaterialStateProperty.all<Size>(Size(widthCard, 45)),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        const StadiumBorder()),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(colorScheme.primary),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        tag,
+                        style:
+                            textTheme.headline6?.copyWith(color: Colors.white),
+                      ),
+                      const Icon(Icons.arrow_right_alt, color: Colors.white),
+                    ],
+                  ),
+                  // padding: const EdgeInsets.only(
+                  //     top: 10, bottom: 10, left: 20, right: 20),
+                  // backgroundColor: colorScheme.primary,
+                  // label: Text(tag,
+                  //     style: textTheme.headline6?.copyWith(color: Colors.white)),
+                ),
+              ),
             ),
           )
         ]));

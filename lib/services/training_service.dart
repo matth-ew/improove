@@ -2,27 +2,22 @@ import 'dart:async';
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-
-const backendUrl = 'https://improove.fit';
+import 'package:improove/const/text.dart';
 
 class TrainingService {
   Dio dio = Dio();
 
-  Future<Response?> getTrainings([List<int>? ids]) async {
+  Future<Response?> getTrainings([List<int>? ids, int? newest]) async {
     try {
-      debugPrint("service getTrainings");
+      debugPrint(
+          "service getTrainings " + ids.toString() + " " + newest.toString());
       return await dio.post(
         '$backendUrl/api/getTrainings',
-        data: {'ids': ids},
+        data: {'ids': ids, 'newest': newest},
         options: Options(
           headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         ),
       );
-
-      // return Training.fromJson(
-      //     res.data["result.title"].toString(),
-      //     res.data["result.duration"].toString(),
-      //     res.data["result.preview"].toString());
     } on DioError catch (e) {
       debugPrint(e.response?.data['msg'].toString());
       return null;

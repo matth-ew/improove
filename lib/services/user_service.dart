@@ -1,8 +1,7 @@
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
-
-const backendUrl = 'https://improove.fit';
+import 'package:improove/const/text.dart';
 
 class UserService {
   Dio dio = Dio();
