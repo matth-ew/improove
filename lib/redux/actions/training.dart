@@ -14,9 +14,9 @@ class SetTrainings {
 }
 
 class SetNewTrainings {
-  final Map<int, Training> trainings;
+  final Map<int, Training> newTrainings;
 
-  SetNewTrainings(this.trainings);
+  SetNewTrainings(this.newTrainings);
 }
 
 class SetTraining {
@@ -46,7 +46,7 @@ ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
             id,
           ),
         );
-        debugPrint("GET TRAININGS BY ID ${store.state.trainings}");
+        debugPrint("GET TRAININGS BY ID");
       }
       // final Training training = Training.fromJson(res.data!);
       // if (t != null) {
@@ -71,18 +71,19 @@ ThunkAction<AppState> getTrainings(
         // debugPrint("UE GET TRAININGS IN");
         final Map<int, Training> trainings = {};
         final results = [...r!.data!["result"]];
-        debugPrint(results.toString());
         for (var i = 0; i < results.length; i++) {
           final Training t =
               Training.fromJson(results[i] as Map<String, dynamic>);
           trainings.addAll({t.id: t});
         }
-        debugPrint("action" + trainings.toString());
-        if (newest! > 0) {
+        if (newest != null && newest > 0) {
           store.dispatch(SetNewTrainings(trainings));
         } else {
           store.dispatch(SetTrainings(trainings));
+          debugPrint("!all!");
         }
+        debugPrint("action pre-New -> " + store.state.newTrainings.toString());
+        debugPrint("action pre-All -> " + store.state.trainings.toString());
         completer?.complete();
         // if (t != null) {
         //   store.dispatch(SetTrainings(t));

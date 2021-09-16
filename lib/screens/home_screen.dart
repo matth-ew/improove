@@ -25,7 +25,8 @@ class HomeScreen extends StatelessWidget {
 
     // var size = MediaQuery.of(context).size;
     return StoreConnector(
-        converter: (Store<AppState> store) => _ViewModel.fromStore(store),
+        converter: (Store<AppState> store) =>
+            _ViewModel.fromStore(store, trainingOfTheDay),
         onInit: (store) {
           store.dispatch(getTrainings(null, numNewTrainings));
           store.dispatch(getTrainingById(trainingOfTheDay));
@@ -51,18 +52,18 @@ class HomeScreen extends StatelessWidget {
                     child: Padding(
                   padding: const EdgeInsets.all(8),
                   child: PreviewCard(
-                    name: vm.trainings[trainingOfTheDay]?.title,
-                    preview: vm.trainings[trainingOfTheDay]?.preview,
-                    category: vm.trainings[trainingOfTheDay]?.category,
-                    avatar: vm.trainings[trainingOfTheDay]?.trainerImage,
+                    name: vm.dailyTraining?.title,
+                    preview: vm.dailyTraining?.preview,
+                    category: vm.dailyTraining?.category,
+                    avatar: vm.dailyTraining?.trainerImage,
                     widthRatio: 0.96,
                     heightRatio: 0.70,
                     id: trainingOfTheDay,
-                    trainerId: vm.trainings[trainingOfTheDay]?.trainerId,
+                    trainerId: vm.dailyTraining?.trainerId,
                     onTapCard: (int index) {
                       pushNewScreen(
                         context,
-                        screen: TrainingScreen(id: vm.trainings[index]!.id),
+                        screen: TrainingScreen(id: vm.dailyTraining!.id),
                         withNavBar: true,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,
@@ -143,10 +144,13 @@ class HomeScreen extends StatelessWidget {
 
 class _ViewModel {
   final Map<int, Training> trainings;
+  final Training? dailyTraining;
 
-  _ViewModel({required this.trainings});
+  _ViewModel({required this.trainings, required this.dailyTraining});
 
-  static _ViewModel fromStore(Store<AppState> store) {
-    return _ViewModel(trainings: store.state.newTrainings);
+  static _ViewModel fromStore(Store<AppState> store, int id) {
+    return _ViewModel(
+        trainings: store.state.newTrainings,
+        dailyTraining: store.state.trainings[id]);
   }
 }
