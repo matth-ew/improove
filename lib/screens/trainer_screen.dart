@@ -123,7 +123,7 @@ class TrainerScreen extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(left: 25.0, right: 25.0),
                         child: Text(
-                          '${vm.trainer?.name} ${vm.trainer?.surname}',
+                          '${vm.trainer?.name ?? ""} ${vm.trainer?.surname ?? ""}',
                           style: textTheme.headline4
                               ?.copyWith(fontWeight: FontWeight.w600),
                         ),

@@ -16,14 +16,14 @@ Future<File?> showImagePickerCropper(
   final FilePickerResult? result =
       await FilePicker.platform.pickFiles(type: FileType.image);
 
-  if (result != null) {
+  if (result != null && result.files.single.path != null) {
     CropStyle myCrop;
     (cropper == "circle")
         ? myCrop = CropStyle.circle
         : myCrop = CropStyle.rectangle;
     //final File file = File(result.files.single.path!);
     return ImageCropper.cropImage(
-      sourcePath: result.files.single.path,
+      sourcePath: result.files.single.path!,
       cropStyle: myCrop,
       maxHeight: maxHeight,
       maxWidth: maxWidth,

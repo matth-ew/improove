@@ -9,6 +9,7 @@ import 'package:improove/screens/terms_screen.dart';
 import 'package:improove/widgets/image_picker_cropper.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import 'settings_widgets/change_personal_info.dart';
 
@@ -47,17 +48,6 @@ class SettingsScreen extends StatelessWidget {
               leading: const Icon(Icons.person),
               title: const Text('Change Personal Info'),
               onTap: () {
-                // showDialog(
-                //   context: context,
-                //   builder: (BuildContext context) {
-                //     return SimpleDialog(
-                //       title: Text("Change personal info"),
-                //       children: [
-                //         ChangePersonalInfo(),
-                //       ],
-                //     );
-                //   },
-                // );
                 pushNewScreen(
                   context,
                   screen: ChangePersonalInfo(
@@ -92,6 +82,28 @@ class SettingsScreen extends StatelessWidget {
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.email),
+              title: const Text('Contact Us'),
+              onTap: () {
+                String? encodeQueryParameters(Map<String, String> params) {
+                  return params.entries
+                      .map((e) =>
+                          '${Uri.encodeComponent(e.key)}=${Uri.encodeComponent(e.value)}')
+                      .join('&');
+                }
+
+                final Uri emailLaunchUri = Uri(
+                  scheme: 'mailto',
+                  path: 'info@improove.fit',
+                  query: encodeQueryParameters(<String, String>{
+                    'subject': 'Example Subject & Symbols are allowed!'
+                  }),
+                );
+
+                launch(emailLaunchUri.toString());
               },
             ),
             ListTile(
