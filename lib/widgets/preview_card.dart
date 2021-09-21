@@ -62,8 +62,8 @@ class PreviewCard extends StatelessWidget {
         widthCard * paddingLeftAvatarRatio - borderSize;
     final double paddingTopText = heightCard * paddingTopTextRatio;
     final double paddingLeftText = widthCard * paddingLeftTextRatio;
-    const double paddingTopCategory = 2;
-    const double paddingLeftCategory = 6;
+    const double paddingTopCategory = 10;
+    const double paddingLeftCategory = 10;
 
     // 254 620
     // 92 119
@@ -111,11 +111,20 @@ class PreviewCard extends StatelessWidget {
               Positioned(
                 top: paddingTopCategory,
                 left: paddingLeftCategory,
-                child: Chip(
-                  backgroundColor: colorScheme.primary,
-                  label: Text(category!,
-                      style:
-                          textTheme.bodyText2?.copyWith(color: Colors.white)),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: colorScheme.primary,
+                    borderRadius: BorderRadius.circular(13),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                    child: Text(
+                      category!,
+                      style: textTheme.caption?.copyWith(
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ),
             Positioned(
