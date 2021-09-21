@@ -66,6 +66,7 @@ class Training {
   final int trainerId;
   final String trainerImage;
   final String description;
+  final int exercisesLength;
   final List<Exercise> exercises;
 
   const Training(
@@ -77,6 +78,7 @@ class Training {
       required this.trainerId,
       required this.trainerImage,
       required this.description,
+      required this.exercisesLength,
       required this.exercises});
 
   const Training.initial()
@@ -89,6 +91,7 @@ class Training {
         trainerId = -1,
         trainerImage = "",
         description = "no description",
+        exercisesLength = 0,
         exercises = const [];
 
   Training copyWith(
@@ -100,6 +103,7 @@ class Training {
       int? trainerId,
       String? trainerImage,
       String? description,
+      int? exercisesLength,
       List<Exercise>? exercises}) {
     return Training(
         id: id ?? this.id,
@@ -110,6 +114,7 @@ class Training {
         trainerId: trainerId ?? this.trainerId,
         trainerImage: trainerImage ?? this.trainerImage,
         description: description ?? this.description,
+        exercisesLength: exercisesLength ?? this.exercisesLength,
         exercises: exercises ?? this.exercises);
   }
 
@@ -120,14 +125,10 @@ class Training {
         'preview': preview,
         'category': category,
         'trainer': trainerId,
+        'exercisesLength': exercisesLength,
         'exercises': exercises,
         'description': description
       };
-
-  // Training.fromJson(String title, String duration, String preview)
-  //   : title = title,
-  //     duration = duration,
-  //     preview = preview;
 
   Training.fromJsonUnpopulated(Map<String, dynamic> json)
       : id = (json['_id'] ?? -1) as int,
@@ -136,6 +137,7 @@ class Training {
         preview = (json['preview'] ?? "") as String,
         category = (json['category'] ?? "") as String,
         description = (json['description'] ?? "") as String,
+        exercisesLength = (json['exercises_length'] ?? 0) as int,
         exercises = List<Exercise>.from(
             ((json['exercises'] ?? const []) as List)
                 .map((t) => Exercise.fromJson(t as Map<String, dynamic>))),
@@ -149,6 +151,7 @@ class Training {
         preview = (json['preview'] ?? "") as String,
         category = (json['category'] ?? "") as String,
         description = (json['description'] ?? "") as String,
+        exercisesLength = (json['exercises_length'] ?? 0) as int,
         exercises = List<Exercise>.from(
             ((json['exercises'] ?? const []) as List)
                 .map((t) => Exercise.fromJson(t as Map<String, dynamic>))),

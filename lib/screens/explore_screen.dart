@@ -76,9 +76,12 @@ class ExploreScreen extends StatelessWidget {
                     ),
                     delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
+                      final durationString =
+                          '${trainingList[index].exercisesLength} ${trainingList[index].exercisesLength == 1 ? 'exercise' : 'exercises'}';
                       return Center(
                         child: PreviewCard(
                           name: trainingList[index].title,
+                          duration: durationString,
                           preview: trainingList[index].preview,
                           category: trainingList[index].category,
                           avatar: trainingList[index].trainerImage,

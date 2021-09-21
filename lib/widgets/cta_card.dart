@@ -67,13 +67,13 @@ class CtaCard extends StatelessWidget {
                 // ],
               )),
           Container(
-              padding: const EdgeInsets.all(11.0),
+              padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
               alignment: Alignment.bottomCenter,
               child: OutlinedButton(
                 onPressed: () {},
                 style: ButtonStyle(
                   minimumSize:
-                      MaterialStateProperty.all<Size>(Size(widthCard, 45)),
+                      MaterialStateProperty.all<Size>(Size(widthCard, 40)),
                   shape: MaterialStateProperty.all<OutlinedBorder>(
                       const StadiumBorder()),
                   backgroundColor:
@@ -84,7 +84,7 @@ class CtaCard extends StatelessWidget {
                   children: [
                     Text(
                       tag,
-                      style: textTheme.headline6?.copyWith(color: Colors.white),
+                      style: textTheme.button?.copyWith(color: Colors.white),
                     ),
                     const Icon(Icons.arrow_right_alt, color: Colors.white),
                   ],

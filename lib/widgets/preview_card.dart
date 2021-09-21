@@ -18,8 +18,8 @@ class PreviewCard extends StatelessWidget {
 
   const PreviewCard({
     Key? key,
-    this.name = 'Nome video',
-    this.duration = 'durata video',
+    this.name = '',
+    this.duration = '',
     this.category,
     this.preview,
     this.avatar,

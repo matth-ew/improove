@@ -50,9 +50,11 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SliverToBoxAdapter(
                     child: Padding(
-                  padding: const EdgeInsets.all(8),
+                  padding: const EdgeInsets.only(left: 8, right: 8),
                   child: PreviewCard(
                     name: vm.dailyTraining?.title,
+                    duration:
+                        '${vm.dailyTraining?.exercisesLength ?? 0} ${vm.dailyTraining?.exercisesLength == 1 ? 'exercise' : 'exercises'}',
                     preview: vm.dailyTraining?.preview,
                     category: vm.dailyTraining?.category,
                     avatar: vm.dailyTraining?.trainerImage,
@@ -71,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
                 )),
-                const SliverPadding(padding: EdgeInsets.all(15)),
+                const SliverPadding(padding: EdgeInsets.only(bottom: 15)),
                 SliverToBoxAdapter(
                   child: Container(
                     padding: const EdgeInsets.only(left: 8, right: 8),
@@ -102,9 +104,12 @@ class HomeScreen extends StatelessWidget {
                   ),
                   delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
+                    final durationString =
+                        '${trainingList[index].exercisesLength} ${trainingList[index].exercisesLength == 1 ? 'exercise' : 'exercises'}';
                     return Center(
                       child: PreviewCard(
                         name: trainingList[index].title,
+                        duration: durationString,
                         preview: trainingList[index].preview,
                         category: trainingList[index].category,
                         avatar: trainingList[index].trainerImage,
