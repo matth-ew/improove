@@ -41,7 +41,7 @@ class HomeScreen extends StatelessWidget {
                   child: Container(
                     padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
                     child: Text(
-                      "Training of the day 🔥",
+                      "Training of the week 🔥",
                       style: textTheme.headline5?.copyWith(
                           color: colorScheme.primary,
                           fontWeight: FontWeight.w600),

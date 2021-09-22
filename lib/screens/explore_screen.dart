@@ -50,7 +50,7 @@ class ExploreScreen extends StatelessWidget {
                   ///Properties of the App Bar when it is expanded
                   flexibleSpace: const FlexibleSpaceBar(
                     title: Text(
-                      "Improove",
+                      "Explore",
                       style: TextStyle(
                           color: Colors.black87,
                           fontSize: 20.0,

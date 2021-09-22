@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:improove/screens/authentication_screen.dart';
+import 'package:improove/const/text.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -96,24 +97,21 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       // ),
       pages: [
         PageViewModel(
-          title: "Fractional shares",
-          body:
-              "Instead of having to buy an entire share, invest any amount you want.",
-          image: _buildImage('story_step1.svg'),
+          title: onboardingTitle1,
+          body: onboardingDescription1,
+          image: _buildImage('onboarding1.svg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Learn as you go",
-          body:
-              "Download the Stockpile app and master the market with our mini-lesson.",
-          image: _buildImage('story_step2.svg'),
+          title: onboardingTitle2,
+          body: onboardingDescription2,
+          image: _buildImage('onboarding2.svg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: "Kids and teens",
-          body:
-              "Kids and teens can track their stocks 24/7 and place trades that you approve.",
-          image: _buildImage('story_step3.svg'),
+          title: onboardingTitle3,
+          body: onboardingDescription3,
+          image: _buildImage('onboarding3.svg'),
           decoration: pageDecoration,
         ),
         // PageViewModel(
