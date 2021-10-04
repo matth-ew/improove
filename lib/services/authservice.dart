@@ -79,6 +79,33 @@ class AuthService {
     }
   }
 
+  Future<Response?> verify(int verifyToken, String token) async {
+    try {
+      dio.options.headers['Authorization'] = token;
+      return await dio.post(
+        '$backendUrl/api/verifyuser',
+        data: {'verifyToken': verifyToken},
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint(e.response?.data['msg'] as String);
+      return e.response;
+    }
+  }
+
+  Future<Response?> resendVerification(String token) async {
+    try {
+      dio.options.headers['Authorization'] = token;
+      return await dio.get('$backendUrl/api/resendverification',
+          options: Options(contentType: Headers.formUrlEncodedContentType));
+    } on DioError catch (e) {
+      debugPrint(e.response?.data['msg'].toString());
+      return e.response;
+    }
+  }
+
   Future<Response?> token(String refreshToken) async {
     try {
       dio.options.headers['Authorization'] = refreshToken;

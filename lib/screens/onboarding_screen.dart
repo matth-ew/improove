@@ -76,9 +76,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       titleTextStyle:
           textTheme.headline4?.copyWith(fontWeight: FontWeight.w700) ??
               const TextStyle(),
-      bodyTextStyle:
-          textTheme.bodyText2?.copyWith(fontSize: 16) ?? const TextStyle(),
-      descriptionPadding: const EdgeInsets.fromLTRB(16.0, 0.0, 16.0, 16.0),
+      bodyTextStyle: textTheme.bodyText2?.copyWith(
+              fontSize: 24, color: colorScheme.onBackground.withOpacity(0.7)) ??
+          const TextStyle(),
+      descriptionPadding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 16.0),
       pageColor: colorScheme.background,
       imagePadding: EdgeInsets.zero,
     );

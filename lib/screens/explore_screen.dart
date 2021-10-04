@@ -2,9 +2,11 @@ import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:improove/const/images.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/screens/training_screen.dart';
 import 'package:improove/const/text.dart';
+import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/widgets/cta_card.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -108,7 +110,20 @@ class ExploreScreen extends StatelessWidget {
                       padding: const EdgeInsets.only(left: 8, right: 8),
                       height: size.width * (198 / 254) * (135 / 198),
                       width: size.width * (198 / 254),
-                      child: const CtaCard(tag: ctaBecameTrainer),
+                      child: CtaCard(
+                        preview: imgCtaTraining,
+                        tag: ctaBecameTrainer,
+                        onPress: () {
+                          pushNewScreen(
+                            context,
+                            screen: const WebViewScreen(
+                                url: "https://improove.fit"),
+                            withNavBar: false,
+                            pageTransitionAnimation:
+                                PageTransitionAnimation.cupertino,
+                          );
+                        },
+                      ),
                     ),
                   ),
                   const SliverPadding(padding: EdgeInsets.all(15)),

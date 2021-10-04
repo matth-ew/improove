@@ -7,6 +7,8 @@ const kTextColor = Color(0xFF373856);
 const kGrayColor = Color(0xFF5c5c5c);
 const kBlueLightColor = Color(0xFFC7B8F5);
 const kBlueColor = Color(0xFF373856);
+// const kBlueColor = Color(0xFF35387D);
+const kSecondary = Color(0xFF00C6C3);
 const kShadowColor = Color(0xFFE6E6E6);
 
 class CustomTheme {
@@ -19,6 +21,7 @@ class CustomTheme {
         textTheme: ThemeData.light().textTheme.apply(displayColor: kTextColor),
         colorScheme: const ColorScheme.light().copyWith(
           primary: kBlueColor,
+          secondary: kSecondary,
           // primaryVariant: primaryVariant,
           // secondary: secondary,
           // secondaryVariant: secondaryVariant,

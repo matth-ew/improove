@@ -4,8 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
-import 'package:improove/screens/privacy_screen.dart';
-import 'package:improove/screens/terms_screen.dart';
+import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/widgets/image_picker_cropper.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
@@ -66,7 +65,8 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {
                 pushNewScreen(
                   context,
-                  screen: const TermsScreen(),
+                  screen:
+                      const WebViewScreen(url: "https://improove.fit/terms"),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );
@@ -78,7 +78,8 @@ class SettingsScreen extends StatelessWidget {
               onTap: () {
                 pushNewScreen(
                   context,
-                  screen: const PrivacyScreen(),
+                  screen:
+                      const WebViewScreen(url: "https://improove.fit/privacy"),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );

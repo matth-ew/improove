@@ -3,9 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/redux/models/models.dart';
-import 'package:improove/screens/nav_screen.dart';
-import 'package:improove/screens/terms_screen.dart';
-import 'package:improove/screens/privacy_screen.dart';
+import 'package:improove/screens/webview_screen.dart';
+import 'package:improove/screens/verification_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
@@ -217,7 +216,8 @@ class _SignupFormState extends State<SignupForm> {
                               ..onTap = () {
                                 pushNewScreen(
                                   context,
-                                  screen: const TermsScreen(),
+                                  screen: const WebViewScreen(
+                                      url: "https://improove.fit/terms"),
                                   withNavBar: false,
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino,
@@ -234,7 +234,8 @@ class _SignupFormState extends State<SignupForm> {
                               ..onTap = () {
                                 pushNewScreen(
                                   context,
-                                  screen: const PrivacyScreen(),
+                                  screen: const WebViewScreen(
+                                      url: "https://improove.fit/privacy"),
                                   withNavBar: false,
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino,
@@ -258,7 +259,7 @@ class _SignupFormState extends State<SignupForm> {
                             if (e == null) {
                               Navigator.of(context).pushReplacement(
                                 MaterialPageRoute(
-                                  builder: (_) => const NavScreen(),
+                                  builder: (_) => const VerificationScreen(),
                                 ),
                               );
                             } else {

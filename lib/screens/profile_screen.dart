@@ -54,7 +54,9 @@ class ProfileScreen extends StatelessWidget {
           appBar: AppBar(
             elevation: 0,
             title: Text(
-              "${vm.user.name} ${vm.user.surname}",
+              vm.user.name.isNotEmpty
+                  ? "${vm.user.name} ${vm.user.surname}"
+                  : "Improover",
               style: textTheme.headline5?.copyWith(
                   color: colorScheme.primary, fontWeight: FontWeight.w600),
             ),
@@ -91,7 +93,8 @@ class ProfileScreen extends StatelessWidget {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                if (vm.user.profileImage != null)
+                                if (vm.user.profileImage != null &&
+                                    vm.user.profileImage!.isNotEmpty)
                                   CircleAvatar(
                                     backgroundColor: Colors.grey,
                                     backgroundImage: CachedNetworkImageProvider(
@@ -179,7 +182,7 @@ class ProfileScreen extends StatelessWidget {
               itemBuilder: (BuildContext context) {
                 return [
                   PopupMenuItem(
-                    child: Text("Remove"),
+                    child: const Text("Remove"),
                     onTap: () {
                       removeTraining(t!.id);
                     },

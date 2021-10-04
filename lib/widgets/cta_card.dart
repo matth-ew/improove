@@ -9,8 +9,10 @@ import 'package:flutter/material.dart';
 class CtaCard extends StatelessWidget {
   final String tag;
   final String preview;
+  final Function? onPress;
   const CtaCard(
       {Key? key,
+      this.onPress,
       this.tag = "",
       this.preview =
           'https://www.ispo.com/sites/default/files/styles/facebook/public/2020-04/Fitness%20App%20Training.jpg?h=1c9b88c9&itok=LpbSkBks'})
@@ -24,8 +26,8 @@ class CtaCard extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    const double paddingBottomCategory = 2;
-    const double paddingRightCategory = 6;
+    // const double paddingBottomCategory = 2;
+    // const double paddingRightCategory = 6;
 
     const widthScreenRatio = 198 / 254;
     const heightScreenRatio = 135 / 198;
@@ -70,7 +72,9 @@ class CtaCard extends StatelessWidget {
               padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
               alignment: Alignment.bottomCenter,
               child: OutlinedButton(
-                onPressed: () {},
+                onPressed: () {
+                  onPress?.call();
+                },
                 style: ButtonStyle(
                   minimumSize:
                       MaterialStateProperty.all<Size>(Size(widthCard, 40)),

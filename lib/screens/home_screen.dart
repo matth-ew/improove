@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:improove/screens/feedback_screen.dart';
 import 'package:improove/screens/training_screen.dart';
+import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/widgets/cta_card.dart';
 import 'package:improove/const/text.dart';
 import 'package:improove/const/images.dart';
@@ -8,6 +10,7 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:improove/widgets/custom_bottom_sheet.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
@@ -19,7 +22,7 @@ class HomeScreen extends StatelessWidget {
   const HomeScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    final Size size = MediaQuery.of(context).size;
+    // final Size size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
@@ -39,7 +42,7 @@ class HomeScreen extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                     child: Text(
                       "Training of the week 🔥",
                       style: textTheme.headline5?.copyWith(
@@ -79,14 +82,26 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     // height: size.width * (198 / 254) * (135 / 198),
                     // width: size.width * (198 / 254),
-                    child: const CtaCard(
-                        preview: imgCtaTraining, tag: ctaBecameTrainer),
+                    child: CtaCard(
+                      preview: imgCtaTraining,
+                      tag: ctaBecameTrainer,
+                      onPress: () {
+                        pushNewScreen(
+                          context,
+                          screen:
+                              const WebViewScreen(url: "https://improove.fit"),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
+                        );
+                      },
+                    ),
                   ),
                 ),
                 const SliverPadding(padding: EdgeInsets.all(15)),
                 SliverToBoxAdapter(
                   child: Container(
-                    padding: EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                     child: Text(
                       "Newest trainings 🚀",
                       style: textTheme.headline5?.copyWith(
@@ -135,8 +150,21 @@ class HomeScreen extends StatelessWidget {
                     padding: const EdgeInsets.only(left: 8, right: 8),
                     // height: size.width * (198 / 254) * (135 / 198),
                     // width: size.width * (198 / 254),
-                    child: const CtaCard(
-                        preview: imgCtaFeedback, tag: ctaFeedback),
+                    child: CtaCard(
+                      preview: imgCtaFeedback,
+                      tag: ctaFeedback,
+                      onPress: () {
+                        showCustomBottomSheet(context, const FeedbackScreen());
+                        // pushNewScreen(
+                        //   context,
+                        //   screen:
+                        //       const WebViewScreen(url: "https://improove.fit"),
+                        //   withNavBar: false,
+                        //   pageTransitionAnimation:
+                        //       PageTransitionAnimation.cupertino,
+                        // );
+                      },
+                    ),
                   ),
                 ),
                 const SliverPadding(padding: EdgeInsets.all(35)),

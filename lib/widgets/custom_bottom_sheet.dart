@@ -9,6 +9,7 @@ Future<dynamic> showCustomBottomSheet(BuildContext context, Widget widget) {
     )),
     context: context,
     useRootNavigator: true,
+    isScrollControlled: true,
     builder: (context) {
       return Column(
         mainAxisSize: MainAxisSize.min,
@@ -21,6 +22,7 @@ Future<dynamic> showCustomBottomSheet(BuildContext context, Widget widget) {
             ),
           ),
           SafeArea(child: widget),
+          Padding(padding: MediaQuery.of(context).viewInsets)
         ],
       );
     },

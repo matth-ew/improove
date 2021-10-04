@@ -141,7 +141,7 @@ class _LoginFormState extends State<LoginForm> {
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                      content: Text('Processing Data: $e'),
+                                      content: Text('$e'),
                                       behavior: SnackBarBehavior.floating),
                                 );
                               }

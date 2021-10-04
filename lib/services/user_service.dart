@@ -48,6 +48,22 @@ class UserService {
     }
   }
 
+  Future<Response?> sendFeedback(String text, String token) async {
+    try {
+      dio.options.headers['Authorization'] = token;
+      return await dio.post(
+        '$backendUrl/api/userSendFeedback',
+        data: {'text': text},
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint("GETINFO ERROR ${e.response?.data?['msg']}");
+      return e.response;
+    }
+  }
+
   Future<Response?> changeProfileImage(File image, String token) async {
     try {
       final String fileName = image.path.split('/').last;

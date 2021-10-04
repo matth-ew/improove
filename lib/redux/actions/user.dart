@@ -161,6 +161,44 @@ ThunkAction<AppState> signupThunk(String email, String password,
     }
   };
 }
+
+ThunkAction<AppState> verifyThunk(int? verifyToken, [Function? cb]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null && verifyToken != null) {
+        final Response? r = await AuthService().verify(verifyToken, token);
+        if (r?.data['success'] as bool) {
+          cb?.call(null);
+        } else {
+          cb?.call(r?.data['msg']);
+        }
+      }
+    } catch (e) {
+      cb?.call(e.toString());
+    }
+  };
+}
+
+ThunkAction<AppState> resendVerificationThunk([Function? cb]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        final Response? r = await AuthService().resendVerification(token);
+        if (r?.data['success'] as bool) {
+          cb?.call(null);
+        } else {
+          cb?.call(r?.data['msg']);
+        }
+      }
+    } catch (e) {
+      cb?.call(e.toString());
+    }
+  };
+}
 //String accessToken = await storage.read(key: "accessToken");
 
 ThunkAction<AppState> logoutThunk([Function? cb]) {
@@ -313,6 +351,29 @@ ThunkAction<AppState> removeTrainingThunk(int trainingId, [Function? cb]) {
       }
     } catch (e) {
       cb?.call(e);
+    }
+  };
+}
+
+ThunkAction<AppState> sendFeedbackThunk(String text, [Function? cb]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await storage.read(key: "accessToken");
+      if (token != null) {
+        debugPrint("UE SEND FEEDBACK $text");
+        final Response? r = await UserService().sendFeedback(text, token);
+        if (r?.data['success'] as bool) {
+          // final Exercise e = store.state.trainings[id]!.exercises
+          //     .firstWhere((element) => element.title == title)
+          //     .copyWith(mistakes: text);
+          // store.dispatch(SetExercise(e, id));
+        }
+        cb?.call(null);
+      }
+    } catch (e) {
+      debugPrint("Errore in setExercise ${e.toString()}");
+      cb?.call(e.toString());
     }
   };
 }
