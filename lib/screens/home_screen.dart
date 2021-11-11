@@ -35,7 +35,6 @@ class HomeScreen extends StatelessWidget {
           store.dispatch(getTrainingById(trainingOfTheDay));
         },
         builder: (BuildContext context, _ViewModel vm) {
-          final List<Training> trainingList = vm.trainings.values.toList();
           return Scaffold(
               body: SafeArea(
             child: CustomScrollView(
@@ -119,30 +118,33 @@ class HomeScreen extends StatelessWidget {
                   ),
                   delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
+                    final training = vm.trainings[vm.ids[index]];
                     final durationString =
-                        '${trainingList[index].exercisesLength} ${trainingList[index].exercisesLength == 1 ? 'exercise' : 'exercises'}';
+                        '${training?.exercisesLength} ${training?.exercisesLength == 1 ? 'exercise' : 'exercises'}';
                     return Center(
                       child: PreviewCard(
-                        name: trainingList[index].title,
+                        name: training?.title,
                         duration: durationString,
-                        preview: trainingList[index].preview,
-                        category: trainingList[index].category,
-                        avatar: trainingList[index].trainerImage,
+                        preview: training?.preview,
+                        category: training?.category,
+                        avatar: training?.trainerImage,
                         widthRatio: 0.45,
                         id: index,
-                        trainerId: trainingList[index].trainerId,
+                        trainerId: training?.trainerId,
                         onTapCard: (int index) {
-                          pushNewScreen(
-                            context,
-                            screen: TrainingScreen(id: trainingList[index].id),
-                            withNavBar: true,
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino,
-                          );
+                          if (training != null) {
+                            pushNewScreen(
+                              context,
+                              screen: TrainingScreen(id: training.id),
+                              withNavBar: true,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
+                            );
+                          }
                         },
                       ),
                     );
-                  }, childCount: trainingList.length),
+                  }, childCount: vm.ids.length),
                 ),
                 const SliverPadding(padding: EdgeInsets.all(15)),
                 SliverToBoxAdapter(
@@ -177,13 +179,19 @@ class HomeScreen extends StatelessWidget {
 
 class _ViewModel {
   final Map<int, Training> trainings;
+  final List<int> ids;
   final Training? dailyTraining;
 
-  _ViewModel({required this.trainings, required this.dailyTraining});
+  _ViewModel({
+    required this.trainings,
+    required this.ids,
+    required this.dailyTraining,
+  });
 
   static _ViewModel fromStore(Store<AppState> store, int id) {
     return _ViewModel(
-        trainings: store.state.newTrainings,
+        trainings: store.state.trainings,
+        ids: store.state.newTrainingsIds,
         dailyTraining: store.state.trainings[id]);
   }
 }

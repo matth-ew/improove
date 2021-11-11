@@ -13,10 +13,16 @@ class SetTrainings {
   SetTrainings(this.trainings);
 }
 
-class SetNewTrainings {
-  final Map<int, Training> newTrainings;
+class SetExploreTrainingsIds {
+  final List<int> trainingsIds;
 
-  SetNewTrainings(this.newTrainings);
+  SetExploreTrainingsIds(this.trainingsIds);
+}
+
+class SetNewTrainingsIds {
+  final List<int> trainingsIds;
+
+  SetNewTrainingsIds(this.trainingsIds);
 }
 
 class SetTraining {
@@ -76,14 +82,20 @@ ThunkAction<AppState> getTrainings(
               Training.fromJson(results[i] as Map<String, dynamic>);
           trainings.addAll({t.id: t});
         }
-        if (newest != null && newest > 0) {
-          store.dispatch(SetNewTrainings(trainings));
-        } else {
-          store.dispatch(SetTrainings(trainings));
-          debugPrint("!all!");
+        // store.dispatch(SetTrainings(trainings));
+
+        store.dispatch(SetTrainings(trainings));
+
+        if (ids == null || ids.isEmpty) {
+          if (newest != null && newest > 0) {
+            store.dispatch(SetNewTrainingsIds(trainings.keys.toList()));
+          } else {
+            store.dispatch(SetExploreTrainingsIds(trainings.keys.toList()));
+          }
+          // debugPrint("!all!");
         }
-        debugPrint("action pre-New -> " + store.state.newTrainings.toString());
-        debugPrint("action pre-All -> " + store.state.trainings.toString());
+        // debugPrint("action pre-New -> " + store.state.newTrainings.toString());
+        // debugPrint("action pre-All -> " + store.state.trainings.toString());
         completer?.complete();
         // if (t != null) {
         //   store.dispatch(SetTrainings(t));

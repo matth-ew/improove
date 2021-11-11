@@ -34,15 +34,15 @@ class _LoginFormState extends State<LoginForm> {
     }
   }
 
-  String? validatePassword(String? value) {
-    const Pattern pattern = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
-    final RegExp regex = RegExp(pattern.toString());
-    if (value == null || !regex.hasMatch(value)) {
-      return 'Your password must be at least 8 characters long, contain at least one number and one letter.';
-    } else {
-      return null;
-    }
-  }
+  // String? validatePassword(String? value) {
+  //   const Pattern pattern = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$";
+  //   final RegExp regex = RegExp(pattern.toString());
+  //   if (value == null || !regex.hasMatch(value)) {
+  //     return 'Invalid password.';
+  //   } else {
+  //     return null;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -91,7 +91,7 @@ class _LoginFormState extends State<LoginForm> {
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: TextFormField(
                       controller: _passwordController,
-                      validator: validatePassword,
+                      // validator: validatePassword,
                       obscureText: _obscurePassword,
                       decoration: InputDecoration(
                         contentPadding:
@@ -141,7 +141,8 @@ class _LoginFormState extends State<LoginForm> {
                               } else {
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                      content: Text('$e'),
+                                      backgroundColor: colorScheme.primary,
+                                      content: Text(e),
                                       behavior: SnackBarBehavior.floating),
                                 );
                               }

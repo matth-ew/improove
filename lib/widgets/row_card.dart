@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 class CardRow extends StatelessWidget {
   final String? name;
   final String? category;
-  final String? preview;
+  final dynamic preview;
   final Function? onTap;
   final Widget? action;
 
@@ -38,14 +38,19 @@ class CardRow extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: const BorderRadius.all(Radius.circular(10)),
                     child: preview != null
-                        ? CachedNetworkImage(
-                            fit: BoxFit.cover,
-                            placeholder: (context, url) =>
-                                const ColoredBox(color: Colors.grey),
-                            imageUrl: preview!,
-                            errorWidget: (context, url, error) =>
-                                const ColoredBox(color: Colors.grey),
-                          )
+                        ? preview is String
+                            ? CachedNetworkImage(
+                                fit: BoxFit.cover,
+                                placeholder: (context, url) =>
+                                    const ColoredBox(color: Colors.grey),
+                                imageUrl: preview!,
+                                errorWidget: (context, url, error) =>
+                                    const ColoredBox(color: Colors.grey),
+                              )
+                            : Image(
+                                image: MemoryImage(preview),
+                                fit: BoxFit.cover,
+                              )
                         : const ColoredBox(color: Colors.grey),
                   ),
                 ),

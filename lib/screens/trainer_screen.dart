@@ -23,15 +23,23 @@ class TrainerScreen extends StatelessWidget {
 
   Widget checkIfEdit(_ViewModel vm, int trainerId) {
     if (vm.user.id == trainerId) {
-      return EditTextCard(
-        text: vm.trainer?.trainerDescription ?? "",
-        onDone: (String text) {
-          vm.setDescription(trainerId, text);
-        },
+      return Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: EditTextCard(
+          text: vm.trainer?.trainerDescription ?? "",
+          onDone: (String text) {
+            vm.setDescription(trainerId, text);
+          },
+        ),
       );
-    } else {
-      return MyExpandableText(text: vm.trainer?.trainerDescription ?? "");
-    }
+    } else if (vm.trainer != null &&
+        vm.trainer!.trainerDescription.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: MyExpandableText(text: vm.trainer?.trainerDescription ?? ""),
+      );
+    } else
+      return SizedBox.shrink();
   }
 
   @override
@@ -97,7 +105,7 @@ class TrainerScreen extends StatelessWidget {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: 35,
+                          height: 25,
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(35),
@@ -116,37 +124,38 @@ class TrainerScreen extends StatelessWidget {
                     ],
                   ),
                 ),
+                const SliverPadding(padding: EdgeInsets.all(2)),
                 SliverToBoxAdapter(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 25.0, right: 25.0),
-                        child: Text(
-                          '${vm.trainer?.name ?? ""} ${vm.trainer?.surname ?? ""}',
-                          style: textTheme.headline4
-                              ?.copyWith(fontWeight: FontWeight.w600),
-                        ),
+                      Row(
+                        children: [
+                          if (vm.trainer?.profileImage != null &&
+                              vm.user.profileImage!.isNotEmpty)
+                            Padding(
+                              padding: const EdgeInsets.only(left: 25.0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                backgroundImage: CachedNetworkImageProvider(
+                                  vm.trainer!.profileImage!,
+                                ),
+                                radius: 35,
+                              ),
+                            ),
+                          Flexible(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 25.0),
+                              child: Text(
+                                '${vm.trainer?.name ?? ""} ${vm.trainer?.surname ?? ""}',
+                                style: textTheme.headline4
+                                    ?.copyWith(fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                          padding: const EdgeInsets.all(25.0),
-                          // child: ExpandableText(
-                          //   vm.trainer?.trainerDescription ?? "",
-                          //   expandText: "expand",
-                          //   collapseText: "collapse",
-                          //   linkColor: colorScheme.primary,
-                          //   maxLines: 6,
-                          //   style: textTheme.subtitle1?.copyWith(
-                          //       color: colorScheme.primary.withOpacity(.59)),
-                          // )
-                          // child: EditTextCard(
-                          //   text: vm.trainer?.trainerDescription ?? "",
-                          //   onDone: (String text) {
-                          //     debugPrint("qui");
-                          //     vm.setDescription(id, text);
-                          //   },
-                          // )),
-                          child: checkIfEdit(vm, id)),
+                      checkIfEdit(vm, id),
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 25.0,

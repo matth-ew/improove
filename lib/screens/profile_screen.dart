@@ -11,6 +11,9 @@ import 'package:improove/widgets/row_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
+import 'profile_widgets/local_video.dart';
+// import 'package:video_player/video_player.dart';
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
@@ -80,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
           ),
           body: SafeArea(
             child: DefaultTabController(
-              length: 2,
+              length: 3,
               child: NestedScrollView(
                 // allows you to build a list of elements that would be scrolled away till the body reached the top
                 headerSliverBuilder: (context, _) {
@@ -133,6 +136,7 @@ class ProfileScreen extends StatelessWidget {
                       unselectedLabelColor: colorScheme.onSurface,
                       tabs: const [
                         Tab(icon: Icon(Icons.video_library)),
+                        Tab(icon: Icon(Icons.video_call)),
                         Tab(icon: Icon(Icons.history)),
                       ],
                     ),
@@ -141,6 +145,7 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           _showSavedTrainings(context, vm.user.savedTrainings,
                               vm.trainings, vm.removeTraining),
+                          LocalVideo(),
                           _showClosedTrainings(
                               context, vm.user.closedTrainings, vm.trainings),
                         ],
@@ -152,6 +157,23 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         );
+      },
+    );
+  }
+
+  Widget _showSavedVideos(BuildContext context) {
+    return FutureBuilder<String>(
+      // future: ,
+      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
+        switch (snapshot.connectionState) {
+          case ConnectionState.waiting:
+            return Text('Loading....');
+          default:
+            if (snapshot.hasError)
+              return Text('Error: ${snapshot.error}');
+            else
+              return Text('Result: ${snapshot.data}');
+        }
       },
     );
   }

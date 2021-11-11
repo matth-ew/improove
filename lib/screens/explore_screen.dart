@@ -25,6 +25,7 @@ class ExploreScreen extends StatelessWidget {
     final double heightScreen = MediaQuery.of(context).size.height;
     final Size size = MediaQuery.of(context).size;
     final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
 
     Future<void> _refresh(Function load) {
       final completer = Completer();
@@ -38,7 +39,6 @@ class ExploreScreen extends StatelessWidget {
         store.dispatch(getTrainings());
       },
       builder: (BuildContext context, _ViewModel vm) {
-        final List<Training> trainingList = vm.trainings.values.toList();
         return Scaffold(
           body: NestedScrollView(
             headerSliverBuilder: (context, _) {
@@ -50,13 +50,15 @@ class ExploreScreen extends StatelessWidget {
                   expandedHeight: heightScreen / 8,
 
                   ///Properties of the App Bar when it is expanded
-                  flexibleSpace: const FlexibleSpaceBar(
+                  flexibleSpace: FlexibleSpaceBar(
+                    titlePadding:
+                        EdgeInsetsDirectional.only(start: 25, bottom: 16),
                     title: Text(
                       "Explore",
-                      style: TextStyle(
-                          color: Colors.black87,
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.bold),
+                      style: textTheme.headline5?.copyWith(
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
@@ -78,31 +80,33 @@ class ExploreScreen extends StatelessWidget {
                     ),
                     delegate: SliverChildBuilderDelegate(
                         (BuildContext context, int index) {
+                      final training = vm.trainings[vm.ids[index]];
                       final durationString =
-                          '${trainingList[index].exercisesLength} ${trainingList[index].exercisesLength == 1 ? 'exercise' : 'exercises'}';
+                          '${training?.exercisesLength} ${training?.exercisesLength == 1 ? 'exercise' : 'exercises'}';
                       return Center(
                         child: PreviewCard(
-                          name: trainingList[index].title,
+                          name: training?.title,
                           duration: durationString,
-                          preview: trainingList[index].preview,
-                          category: trainingList[index].category,
-                          avatar: trainingList[index].trainerImage,
+                          preview: training?.preview,
+                          category: training?.category,
+                          avatar: training?.trainerImage,
                           widthRatio: 0.45,
                           id: index,
-                          trainerId: trainingList[index].trainerId,
+                          trainerId: training?.trainerId,
                           onTapCard: (int index) {
-                            pushNewScreen(
-                              context,
-                              screen:
-                                  TrainingScreen(id: trainingList[index].id),
-                              withNavBar: true,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
-                            );
+                            if (training != null) {
+                              pushNewScreen(
+                                context,
+                                screen: TrainingScreen(id: training.id),
+                                withNavBar: true,
+                                pageTransitionAnimation:
+                                    PageTransitionAnimation.cupertino,
+                              );
+                            }
                           },
                         ),
                       );
-                    }, childCount: trainingList.length),
+                    }, childCount: vm.ids.length),
                   ),
                   const SliverPadding(padding: EdgeInsets.all(15)),
                   SliverToBoxAdapter(
@@ -139,13 +143,19 @@ class ExploreScreen extends StatelessWidget {
 
 class _ViewModel {
   final Map<int, Training> trainings;
+  final List<int> ids;
   final Function([Completer? cb]) loadTrainings;
 
-  _ViewModel({required this.trainings, required this.loadTrainings});
+  _ViewModel({
+    required this.trainings,
+    required this.ids,
+    required this.loadTrainings,
+  });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       trainings: store.state.trainings,
+      ids: store.state.exploreTrainingsIds,
       loadTrainings: ([cb]) => store.dispatch(
         getTrainings([], 0, cb),
       ),

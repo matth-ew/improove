@@ -140,6 +140,7 @@ class PreviewCard extends StatelessWidget {
                       name ?? "",
                       style: textTheme.subtitle2
                           ?.copyWith(color: colorScheme.primary),
+                      overflow: TextOverflow.ellipsis,
                     ),
                     Text(duration ?? "",
                         style: textTheme.bodyText2

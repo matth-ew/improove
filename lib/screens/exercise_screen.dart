@@ -105,7 +105,7 @@ class ExerciseScreen extends StatelessWidget {
                         top: Platform.isIOS ? 35 : 0,
                         left: 0,
                         right: 0,
-                        bottom: 35,
+                        bottom: 25,
                         child: MyVideoPlayer(
                           video: getVideo(vm.exercise!.video),
                           onEnd: () {
@@ -121,7 +121,7 @@ class ExerciseScreen extends StatelessWidget {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: 35,
+                          height: 25,
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(35),
@@ -144,6 +144,7 @@ class ExerciseScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      // if(vm.exercise != null && vm.exercise!.how.isNotEmpty)
                       Padding(
                         padding: const EdgeInsets.only(
                           left: 25.0,

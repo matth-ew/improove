@@ -9,19 +9,21 @@ class AppState {
 
   //final Training training;
   final Map<int, Training> trainings;
-
-  final Map<int, Training> newTrainings;
-
+  final List<int> exploreTrainingsIds;
+  final List<int> newTrainingsIds;
   final Map<int, User> trainers;
 
-  const AppState(
-      {required this.user,
-      required this.trainings,
-      required this.newTrainings,
-      required this.trainers});
+  const AppState({
+    required this.user,
+    required this.trainings,
+    required this.exploreTrainingsIds,
+    required this.newTrainingsIds,
+    required this.trainers,
+  });
   const AppState.initial()
       : trainings = const {},
-        newTrainings = const {},
+        exploreTrainingsIds = const [],
+        newTrainingsIds = const [],
         user = const User.initial(),
         trainers = const {};
 
@@ -36,7 +38,8 @@ class AppState {
       user: User.fromJson(json['user']),
       trainers: const {},
       trainings: const {},
-      newTrainings: const {},
+      exploreTrainingsIds: const [],
+      newTrainingsIds: const [],
       /*trainers: (json['trainers'] ?? "").map(
         (t) => {
           t["key"]: User.fromJson(

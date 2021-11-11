@@ -53,7 +53,7 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   String? validatePassword(String? value) {
-    const Pattern pattern = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$";
+    const Pattern pattern = r"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*]{8,}$";
     final RegExp regex = RegExp(pattern.toString());
     if (value == null || !regex.hasMatch(value)) {
       return 'Your password must be at least 8 characters long, contain at least one number and one letter.';

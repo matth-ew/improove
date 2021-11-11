@@ -10,6 +10,7 @@ import 'package:improove/screens/exercise_screen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:improove/widgets/row_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -22,16 +23,23 @@ class TrainingScreen extends StatelessWidget {
   }) : super(key: key);
 
   Widget checkIfEdit(_ViewModel vm, int trainingId) {
-    if (vm.user.id == vm.training!.trainerId) {
-      return EditTextCard(
-        text: vm.training?.description ?? "",
-        onDone: (String text) {
-          vm.setDescription(trainingId, text);
-        },
+    if (vm.user.id == vm.training?.trainerId) {
+      return Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: EditTextCard(
+          text: vm.training?.description ?? "",
+          onDone: (String text) {
+            vm.setDescription(trainingId, text);
+          },
+        ),
       );
-    } else {
-      return MyExpandableText(text: vm.training?.description ?? "");
-    }
+    } else if (vm.training != null && vm.training!.description.isNotEmpty) {
+      return Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: MyExpandableText(text: vm.training?.description ?? ""),
+      );
+    } else
+      return SizedBox.shrink();
   }
 
   @override
@@ -42,7 +50,8 @@ class TrainingScreen extends StatelessWidget {
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store, id),
         onInit: (Store<AppState> store) {
-          if (store.state.trainings[id]!.description == "") {
+          if (store.state.trainings[id] == null ||
+              store.state.trainings[id]!.description == "") {
             store.dispatch(getTrainingById(id));
           }
         },
@@ -93,7 +102,7 @@ class TrainingScreen extends StatelessWidget {
                           fit: BoxFit.cover,
                           placeholder: (context, url) =>
                               ColoredBox(color: colorScheme.primary),
-                          imageUrl: vm.training!.preview,
+                          imageUrl: vm.training?.preview ?? "",
                           errorWidget: (context, url, error) =>
                               const ColoredBox(color: Colors.grey),
                         ),
@@ -103,7 +112,7 @@ class TrainingScreen extends StatelessWidget {
                         left: 0,
                         right: 0,
                         child: Container(
-                          height: 35,
+                          height: 30,
                           decoration: const BoxDecoration(
                             borderRadius: BorderRadius.only(
                               topLeft: Radius.circular(35),
@@ -120,33 +129,41 @@ class TrainingScreen extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        bottom: 3,
+                        bottom: 0,
                         right: 35,
                         child: ClipRRect(
                           borderRadius:
                               const BorderRadius.all(Radius.circular(30)),
                           child: GestureDetector(
-                            onTap: () => {
-                              pushNewScreen(
-                                context,
-                                screen: TrainerScreen(
-                                  id: vm.training!.trainerId,
+                              onTap: () => {
+                                    if (vm.training?.trainerId != null)
+                                      pushNewScreen(
+                                        context,
+                                        screen: TrainerScreen(
+                                          id: vm.training!.trainerId,
+                                        ),
+                                        withNavBar: true,
+                                        pageTransitionAnimation:
+                                            PageTransitionAnimation.cupertino,
+                                      )
+                                  },
+                              child: CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                backgroundImage: CachedNetworkImageProvider(
+                                  vm.training?.trainerImage ?? "",
                                 ),
-                                withNavBar: true,
-                                pageTransitionAnimation:
-                                    PageTransitionAnimation.cupertino,
+                                radius: 30.0,
                               )
-                            },
-                            child: CachedNetworkImage(
-                                width: 60,
-                                height: 60,
-                                fit: BoxFit.cover,
-                                placeholder: (context, url) =>
-                                    const CircularProgressIndicator(),
-                                errorWidget: (context, url, error) =>
-                                    const Icon(Icons.error),
-                                imageUrl: vm.training!.trainerImage),
-                          ),
+                              // CachedNetworkImage(
+                              //     width: 60,
+                              //     height: 60,
+                              //     fit: BoxFit.cover,
+                              //     placeholder: (context, url) =>
+                              //         const CircularProgressIndicator(),
+                              //     errorWidget: (context, url, error) =>
+                              //         const Icon(Icons.error),
+                              //     imageUrl: vm.training!.trainerImage),
+                              ),
                         ),
                         // Container(
                         //   height: 35,
@@ -166,55 +183,90 @@ class TrainingScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.only(left: 25.0),
-                        child: Text(
-                          vm.training!.title,
-                          style: textTheme.headline4
-                              ?.copyWith(fontWeight: FontWeight.w600),
-                        ),
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 25.0),
+                              child: Text(
+                                vm.training?.title ?? "",
+                                style: textTheme.headline4
+                                    ?.copyWith(fontWeight: FontWeight.w600),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      Padding(
-                          padding: const EdgeInsets.all(25.0),
-                          child: checkIfEdit(vm, id)),
+                      checkIfEdit(vm, id),
                     ],
                   ),
                 ),
                 const SliverPadding(padding: EdgeInsets.all(5)),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: size.width * (92 / 254) * (135 / 92),
-                    width: size.width,
-                    child: ListView.builder(
-                      padding: const EdgeInsets.only(left: 19.0, right: 19.0),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: vm.training!.exercises.length,
-                      itemBuilder: (context, index) {
-                        return Padding(
-                          padding: const EdgeInsets.only(left: 6, right: 6),
-                          child: PreviewCard(
-                            preview: vm.training!.exercises[index].preview,
-                            name: vm.training!.exercises[index].title,
-                            // avatar: vm.training!.trainerImage,
+                SliverList(
+                  // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  //   crossAxisCount: 1,
+                  //   // mainAxisSpacing: 30,
+                  //   // crossAxisSpacing: 0,
+                  //   childAspectRatio: 4,
+                  // ),
+                  delegate: SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                    return CardRow(
+                      preview: vm.training?.exercises[index].preview,
+                      name:
+                          "${index + 1}. ${vm.training?.exercises[index].title}",
+                      category:
+                          "ESEMPIO", //vm.training?.exercises[index].category,
+                      onTap: () {
+                        pushNewScreen(
+                          context,
+                          screen: ExerciseScreen(
+                            trainingId: id,
                             id: index,
-                            onTapCard: (int index) {
-                              pushNewScreen(
-                                context,
-                                screen: ExerciseScreen(
-                                  trainingId: id,
-                                  id: index,
-                                ),
-                                withNavBar: false,
-                                pageTransitionAnimation:
-                                    PageTransitionAnimation.slideUp,
-                              );
-                            },
                           ),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.slideUp,
                         );
                       },
-                    ),
-                  ),
+                    );
+                  }, childCount: vm.training?.exercises.length),
                 ),
+                // SliverToBoxAdapter(
+                //   child: SizedBox(
+                //     height: size.width * (92 / 254) * (135 / 92),
+                //     width: size.width,
+                //     child: ListView.builder(
+                //       padding: const EdgeInsets.only(left: 19.0, right: 19.0),
+                //       scrollDirection: Axis.horizontal,
+                //       itemCount: vm.training!.exercises.length,
+                //       itemBuilder: (context, index) {
+                //         return Padding(
+                //           padding: const EdgeInsets.only(left: 6, right: 6),
+                //           child: PreviewCard(
+                //             preview: vm.training!.exercises[index].preview,
+                //             name: vm.training!.exercises[index].title,
+                //             // avatar: vm.training!.trainerImage,
+                //             id: index,
+                //             onTapCard: (int index) {
+                //               pushNewScreen(
+                //                 context,
+                //                 screen: ExerciseScreen(
+                //                   trainingId: id,
+                //                   id: index,
+                //                 ),
+                //                 withNavBar: false,
+                //                 pageTransitionAnimation:
+                //                     PageTransitionAnimation.slideUp,
+                //               );
+                //             },
+                //           ),
+                //         );
+                //       },
+                //     ),
+                //   ),
+                // ),
                 const SliverPadding(padding: EdgeInsets.all(5)),
               ],
             ),

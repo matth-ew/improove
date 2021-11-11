@@ -158,149 +158,146 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
       builder: (BuildContext context, _ViewModel vm) {
         return Scaffold(
           backgroundColor: colorScheme.background,
-          body: SingleChildScrollView(
-            padding: const EdgeInsets.all(30),
-            child: SafeArea(
-              child: SizedBox(
-                height: MediaQuery.of(context).size.height * 0.9,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+          body: SafeArea(
+            child: ListView(
+              padding: const EdgeInsets.all(30),
+              // mainAxisSize: MainAxisSize.max,
+              // mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 15.0, bottom: 15),
+                  child: Center(
+                    child: Text(
+                      "Improove",
+                      style: textTheme.headline3?.copyWith(
+                        color: colorScheme.primary,
+                      ),
+                    ),
+                  ),
+                ),
+                if (signIn)
+                  const LoginForm(fontSize: fontSize)
+                else
+                  const SignupForm(fontSize: fontSize),
+                Column(
                   children: [
                     Padding(
-                      padding: const EdgeInsets.only(top: 15.0, bottom: 15),
+                      padding: const EdgeInsets.all(20.0),
                       child: Text(
-                        "Improove",
-                        style: textTheme.headline3?.copyWith(
-                          color: colorScheme.primary,
+                        signIn ? "- or sign in with -" : "- or sign up with -",
+                        style: textTheme.overline?.copyWith(
+                          color: colorScheme.onSurface,
                         ),
                       ),
                     ),
-                    if (signIn)
-                      const LoginForm(fontSize: fontSize)
-                    else
-                      const SignupForm(fontSize: fontSize),
-                    Column(
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(20.0),
-                          child: Text(
-                            signIn
-                                ? "- or sign in with -"
-                                : "- or sign up with -",
-                            style: textTheme.overline?.copyWith(
-                              color: colorScheme.onSurface,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: SizedBox(
+                        height: height,
+                        child: SizedBox.expand(
+                          child: OutlinedButton(
+                            onPressed: () => _facebookLogin(vm.facebookLogin),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                const Color.fromRGBO(25, 119, 243, 1),
+                              ),
                             ),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
-                          child: SizedBox(
-                            height: height,
-                            child: SizedBox.expand(
-                              child: OutlinedButton(
-                                onPressed: () =>
-                                    _facebookLogin(vm.facebookLogin),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                    const Color.fromRGBO(25, 119, 243, 1),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/facebook.svg',
+                                  height: 24,
+                                ),
+                                Text(
+                                  signIn
+                                      ? " Login with Facebook"
+                                      : " Signup with Facebook",
+                                  style: TextStyle(
+                                    fontSize: fontSize,
+                                    color: Colors.white,
                                   ),
                                 ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/facebook.svg',
-                                      height: 24,
-                                    ),
-                                    const Text(
-                                      "  Login with Facebook",
-                                      style: TextStyle(
-                                        fontSize: fontSize,
-                                        color: Colors.white,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
+                              ],
                             ),
                           ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 15.0),
-                          child: SizedBox(
-                            height: height,
-                            child: SizedBox.expand(
-                              child: OutlinedButton(
-                                onPressed: () => _googleLogin(vm.googleLogin),
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                          colorScheme.background),
-                                ),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    SvgPicture.asset(
-                                      'assets/icons/google.svg',
-                                      height: 24,
-                                    ),
-                                    Text(
-                                      "  Login with Google",
-                                      style: TextStyle(
-                                          fontSize: fontSize,
-                                          color: colorScheme.onSecondary),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        ),
-                        if (Platform.isIOS || Platform.isMacOS)
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 15),
-                            child: SignInWithAppleButton(
-                              height: height,
-                              onPressed: () => _appleLogin(vm.appleLogin),
-                            ),
-                          ),
-                      ],
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          signIn = !signIn;
-                        });
-                      },
-                      child: Padding(
-                        padding: const EdgeInsets.all(20.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(
-                              signIn
-                                  ? "Don't have an account? "
-                                  : "Already have an account? ",
-                              style: textTheme.overline?.copyWith(
-                                color: colorScheme.onSurface,
-                              ),
-                            ),
-                            InkWell(
-                              child: Text(
-                                signIn ? "Sign up" : "Sign in",
-                                style: textTheme.overline?.copyWith(
-                                  color: Colors.blueAccent,
-                                ),
-                              ),
-                            ),
-                          ],
                         ),
                       ),
                     ),
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 15.0),
+                      child: SizedBox(
+                        height: height,
+                        child: SizedBox.expand(
+                          child: OutlinedButton(
+                            onPressed: () => _googleLogin(vm.googleLogin),
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                  colorScheme.background),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                SvgPicture.asset(
+                                  'assets/icons/google.svg',
+                                  height: 24,
+                                ),
+                                Text(
+                                  signIn
+                                      ? " Login with Google"
+                                      : " Signup with Google",
+                                  style: TextStyle(
+                                      fontSize: fontSize,
+                                      color: colorScheme.onSecondary),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    if (Platform.isIOS || Platform.isMacOS)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: SignInWithAppleButton(
+                          height: height,
+                          onPressed: () => _appleLogin(vm.appleLogin),
+                        ),
+                      ),
                   ],
                 ),
-              ),
+                InkWell(
+                  onTap: () {
+                    setState(() {
+                      signIn = !signIn;
+                    });
+                  },
+                  child: Padding(
+                    padding: const EdgeInsets.all(20.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          signIn
+                              ? "Don't have an account? "
+                              : "Already have an account? ",
+                          style: textTheme.overline?.copyWith(
+                            color: colorScheme.onSurface,
+                          ),
+                        ),
+                        InkWell(
+                          child: Text(
+                            signIn ? "Sign up" : "Sign in",
+                            style: textTheme.overline?.copyWith(
+                              color: Colors.blueAccent,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         );

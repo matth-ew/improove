@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
@@ -10,7 +12,7 @@ class MyVideoPlayer extends StatefulWidget {
     this.onEnd,
   }) : super(key: key);
 
-  final String video;
+  final dynamic video;
   // final Function? onStart;
   final Function? onEnd;
 
@@ -38,7 +40,11 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   }
 
   Future<void> initializePlayer() async {
-    _videoPlayerController = VideoPlayerController.network(widget.video);
+    if (widget.video is String) {
+      _videoPlayerController = VideoPlayerController.network(widget.video);
+    } else {
+      _videoPlayerController = VideoPlayerController.file(widget.video);
+    }
     await Future.wait([
       _videoPlayerController.initialize(),
     ]);

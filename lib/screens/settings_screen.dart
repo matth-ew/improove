@@ -6,6 +6,8 @@ import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/widgets/image_picker_cropper.dart';
+import 'package:improove/widgets/trim_view.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -38,6 +40,33 @@ class SettingsScreen extends StatelessWidget {
                       Navigator.pop(context);
                     });
                   }
+                } catch (e) {
+                  debugPrint("Errore in selezione immagine ${e.toString()}");
+                }
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.video_camera_front_rounded),
+              title: const Text('Take a video'),
+              onTap: () async {
+                try {
+                  final ImagePicker _picker = ImagePicker();
+                  final XFile? fileToSave =
+                      await _picker.pickVideo(source: ImageSource.camera);
+                  if (fileToSave != null) {
+                    pushNewScreen(
+                      context,
+                      screen: TrimmerView(File(fileToSave.path)),
+                      withNavBar: false,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino,
+                    );
+                  }
+                  // if (fileToSave != null) {
+                  //   vm.changeProfileImage(fileToSave, (String? e) {
+                  //     Navigator.pop(context);
+                  //   });
+                  // }
                 } catch (e) {
                   debugPrint("Errore in selezione immagine ${e.toString()}");
                 }
