@@ -6,6 +6,7 @@ import 'package:improove/redux/models/models.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/services/trainer_service.dart';
+import 'package:improove/utility/device_storage.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
@@ -55,7 +56,7 @@ ThunkAction<AppState> setTrainerDescription(int id, String text,
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r =
             await TrainerService().setTrainerDescription(id, text, token);
@@ -76,7 +77,7 @@ ThunkAction<AppState> setTrainerImage(File image, int id,
     [Completer? completer]) {
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r =
             await TrainerService().setTrainerImage(image, token);

@@ -6,6 +6,7 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/services/authservice.dart';
 import 'package:improove/services/user_service.dart';
+import 'package:improove/utility/device_storage.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -62,8 +63,7 @@ ThunkAction<AppState> loginThunk(String email, String password,
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
-        await storage.write(
-            key: "accessToken", value: r.data!["token"] as String);
+        await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
@@ -84,8 +84,7 @@ ThunkAction<AppState> loginFacebookThunk(String accessToken, [Function? cb]) {
         // debugPrint(r!.data!["user"].toString());
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
-        await storage.write(
-            key: "accessToken", value: r.data!["token"] as String);
+        await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
@@ -105,8 +104,7 @@ ThunkAction<AppState> loginGoogleThunk(String accessToken, [Function? cb]) {
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
-        await storage.write(
-            key: "accessToken", value: r.data!["token"] as String);
+        await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
@@ -127,8 +125,7 @@ ThunkAction<AppState> loginAppleThunk(String authorizationCode,
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
-        await storage.write(
-            key: "accessToken", value: r.data!["token"] as String);
+        await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
@@ -149,8 +146,7 @@ ThunkAction<AppState> signupThunk(String email, String password,
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u)); // Create storage
-        await storage.write(
-            key: "accessToken", value: r.data!["token"] as String);
+        await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
         cb?.call(r?.data['msg']);
@@ -166,7 +162,7 @@ ThunkAction<AppState> verifyThunk(int? verifyToken, [Function? cb]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null && verifyToken != null) {
         final Response? r = await AuthService().verify(verifyToken, token);
         if (r?.data['success'] as bool) {
@@ -185,7 +181,7 @@ ThunkAction<AppState> resendVerificationThunk([Function? cb]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r = await AuthService().resendVerification(token);
         if (r?.data['success'] as bool) {
@@ -199,12 +195,12 @@ ThunkAction<AppState> resendVerificationThunk([Function? cb]) {
     }
   };
 }
-//String accessToken = await storage.read(key: "accessToken");
+//String accessToken = await getAccessToken();
 
 ThunkAction<AppState> logoutThunk([Function? cb]) {
   return (Store<AppState> store) async {
     try {
-      await storage.delete(key: "accessToken");
+      await deleteAccessToken();
       //CANCELLA DATI DA REDUX!
       store.dispatch(UserLogout());
       cb?.call(null);
@@ -218,7 +214,7 @@ ThunkAction<AppState> logoutThunk([Function? cb]) {
 ThunkAction<AppState> changeProfileImageThunk(File image, [Function? cb]) {
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r =
             await UserService().changeProfileImage(image, token);
@@ -240,7 +236,7 @@ ThunkAction<AppState> changeProfileInfoThunk(String name, String surname,
     [Function? cb]) {
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r = await UserService().changeProfileInfo(
           name,
@@ -262,7 +258,7 @@ ThunkAction<AppState> changeProfileInfoThunk(String name, String surname,
 ThunkAction<AppState> getInfoThunk([Function? cb]) {
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r = await UserService().getInfo(token);
         //debugPrint("UE RESP ${r?.data}");
@@ -292,7 +288,7 @@ ThunkAction<AppState> setExerciseCompleted(int trainingId, String exerciseId,
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         // final Response? r =
         //     await TrainingService().setExerciseMistakes(id, title, text, token);
@@ -314,7 +310,7 @@ ThunkAction<AppState> setExerciseCompleted(int trainingId, String exerciseId,
 ThunkAction<AppState> saveTrainingThunk(int trainingId, [Function? cb]) {
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r = await UserService().saveTraining(trainingId, token);
         //debugPrint("UE RESP $r");
@@ -337,7 +333,7 @@ ThunkAction<AppState> saveTrainingThunk(int trainingId, [Function? cb]) {
 ThunkAction<AppState> removeTrainingThunk(int trainingId, [Function? cb]) {
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r =
             await UserService().removeTraining(trainingId, token);
@@ -359,7 +355,7 @@ ThunkAction<AppState> sendFeedbackThunk(String text, [Function? cb]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         debugPrint("UE SEND FEEDBACK $text");
         final Response? r = await UserService().sendFeedback(text, token);

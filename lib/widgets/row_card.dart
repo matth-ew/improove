@@ -24,7 +24,7 @@ class CardRow extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final Size size = MediaQuery.of(context).size;
     return Center(
-      child: GestureDetector(
+      child: InkWell(
         onTap: () => onTap?.call(),
         child: Padding(
           padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),

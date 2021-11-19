@@ -38,8 +38,9 @@ class TrainerScreen extends StatelessWidget {
         padding: const EdgeInsets.all(25.0),
         child: MyExpandableText(text: vm.trainer?.trainerDescription ?? ""),
       );
-    } else
-      return SizedBox.shrink();
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   @override

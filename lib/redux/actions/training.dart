@@ -3,8 +3,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/services/training_service.dart';
+import 'package:improove/utility/device_storage.dart';
 import 'package:redux/redux.dart';
-import 'package:improove/redux/actions/user.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
 class SetTrainings {
@@ -115,7 +115,7 @@ ThunkAction<AppState> setTrainingDescription(int id, String text,
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r =
             await TrainingService().setTrainingDescription(id, text, token);
@@ -138,7 +138,7 @@ ThunkAction<AppState> setExerciseTips(int id, String title, String text,
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r =
             await TrainingService().setExerciseTips(id, title, text, token);
@@ -161,7 +161,7 @@ ThunkAction<AppState> setExerciseMistakes(int id, String title, String text,
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r =
             await TrainingService().setExerciseMistakes(id, title, text, token);
@@ -184,7 +184,7 @@ ThunkAction<AppState> setExerciseHow(int id, String title, String text,
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final token = await storage.read(key: "accessToken");
+      final token = await getAccessToken();
       if (token != null) {
         final Response? r =
             await TrainingService().setExerciseHow(id, title, text, token);

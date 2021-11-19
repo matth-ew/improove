@@ -52,7 +52,7 @@ class ExploreScreen extends StatelessWidget {
                   ///Properties of the App Bar when it is expanded
                   flexibleSpace: FlexibleSpaceBar(
                     titlePadding:
-                        EdgeInsetsDirectional.only(start: 25, bottom: 16),
+                        const EdgeInsetsDirectional.only(start: 25, bottom: 16),
                     title: Text(
                       "Explore",
                       style: textTheme.headline5?.copyWith(

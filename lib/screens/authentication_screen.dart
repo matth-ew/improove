@@ -213,7 +213,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
                                   signIn
                                       ? " Login with Facebook"
                                       : " Signup with Facebook",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: fontSize,
                                     color: Colors.white,
                                   ),

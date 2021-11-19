@@ -11,7 +11,7 @@ import 'package:improove/widgets/row_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
-import 'profile_widgets/local_video.dart';
+import 'profile_widgets/local_videos.dart';
 // import 'package:video_player/video_player.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -145,7 +145,7 @@ class ProfileScreen extends StatelessWidget {
                         children: [
                           _showSavedTrainings(context, vm.user.savedTrainings,
                               vm.trainings, vm.removeTraining),
-                          LocalVideo(),
+                          const LocalVideos(),
                           _showClosedTrainings(
                               context, vm.user.closedTrainings, vm.trainings),
                         ],
@@ -157,23 +157,6 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
         );
-      },
-    );
-  }
-
-  Widget _showSavedVideos(BuildContext context) {
-    return FutureBuilder<String>(
-      // future: ,
-      builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-        switch (snapshot.connectionState) {
-          case ConnectionState.waiting:
-            return Text('Loading....');
-          default:
-            if (snapshot.hasError)
-              return Text('Error: ${snapshot.error}');
-            else
-              return Text('Result: ${snapshot.data}');
-        }
       },
     );
   }

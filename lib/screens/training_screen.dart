@@ -5,7 +5,6 @@ import 'package:improove/redux/actions/user.dart';
 import 'package:improove/screens/trainer_screen.dart';
 import 'package:improove/widgets/edit_text.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
-import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/screens/exercise_screen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/app_state.dart';
@@ -38,8 +37,9 @@ class TrainingScreen extends StatelessWidget {
         padding: const EdgeInsets.all(25.0),
         child: MyExpandableText(text: vm.training?.description ?? ""),
       );
-    } else
-      return SizedBox.shrink();
+    } else {
+      return const SizedBox.shrink();
+    }
   }
 
   @override

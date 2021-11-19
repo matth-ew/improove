@@ -56,7 +56,18 @@ class SettingsScreen extends StatelessWidget {
                   if (fileToSave != null) {
                     pushNewScreen(
                       context,
-                      screen: TrimmerView(File(fileToSave.path)),
+                      screen: TrimmerView(
+                        File(fileToSave.path),
+                        onSave: (String path) async {
+                          vm.addLocalVideo(
+                              LocalVideo(path: path, group: "", name: ""));
+                          // await addLocalVideo(
+                          //   path: path,
+                          //   group: "",
+                          //   name: "",
+                          // );
+                        },
+                      ),
                       withNavBar: false,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino,
@@ -165,26 +176,29 @@ class _ViewModel {
   final Function([Function? cb]) logout;
   final Function(File image, [Function? cb]) changeProfileImage;
   final Function(String name, String surname, [Function? cb]) changeProfileInfo;
+  final Function(LocalVideo video, [Function? cb]) addLocalVideo;
 
   _ViewModel({
     required this.user,
     required this.logout,
     required this.changeProfileImage,
     required this.changeProfileInfo,
+    required this.addLocalVideo,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
-      user: store.state.user,
-      logout: ([cb]) => store.dispatch(
-        logoutThunk(cb),
-      ),
-      changeProfileImage: (image, [cb]) => store.dispatch(
-        changeProfileImageThunk(image, cb),
-      ),
-      changeProfileInfo: (name, surname, [cb]) => store.dispatch(
-        changeProfileInfoThunk(name, surname, cb),
-      ),
-    );
+        user: store.state.user,
+        logout: ([cb]) => store.dispatch(
+              logoutThunk(cb),
+            ),
+        changeProfileImage: (image, [cb]) => store.dispatch(
+              changeProfileImageThunk(image, cb),
+            ),
+        changeProfileInfo: (name, surname, [cb]) => store.dispatch(
+              changeProfileInfoThunk(name, surname, cb),
+            ),
+        addLocalVideo: (video, [cb]) =>
+            store.dispatch(addLocalVideoThunk(video, cb)));
   }
 }

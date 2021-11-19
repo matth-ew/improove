@@ -3,14 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
-import 'package:improove/screens/authentication_screen.dart';
-import 'package:improove/screens/webview_screen.dart';
-import 'package:improove/widgets/image_picker_cropper.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
-import 'package:url_launcher/url_launcher.dart';
-
-import 'settings_widgets/change_personal_info.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({Key? key}) : super(key: key);

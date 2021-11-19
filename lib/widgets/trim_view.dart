@@ -7,8 +7,9 @@ import 'package:uuid/uuid.dart';
 
 class TrimmerView extends StatefulWidget {
   final File file;
+  final Function? onSave;
 
-  TrimmerView(this.file);
+  const TrimmerView(this.file, {Key? key, this.onSave}) : super(key: key);
 
   @override
   _TrimmerViewState createState() => _TrimmerViewState();
@@ -38,12 +39,15 @@ class _TrimmerViewState extends State<TrimmerView> {
             storageDir: "applicationDocumentsDirectory",
             videoFolderName: "VideoSalvati",
             videoFileName: uuid.v1())
-        .then((value) {
-      setState(() {
-        _progressVisibility = false;
-        _value = value;
-      });
-    });
+        .then(
+      (value) {
+        widget.onSave?.call(value);
+        setState(() {
+          _progressVisibility = false;
+          _value = value;
+        });
+      },
+    );
 
     return _value;
   }
@@ -63,12 +67,13 @@ class _TrimmerViewState extends State<TrimmerView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Video Trimmer"),
+        backgroundColor: Colors.black,
+        // title: Text("Video Trimmer"),
       ),
       body: Builder(
         builder: (context) => Center(
           child: Container(
-            padding: EdgeInsets.only(bottom: 30.0),
+            padding: const EdgeInsets.only(bottom: 30.0),
             color: Colors.black,
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -76,34 +81,46 @@ class _TrimmerViewState extends State<TrimmerView> {
               children: <Widget>[
                 Visibility(
                   visible: _progressVisibility,
-                  child: LinearProgressIndicator(
+                  child: const LinearProgressIndicator(
                     backgroundColor: Colors.red,
                   ),
                 ),
-                ElevatedButton(
-                  onPressed: _progressVisibility
-                      ? null
-                      : () async {
-                          _saveVideo().then((outputPath) {
-                            print('OUTPUT PATH: $outputPath');
-                            final snackBar = SnackBar(
-                                content: Text('Video Saved successfully'));
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              snackBar,
-                            );
-                          });
-                        },
-                  child: Text("SAVE"),
-                ),
                 Expanded(
-                  child: VideoViewer(trimmer: _trimmer),
+                  child: GestureDetector(
+                    onTap: () async {
+                      bool playbackState = await _trimmer.videPlaybackControl(
+                        startValue: _startValue,
+                        endValue: _endValue,
+                      );
+                      setState(() {
+                        _isPlaying = playbackState;
+                      });
+                    },
+                    child: Stack(
+                      children: [
+                        VideoViewer(trimmer: _trimmer),
+                        Visibility(
+                          visible: !_isPlaying,
+                          child: const Align(
+                            alignment: Alignment.center,
+                            child: Icon(
+                              Icons.play_arrow_rounded,
+                              size: 80.0,
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
                 Center(
                   child: TrimEditor(
+                    sideTapSize: 50,
                     trimmer: _trimmer,
                     viewerHeight: 50.0,
-                    viewerWidth: MediaQuery.of(context).size.width,
-                    maxVideoLength: Duration(seconds: 10),
+                    viewerWidth: MediaQuery.of(context).size.width * 0.9,
+                    // maxVideoLength: Duration(seconds: 10),
                     onChangeStart: (value) {
                       _startValue = value;
                     },
@@ -117,28 +134,21 @@ class _TrimmerViewState extends State<TrimmerView> {
                     },
                   ),
                 ),
-                TextButton(
-                  child: _isPlaying
-                      ? Icon(
-                          Icons.pause,
-                          size: 80.0,
-                          color: Colors.white,
-                        )
-                      : Icon(
-                          Icons.play_arrow,
-                          size: 80.0,
-                          color: Colors.white,
-                        ),
-                  onPressed: () async {
-                    bool playbackState = await _trimmer.videPlaybackControl(
-                      startValue: _startValue,
-                      endValue: _endValue,
-                    );
-                    setState(() {
-                      _isPlaying = playbackState;
-                    });
-                  },
-                )
+                ElevatedButton(
+                  onPressed: _progressVisibility
+                      ? null
+                      : () async {
+                          _saveVideo().then((outputPath) {
+                            debugPrint('OUTPUT PATH: $outputPath');
+                            const snackBar = SnackBar(
+                                content: Text('Video Saved successfully'));
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              snackBar,
+                            );
+                          });
+                        },
+                  child: const Text("SAVE"),
+                ),
               ],
             ),
           ),
