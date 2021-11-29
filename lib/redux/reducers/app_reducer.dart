@@ -5,6 +5,7 @@ AppState appReducer(AppState state, dynamic action) => AppState(
     user: userReducer(state.user, action),
     trainings: trainingReducer(state.trainings, action),
     localVideos: localVideoReducer(state.localVideos, action),
+    videoFolders: videoFolderReducer(state.videoFolders, action),
     exploreTrainingsIds:
         exploreTrainingsReducer(state.exploreTrainingsIds, action),
     newTrainingsIds: newTrainingsReducer(state.newTrainingsIds, action),

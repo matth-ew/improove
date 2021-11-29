@@ -4,6 +4,8 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/screens/splash_screen.dart';
 import 'package:improove/theme/custom_theme.dart';
 import 'package:improove/redux/store.dart';
+// import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,6 +36,8 @@ class App extends StatelessWidget {
         title: 'Improove',
         theme: CustomTheme.lightTheme,
         // darkTheme: CustomTheme.darkTheme,
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
         home: const SplashScreen(),
       ),
     );

@@ -13,6 +13,7 @@ import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TrainerScreen extends StatelessWidget {
   final int id;
@@ -165,7 +166,7 @@ class TrainerScreen extends StatelessWidget {
                           bottom: 25.0,
                         ),
                         child: Text(
-                          "My Courses",
+                          AppLocalizations.of(context)!.myCourses,
                           style: textTheme.headline6
                               ?.copyWith(color: colorScheme.primary),
                         ),

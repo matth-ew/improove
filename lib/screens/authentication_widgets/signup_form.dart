@@ -7,6 +7,7 @@ import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/screens/verification_screen.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SignupForm extends StatefulWidget {
   final double? fontSize;
@@ -84,7 +85,7 @@ class _SignupFormState extends State<SignupForm> {
             Padding(
               padding: const EdgeInsets.only(top: 15.0, bottom: 15),
               child: Text(
-                "Create your account",
+                AppLocalizations.of(context)!.createAccount,
                 textAlign: TextAlign.left,
                 style: textTheme.headline6?.copyWith(
                   color: colorScheme.onSurface,
@@ -204,13 +205,13 @@ class _SignupFormState extends State<SignupForm> {
                     child: RichText(
                       textAlign: TextAlign.center,
                       text: TextSpan(
-                        style: textTheme.caption,
+                        style: textTheme.overline,
                         children: [
-                          const TextSpan(
-                            text: 'By entering, I accept Improove’s ',
+                          TextSpan(
+                            text: "${AppLocalizations.of(context)!.legalText} ",
                           ),
                           TextSpan(
-                            text: 'Terms & Conditions of Use',
+                            text: AppLocalizations.of(context)!.termsConditions,
                             style: const TextStyle(color: Colors.blue),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
@@ -224,11 +225,11 @@ class _SignupFormState extends State<SignupForm> {
                                 );
                               },
                           ),
-                          const TextSpan(
-                            text: ' and ',
+                          TextSpan(
+                            text: ' ${AppLocalizations.of(context)!.and} ',
                           ),
                           TextSpan(
-                            text: 'Privacy Policy',
+                            text: AppLocalizations.of(context)!.privacyPolicy,
                             style: const TextStyle(color: Colors.blue),
                             recognizer: TapGestureRecognizer()
                               ..onTap = () {
@@ -303,7 +304,7 @@ class _SignupFormState extends State<SignupForm> {
                       shape: const StadiumBorder(),
                     ),
                     child: Text(
-                      'Sign Up',
+                      AppLocalizations.of(context)!.signup,
                       style: TextStyle(fontSize: widget.fontSize),
                     ),
                   ),

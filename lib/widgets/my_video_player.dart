@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:chewie/chewie.dart';
 import 'package:video_player/video_player.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyVideoPlayer extends StatefulWidget {
   const MyVideoPlayer({
@@ -98,10 +99,11 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
                     )
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        CircularProgressIndicator(color: Colors.white),
-                        SizedBox(height: 20),
-                        Text('Loading', style: TextStyle(color: Colors.white)),
+                      children: [
+                        const CircularProgressIndicator(color: Colors.white),
+                        const SizedBox(height: 20),
+                        Text(AppLocalizations.of(context)!.loading,
+                            style: const TextStyle(color: Colors.white)),
                       ],
                     ),
             ),

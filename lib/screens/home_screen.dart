@@ -4,7 +4,6 @@ import 'package:improove/screens/feedback_screen.dart';
 import 'package:improove/screens/training_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/widgets/cta_card.dart';
-import 'package:improove/const/text.dart';
 import 'package:improove/const/images.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -14,6 +13,7 @@ import 'package:improove/widgets/custom_bottom_sheet.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   static const int numNewTrainings = 4;
@@ -43,7 +43,7 @@ class HomeScreen extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                     child: Text(
-                      "Training of the week 🔥",
+                      AppLocalizations.of(context)!.trainingWeek,
                       style: textTheme.headline5?.copyWith(
                           color: colorScheme.primary,
                           fontWeight: FontWeight.w600),
@@ -56,7 +56,7 @@ class HomeScreen extends StatelessWidget {
                   child: PreviewCard(
                     name: vm.dailyTraining?.title,
                     duration:
-                        '${vm.dailyTraining?.exercisesLength ?? 0} ${vm.dailyTraining?.exercisesLength == 1 ? 'exercise' : 'exercises'}',
+                        '${vm.dailyTraining?.exercisesLength ?? 0} ${vm.dailyTraining?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}',
                     preview: vm.dailyTraining?.preview,
                     category: vm.dailyTraining?.category,
                     avatar: vm.dailyTraining?.trainerImage,
@@ -83,7 +83,7 @@ class HomeScreen extends StatelessWidget {
                     // width: size.width * (198 / 254),
                     child: CtaCard(
                       preview: imgCtaTraining,
-                      tag: ctaBecameTrainer,
+                      tag: AppLocalizations.of(context)!.ctaBecameTrainer,
                       onPress: () {
                         pushNewScreen(
                           context,
@@ -102,7 +102,7 @@ class HomeScreen extends StatelessWidget {
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
                     child: Text(
-                      "Newest trainings 🚀",
+                      AppLocalizations.of(context)!.newTrainings,
                       style: textTheme.headline5?.copyWith(
                           color: colorScheme.primary,
                           fontWeight: FontWeight.w600),
@@ -120,7 +120,7 @@ class HomeScreen extends StatelessWidget {
                       (BuildContext context, int index) {
                     final training = vm.trainings[vm.ids[index]];
                     final durationString =
-                        '${training?.exercisesLength} ${training?.exercisesLength == 1 ? 'exercise' : 'exercises'}';
+                        '${training?.exercisesLength} ${training?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}';
                     return Center(
                       child: PreviewCard(
                         name: training?.title,
@@ -154,7 +154,7 @@ class HomeScreen extends StatelessWidget {
                     // width: size.width * (198 / 254),
                     child: CtaCard(
                       preview: imgCtaFeedback,
-                      tag: ctaFeedback,
+                      tag: AppLocalizations.of(context)!.ctaFeedback,
                       onPress: () {
                         showCustomBottomSheet(context, const FeedbackScreen());
                         // pushNewScreen(

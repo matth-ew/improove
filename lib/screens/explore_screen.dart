@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:improove/const/images.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/screens/training_screen.dart';
-import 'package:improove/const/text.dart';
 import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/widgets/cta_card.dart';
@@ -14,6 +13,7 @@ import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExploreScreen extends StatelessWidget {
   const ExploreScreen({
@@ -54,7 +54,7 @@ class ExploreScreen extends StatelessWidget {
                     titlePadding:
                         const EdgeInsetsDirectional.only(start: 25, bottom: 16),
                     title: Text(
-                      "Explore",
+                      AppLocalizations.of(context)!.explore,
                       style: textTheme.headline5?.copyWith(
                         color: colorScheme.primary,
                         fontWeight: FontWeight.w600,
@@ -82,7 +82,7 @@ class ExploreScreen extends StatelessWidget {
                         (BuildContext context, int index) {
                       final training = vm.trainings[vm.ids[index]];
                       final durationString =
-                          '${training?.exercisesLength} ${training?.exercisesLength == 1 ? 'exercise' : 'exercises'}';
+                          '${training?.exercisesLength} ${training?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}';
                       return Center(
                         child: PreviewCard(
                           name: training?.title,
@@ -116,7 +116,7 @@ class ExploreScreen extends StatelessWidget {
                       width: size.width * (198 / 254),
                       child: CtaCard(
                         preview: imgCtaTraining,
-                        tag: ctaBecameTrainer,
+                        tag: AppLocalizations.of(context)!.ctaBecameTrainer,
                         onPress: () {
                           pushNewScreen(
                             context,

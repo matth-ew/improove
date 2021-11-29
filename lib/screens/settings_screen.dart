@@ -6,11 +6,10 @@ import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/widgets/image_picker_cropper.dart';
-import 'package:improove/widgets/trim_view.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'settings_widgets/change_personal_info.dart';
 
@@ -19,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final colorScheme = Theme.of(context).colorScheme;
+    final colorScheme = Theme.of(context).colorScheme;
     // final buttonTheme = Theme.of(context).buttonTheme;
     // final textTheme = Theme.of(context).textTheme;
     return StoreConnector(
@@ -30,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
           children: <Widget>[
             ListTile(
               leading: const Icon(Icons.photo),
-              title: const Text('Change Profile Image'),
+              title: Text(AppLocalizations.of(context)!.changeProfImage),
               onTap: () async {
                 try {
                   final File? fileToSave =
@@ -45,47 +44,21 @@ class SettingsScreen extends StatelessWidget {
                 }
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.video_camera_front_rounded),
-              title: const Text('Take a video'),
-              onTap: () async {
-                try {
-                  final ImagePicker _picker = ImagePicker();
-                  final XFile? fileToSave =
-                      await _picker.pickVideo(source: ImageSource.camera);
-                  if (fileToSave != null) {
-                    pushNewScreen(
-                      context,
-                      screen: TrimmerView(
-                        File(fileToSave.path),
-                        onSave: (String path) async {
-                          vm.addLocalVideo(
-                              LocalVideo(path: path, group: "", name: ""));
-                          // await addLocalVideo(
-                          //   path: path,
-                          //   group: "",
-                          //   name: "",
-                          // );
-                        },
-                      ),
-                      withNavBar: false,
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino,
-                    );
-                  }
-                  // if (fileToSave != null) {
-                  //   vm.changeProfileImage(fileToSave, (String? e) {
-                  //     Navigator.pop(context);
-                  //   });
-                  // }
-                } catch (e) {
-                  debugPrint("Errore in selezione immagine ${e.toString()}");
-                }
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.video_camera_front_rounded),
+            //   title: const Text('Take a video'),
+            //   onTap: () => recordTrimVideo(
+            //     context,
+            //     onSave: (String path) async {
+            //       vm.addLocalVideo(
+            //         LocalVideo(path: path, group: ""),
+            //       );
+            //     },
+            //   ),
+            // ),
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('Change Personal Info'),
+              title: Text(AppLocalizations.of(context)!.changePersInfo),
               onTap: () {
                 pushNewScreen(
                   context,
@@ -101,7 +74,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.description),
-              title: const Text('Terms & Conditions'),
+              title: Text(AppLocalizations.of(context)!.termsConditions),
               onTap: () {
                 pushNewScreen(
                   context,
@@ -114,7 +87,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.security),
-              title: const Text('Privacy Policy'),
+              title: Text(AppLocalizations.of(context)!.privacyPolicy),
               onTap: () {
                 pushNewScreen(
                   context,
@@ -127,7 +100,7 @@ class SettingsScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.email),
-              title: const Text('Contact Us'),
+              title: Text(AppLocalizations.of(context)!.contactUs),
               onTap: () {
                 String? encodeQueryParameters(Map<String, String> params) {
                   return params.entries
@@ -148,9 +121,9 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.logout, color: Colors.redAccent),
-              title: const Text('Disconnect',
-                  style: TextStyle(color: Colors.redAccent)),
+              leading: Icon(Icons.logout, color: colorScheme.error),
+              title: Text(AppLocalizations.of(context)!.disconnect,
+                  style: TextStyle(color: colorScheme.error)),
               onTap: () {
                 vm.logout(
                   (String? e) {

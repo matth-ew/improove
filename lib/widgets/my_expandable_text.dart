@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:expandable_text/expandable_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MyExpandableText extends StatelessWidget {
   final String text;
@@ -12,8 +13,8 @@ class MyExpandableText extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
 
     return ExpandableText(text,
-        expandText: "Show",
-        collapseText: "Hide",
+        expandText: AppLocalizations.of(context)!.show,
+        collapseText: AppLocalizations.of(context)!.hide,
         linkColor: colorScheme.primary,
         maxLines: 6,
         style: textTheme.subtitle1

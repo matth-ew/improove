@@ -9,6 +9,7 @@ import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExerciseScreen extends StatelessWidget {
   final int trainingId;
@@ -152,7 +153,7 @@ class ExerciseScreen extends StatelessWidget {
                           bottom: 15.0,
                         ),
                         child: Text(
-                          "How to Perform",
+                          AppLocalizations.of(context)!.howToPerform,
                           style: textTheme.headline6
                               ?.copyWith(color: colorScheme.primary),
                         ),
@@ -173,7 +174,7 @@ class ExerciseScreen extends StatelessWidget {
                           bottom: 10.0,
                         ),
                         child: Text(
-                          "Common Mistakes",
+                          AppLocalizations.of(context)!.commonMistakes,
                           style: textTheme.headline6
                               ?.copyWith(color: colorScheme.primary),
                         ),
@@ -192,7 +193,7 @@ class ExerciseScreen extends StatelessWidget {
                           bottom: 10.0,
                         ),
                         child: Text(
-                          "Tips",
+                          AppLocalizations.of(context)!.tips,
                           style: textTheme.headline6
                               ?.copyWith(color: colorScheme.primary),
                         ),

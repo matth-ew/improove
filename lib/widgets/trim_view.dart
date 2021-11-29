@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'trimmer/video_trimmer.dart';
 import 'trimmer/trimmer.dart';
 import 'trimmer/video_viewer.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TrimmerView extends StatefulWidget {
   final File file;
@@ -46,6 +48,7 @@ class _TrimmerViewState extends State<TrimmerView> {
           _progressVisibility = false;
           _value = value;
         });
+        Navigator.pop(context);
       },
     );
 
@@ -65,91 +68,130 @@ class _TrimmerViewState extends State<TrimmerView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.black,
-        // title: Text("Video Trimmer"),
-      ),
-      body: Builder(
-        builder: (context) => Center(
-          child: Container(
-            padding: const EdgeInsets.only(bottom: 30.0),
-            color: Colors.black,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.max,
-              children: <Widget>[
-                Visibility(
-                  visible: _progressVisibility,
-                  child: const LinearProgressIndicator(
-                    backgroundColor: Colors.red,
-                  ),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: () async {
-                      bool playbackState = await _trimmer.videPlaybackControl(
-                        startValue: _startValue,
-                        endValue: _endValue,
-                      );
-                      setState(() {
-                        _isPlaying = playbackState;
-                      });
-                    },
-                    child: Stack(
-                      children: [
-                        VideoViewer(trimmer: _trimmer),
-                        Visibility(
-                          visible: !_isPlaying,
-                          child: const Align(
-                            alignment: Alignment.center,
-                            child: Icon(
-                              Icons.play_arrow_rounded,
-                              size: 80.0,
-                              color: Colors.white,
-                            ),
-                          ),
+    // final colorScheme = Theme.of(context).colorScheme;
+    return WillPopScope(
+      onWillPop: () async {
+        showDialog<void>(
+            context: context,
+            builder: (BuildContext context) => AlertDialog(
+                  title: Text(AppLocalizations.of(context)!.wantDeleteVideo),
+                  content: Text(AppLocalizations.of(context)!.backLooseVideo),
+                  actions: [
+                    TextButton(
+                      child: Text(AppLocalizations.of(context)!.no),
+                      onPressed: () {
+                        Navigator.pop(context);
+                      },
+                    ),
+                    TextButton(
+                      child: Text(
+                        AppLocalizations.of(context)!.delete,
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.error,
                         ),
-                      ],
+                      ),
+                      onPressed: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
+                    )
+                  ],
+                ));
+        return false;
+      },
+      child: Scaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.black,
+          // title: Text("Video Trimmer"),
+        ),
+        body: Builder(
+          builder: (context) => Center(
+            child: Container(
+              padding: const EdgeInsets.only(bottom: 30.0),
+              color: Colors.black,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: <Widget>[
+                  Visibility(
+                    visible: _progressVisibility,
+                    child: const LinearProgressIndicator(
+                      backgroundColor: Colors.red,
                     ),
                   ),
-                ),
-                Center(
-                  child: TrimEditor(
-                    sideTapSize: 50,
-                    trimmer: _trimmer,
-                    viewerHeight: 50.0,
-                    viewerWidth: MediaQuery.of(context).size.width * 0.9,
-                    // maxVideoLength: Duration(seconds: 10),
-                    onChangeStart: (value) {
-                      _startValue = value;
-                    },
-                    onChangeEnd: (value) {
-                      _endValue = value;
-                    },
-                    onChangePlaybackState: (value) {
-                      setState(() {
-                        _isPlaying = value;
-                      });
-                    },
+                  Expanded(
+                    child: GestureDetector(
+                      onTap: () async {
+                        bool playbackState = await _trimmer.videPlaybackControl(
+                          startValue: _startValue,
+                          endValue: _endValue,
+                        );
+                        setState(() {
+                          _isPlaying = playbackState;
+                        });
+                      },
+                      child: Stack(
+                        children: [
+                          VideoViewer(trimmer: _trimmer),
+                          Visibility(
+                            visible: !_isPlaying,
+                            child: const Align(
+                              alignment: Alignment.center,
+                              child: Icon(
+                                Icons.play_arrow_rounded,
+                                size: 80.0,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-                ElevatedButton(
-                  onPressed: _progressVisibility
-                      ? null
-                      : () async {
-                          _saveVideo().then((outputPath) {
-                            debugPrint('OUTPUT PATH: $outputPath');
-                            const snackBar = SnackBar(
-                                content: Text('Video Saved successfully'));
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              snackBar,
-                            );
-                          });
-                        },
-                  child: const Text("SAVE"),
-                ),
-              ],
+                  Center(
+                    child: TrimEditor(
+                      sideTapSize: 50,
+                      circleSize: 8,
+                      circleSizeOnDrag: 10,
+                      trimmer: _trimmer,
+                      viewerHeight: 50.0,
+                      viewerWidth: MediaQuery.of(context).size.width * 0.9,
+                      // maxVideoLength: Duration(seconds: 10),
+                      onChangeStart: (value) {
+                        _startValue = value;
+                      },
+                      onChangeEnd: (value) {
+                        _endValue = value;
+                      },
+                      onChangePlaybackState: (value) {
+                        setState(() {
+                          _isPlaying = value;
+                        });
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    child: ElevatedButton(
+                      onPressed: _progressVisibility
+                          ? null
+                          : () async {
+                              _saveVideo();
+                            },
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          const Icon(Icons.save_alt_rounded),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Text(AppLocalizations.of(context)!.save),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         ),

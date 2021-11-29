@@ -3,6 +3,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../nav_screen.dart';
 
@@ -58,7 +59,7 @@ class _LoginFormState extends State<LoginForm> {
             Padding(
               padding: const EdgeInsets.only(top: 15.0, bottom: 15),
               child: Text(
-                "Login to your account",
+                AppLocalizations.of(context)!.loginTitle,
                 textAlign: TextAlign.left,
                 style: textTheme.headline6?.copyWith(
                   color: colorScheme.onSurface,
@@ -189,7 +190,7 @@ class _LoginFormState extends State<LoginForm> {
                         minimumSize: const Size(double.infinity, 50),
                         shape: const StadiumBorder(),
                       ),
-                      child: Text('Sign In',
+                      child: Text(AppLocalizations.of(context)!.signin,
                           style: TextStyle(fontSize: widget.fontSize)),
                     ),
                   ),

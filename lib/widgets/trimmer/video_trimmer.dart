@@ -217,7 +217,8 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
 
   int _numberOfThumbnails = 0;
 
-  late double _circleSize;
+  late double _leftCircleSize;
+  late double _rightCircleSize;
 
   double? fraction;
   double? maxLengthPixels;
@@ -298,7 +299,8 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
       }
     });
 
-    _circleSize = widget.circleSize;
+    _leftCircleSize = widget.circleSize;
+    _rightCircleSize = widget.circleSize;
 
     _thumbnailViewerH = widget.viewerHeight;
 
@@ -396,9 +398,8 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
   void _onDragUpdate(DragUpdateDetails details) {
     if (!_allowDrag) return;
 
-    _circleSize = widget.circleSizeOnDrag;
-
     if (_dragType == EditorDragType.left) {
+      _leftCircleSize = widget.circleSizeOnDrag;
       if ((_startPos.dx + details.delta.dx >= 0) &&
           (_startPos.dx + details.delta.dx <= _endPos.dx) &&
           !(_endPos.dx - _startPos.dx - details.delta.dx > maxLengthPixels!)) {
@@ -406,14 +407,13 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
         _onStartDragged();
       }
     } else if (_dragType == EditorDragType.center) {
-      if ((_startPos.dx + details.delta.dx >= 0) &&
-          (_endPos.dx + details.delta.dx <= _thumbnailViewerW)) {
-        _startPos += details.delta;
-        _endPos += details.delta;
-        _onStartDragged();
-        _onEndDragged();
-      }
+      // var _Fraction = (details.localPosition.dx / _thumbnailViewerW);
+      // var _Pos = _videoDuration * _Fraction;
+      // debugPrint("UE POS $_Pos");
+      // _linearTween.begin = details.localPosition.dx;
+      // videoPlayerController.seekTo(Duration(milliseconds: _Pos.toInt()));
     } else {
+      _rightCircleSize = widget.circleSizeOnDrag;
       if ((_endPos.dx + details.delta.dx <= _thumbnailViewerW) &&
           (_endPos.dx + details.delta.dx >= _startPos.dx) &&
           !(_endPos.dx - _startPos.dx + details.delta.dx > maxLengthPixels!)) {
@@ -437,6 +437,7 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
   void _onEndDragged() {
     _endFraction = _endPos.dx / _thumbnailViewerW;
     _videoEndPos = _videoDuration * _endFraction;
+    debugPrint("UE POS $_videoEndPos");
     widget.onChangeEnd!(_videoEndPos);
     _linearTween.end = _endPos.dx;
     _animationController!.duration =
@@ -447,7 +448,8 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
   /// Drag gesture ended, update UI accordingly.
   void _onDragEnd(DragEndDetails details) {
     setState(() {
-      _circleSize = widget.circleSize;
+      _leftCircleSize = widget.circleSize;
+      _rightCircleSize = widget.circleSize;
       if (_dragType == EditorDragType.right) {
         videoPlayerController
             .seekTo(Duration(milliseconds: _videoEndPos.toInt()));
@@ -512,7 +514,8 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
               startPos: _startPos,
               endPos: _endPos,
               scrubberAnimationDx: _scrubberAnimation?.value ?? 0,
-              circleSize: _circleSize,
+              leftCircleSize: _leftCircleSize,
+              rightCircleSize: _rightCircleSize,
               borderWidth: widget.borderWidth,
               scrubberWidth: widget.scrubberWidth,
               circlePaintColor: widget.circlePaintColor,
@@ -556,7 +559,8 @@ class TrimEditorPainter extends CustomPainter {
   /// For specifying a size to the holder at the
   /// two ends of the video trimmer area, while it is `idle`.
   /// By default it is set to `0.5`.
-  final double circleSize;
+  final double leftCircleSize;
+  final double rightCircleSize;
 
   /// For specifying the width of the border around
   /// the trim area. By default it is set to `3`.
@@ -629,7 +633,8 @@ class TrimEditorPainter extends CustomPainter {
     required this.startPos,
     required this.endPos,
     required this.scrubberAnimationDx,
-    this.circleSize = 0.5,
+    this.leftCircleSize = 0.5,
+    this.rightCircleSize = 0.5,
     this.borderWidth = 3,
     this.scrubberWidth = 1,
     this.showScrubber = true,
@@ -672,9 +677,9 @@ class TrimEditorPainter extends CustomPainter {
 
     canvas.drawRect(rect, borderPaint);
     canvas.drawCircle(
-        startPos + Offset(0, endPos.dy / 2), circleSize, circlePaint);
+        startPos + Offset(0, endPos.dy / 2), leftCircleSize, circlePaint);
     canvas.drawCircle(
-        endPos + Offset(0, -endPos.dy / 2), circleSize, circlePaint);
+        endPos + Offset(0, -endPos.dy / 2), rightCircleSize, circlePaint);
   }
 
   @override

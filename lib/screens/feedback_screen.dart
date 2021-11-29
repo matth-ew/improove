@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class FeedbackScreen extends StatefulWidget {
   const FeedbackScreen({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
           if (e == null) {
             debugPrint("NOT ERROR");
             Navigator.of(context).pop();
-            snackBar("Thanks for your help");
+            snackBar(AppLocalizations.of(context)!.thanksForHelp);
           } else {
             debugPrint("ERROR ${e.toString()}");
           }
@@ -69,7 +70,7 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
             mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               Text(
-                "Tell us what you think",
+                AppLocalizations.of(context)!.giveFeedback,
                 style: textTheme.headline5?.copyWith(
                     fontWeight: FontWeight.w600, color: colorScheme.primary),
               ),
@@ -93,12 +94,12 @@ class _FeedbackScreenState extends State<FeedbackScreen> {
                   _submit(vm.sendFeedback, currentText);
                 },
                 style: ElevatedButton.styleFrom(
-                  minimumSize: const Size(0, 50),
+                  minimumSize: const Size(double.infinity, 50),
                   shape: const StadiumBorder(),
                 ),
-                child: const Text(
-                  'Submit',
-                  style: TextStyle(fontSize: 20),
+                child: Text(
+                  AppLocalizations.of(context)!.submitFeedback,
+                  // style: TextStyle(fontSize: 20),
                 ),
               ),
             ],

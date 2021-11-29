@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChangePersonalInfo extends StatefulWidget {
   final String? name;
@@ -47,7 +48,7 @@ class _ChangePersonalInfoState extends State<ChangePersonalInfo> {
       appBar: AppBar(
         elevation: 0,
         title: Text(
-          "Change personal info",
+          AppLocalizations.of(context)!.changePersInfo,
           style: textTheme.headline6?.copyWith(
               color: colorScheme.primary, fontWeight: FontWeight.w600),
         ),

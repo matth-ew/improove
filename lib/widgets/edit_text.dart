@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditTextCard extends StatefulWidget {
   final String text;
@@ -56,7 +57,7 @@ class _EditTextCard extends State<EditTextCard> {
               widget.onDone!(myController.text);
             },
             child: Text(
-              "Done",
+              AppLocalizations.of(context)!.done,
               style: textTheme.subtitle1?.copyWith(color: colorScheme.primary),
             )),
       ]);
@@ -70,7 +71,7 @@ class _EditTextCard extends State<EditTextCard> {
               });
             },
             child: Text(
-              "Edit",
+              AppLocalizations.of(context)!.edit,
               style: textTheme.subtitle1?.copyWith(color: colorScheme.primary),
             )),
       ]);

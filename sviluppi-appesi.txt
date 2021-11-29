@@ -1,4 +1,5 @@
-Manca configurazione Facebook Login e Google Login per iOS e Web (https://facebook.meedu.app/#/, )
+Manca configurazione Facebook Login e Google Login per Web (https://facebook.meedu.app/#/, )
 Manca flutter secure-storage per Web e va gestito (https://github.com/mogol/flutter_secure_storage/issues/96)
-Manca Sign in Apple, https://pub.dev/packages/sign_in_with_apple/install https://github.com/nicokaiser/passport-apple
-Manca configurazione File Picker per iOS https://github.com/miguelpruivo/flutter_file_picker/wiki/Setup
+Manca configurazione Image Picker per iOS https://pub.dev/packages/image_picker
+Manca configurazione localization per iOS https://docs.flutter.dev/development/accessibility-and-localization/internationalization
+Manca configurazione Trimmer per iOS https://github.com/sbis04/video_trimmer/

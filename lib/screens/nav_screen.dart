@@ -30,11 +30,11 @@ class _NavScreenState extends State<NavScreen> {
 
   // int _selectedIndex = 3;
 
-  List<Widget> _buildScreens() {
+  List<Widget> _buildScreens(PersistentTabController _controller) {
     return [
       const HomeScreen(),
       const ExploreScreen(),
-      const ProfileScreen(),
+      ProfileScreen(controller: _controller),
     ];
   }
   //       BottomNavigationBarItem(
@@ -90,7 +90,7 @@ class _NavScreenState extends State<NavScreen> {
     return PersistentTabView(
       context,
       controller: _controller,
-      screens: _buildScreens(),
+      screens: _buildScreens(_controller),
       items: _navBarsItems(colorScheme),
       confineInSafeArea: true,
       backgroundColor: colorScheme.background, // Default is Colors.white.
@@ -100,12 +100,19 @@ class _NavScreenState extends State<NavScreen> {
       // stateManagement: true, // Default is true.
       // hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
       decoration: NavBarDecoration(
+        // boxShadow: [
+        //   BoxShadow(
+        //     color: colorScheme.onSurface.withOpacity(0.1),
+        //     blurRadius: 10,
+        //     spreadRadius: -3,
+        //   )
+        // ],
         // adjustScreenBottomPaddingOnCurve: false,
         // borderRadius: BorderRadius.circular(10.0),
         // colorBehindNavBar: Colors.white,
         border: BorderDirectional(
           top: BorderSide(
-            color: colorScheme.onSurface.withOpacity(0.49),
+            color: colorScheme.onSurface.withOpacity(0.1),
           ),
         ),
       ),

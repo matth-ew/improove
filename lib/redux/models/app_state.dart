@@ -1,6 +1,5 @@
 // lib/models/app_state.dart
 import 'package:flutter/foundation.dart';
-import 'package:improove/redux/models/local_video.dart';
 import 'package:meta/meta.dart';
 import 'models.dart';
 
@@ -13,6 +12,7 @@ class AppState {
   final List<int> exploreTrainingsIds;
   final List<int> newTrainingsIds;
   final List<LocalVideo> localVideos;
+  final List<VideoFolder> videoFolders;
   final Map<int, User> trainers;
 
   const AppState({
@@ -21,6 +21,7 @@ class AppState {
     required this.exploreTrainingsIds,
     required this.newTrainingsIds,
     required this.localVideos,
+    required this.videoFolders,
     required this.trainers,
   });
   const AppState.initial()
@@ -29,11 +30,14 @@ class AppState {
         newTrainingsIds = const [],
         user = const User.initial(),
         localVideos = const [],
+        videoFolders = const [],
         trainers = const {};
 
   dynamic toJson() => {
         'user': user.toJson(),
         'local-videos': List<dynamic>.from(localVideos.map((v) => v.toJson())),
+        'video-folders':
+            List<dynamic>.from(videoFolders.map((f) => f.toJson())),
         //'trainers': trainers.entries.map((e) => {e.key: e.value.toJson()}),
         //'trainings': trainings.entries.map((e) => {e.key: e.value.toJson()}),
       };
@@ -43,6 +47,8 @@ class AppState {
       user: User.fromJson(json['user']),
       localVideos: List<LocalVideo>.from(
           (json['local-videos'] ?? []).map((v) => LocalVideo.fromJson(v))),
+      videoFolders: List<VideoFolder>.from(
+          (json['video-folders'] ?? []).map((f) => VideoFolder.fromJson(f))),
       trainers: const {},
       trainings: const {},
       exploreTrainingsIds: const [],

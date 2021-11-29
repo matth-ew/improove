@@ -62,20 +62,28 @@ class CardRow extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text(
-                        name ?? "",
-                        textAlign: TextAlign.left,
-                        maxLines: 1,
-                        style: textTheme.headline6
-                            ?.copyWith(color: colorScheme.primary),
+                      Visibility(
+                        visible: name != null && name!.isNotEmpty,
+                        child: Text(
+                          name ?? "",
+                          textAlign: TextAlign.left,
+                          maxLines: 1,
+                          style: textTheme.headline6
+                              ?.copyWith(color: colorScheme.primary),
+                        ),
                       ),
-                      const SizedBox(height: 5),
-                      Text(
-                        category ?? "",
-                        textAlign: TextAlign.left,
-                        maxLines: 1,
-                        style:
-                            textTheme.bodyText2?.copyWith(color: Colors.grey),
+                      Visibility(
+                          visible: category != null && category!.isNotEmpty,
+                          child: const SizedBox(height: 5)),
+                      Visibility(
+                        visible: category != null && category!.isNotEmpty,
+                        child: Text(
+                          category ?? "",
+                          textAlign: TextAlign.left,
+                          maxLines: 1,
+                          style:
+                              textTheme.bodyText2?.copyWith(color: Colors.grey),
+                        ),
                       ),
                     ],
                   ),

@@ -11,11 +11,21 @@ import 'package:improove/widgets/row_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 
-import 'profile_widgets/local_videos.dart';
+import 'profile_widgets/local_folders.dart';
+import 'profile_widgets/saved_trainings.dart';
 // import 'package:video_player/video_player.dart';
 
 class ProfileScreen extends StatelessWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
+  final PersistentTabController controller;
+  const ProfileScreen({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
+
+  void goToExplore() {
+    debugPrint("GOTOEXPLORE!");
+    controller.jumpToTab(1);
+  }
 
   Widget textElem(String first, String second, BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -136,16 +146,20 @@ class ProfileScreen extends StatelessWidget {
                       unselectedLabelColor: colorScheme.onSurface,
                       tabs: const [
                         Tab(icon: Icon(Icons.video_library)),
-                        Tab(icon: Icon(Icons.video_call)),
+                        Tab(icon: Icon(Icons.fitness_center_rounded)),
                         Tab(icon: Icon(Icons.history)),
                       ],
                     ),
                     Expanded(
                       child: TabBarView(
                         children: [
-                          _showSavedTrainings(context, vm.user.savedTrainings,
-                              vm.trainings, vm.removeTraining),
-                          const LocalVideos(),
+                          SavedTrainings(
+                            savedTrainings: vm.user.savedTrainings,
+                            trainings: vm.trainings,
+                            removeTraining: vm.removeTraining,
+                            ctaAction: goToExplore,
+                          ),
+                          const LocalFolders(),
                           _showClosedTrainings(
                               context, vm.user.closedTrainings, vm.trainings),
                         ],
@@ -158,51 +172,6 @@ class ProfileScreen extends StatelessWidget {
           ),
         );
       },
-    );
-  }
-
-  Widget _showSavedTrainings(
-      BuildContext context,
-      List<SavedTraining> savedTrainings,
-      Map<int, Training> trainings,
-      Function removeTraining) {
-    return ListView(
-      // padding: EdgeInsets.all(5),
-      children: [
-        ...savedTrainings.map((s) {
-          final Training? t = trainings[s.trainingId];
-          return CardRow(
-            preview: t?.preview,
-            name: t?.title,
-            category: t?.category,
-            onTap: () {
-              pushNewScreen(
-                context,
-                screen: TrainingScreen(id: s.trainingId),
-                withNavBar: true,
-                pageTransitionAnimation: PageTransitionAnimation.cupertino,
-              );
-            },
-            action: PopupMenuButton(
-              itemBuilder: (BuildContext context) {
-                return [
-                  PopupMenuItem(
-                    child: const Text("Remove"),
-                    onTap: () {
-                      removeTraining(t!.id);
-                    },
-                  )
-                ];
-              },
-              child: const Icon(
-                Icons.more_vert,
-                size: 30,
-                color: Colors.grey,
-              ),
-            ),
-          );
-        }),
-      ],
     );
   }
 

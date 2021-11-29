@@ -42,64 +42,69 @@ class CtaCard extends StatelessWidget {
     // 254 620
     // 92 119 -> 198 135
 
-    return SizedBox(
-      height: heightCard,
-      width: widthCard,
-      child: Stack(
-        children: <Widget>[
-          Container(
-              alignment: Alignment.bottomCenter,
-              child: ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(radius)),
-                child: CachedNetworkImage(
-                  width: double.infinity,
-                  height: double.infinity,
-                  fit: BoxFit.cover,
-                  placeholder: (context, url) =>
-                      const ColoredBox(color: Colors.grey),
-                  imageUrl: preview,
-                  errorWidget: (context, url, error) =>
-                      const ColoredBox(color: Colors.grey),
-                ),
-                // boxShadow: [
-                //   new BoxShadow(
-                //     color: Colors.black,
-                //     blurRadius: 2.0,
-                //   ),
-                // ],
-              )),
-          Container(
-              padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
-              alignment: Alignment.bottomCenter,
-              child: OutlinedButton(
-                onPressed: () {
-                  onPress?.call();
-                },
-                style: ButtonStyle(
-                  minimumSize:
-                      MaterialStateProperty.all<Size>(Size(widthCard, 40)),
-                  shape: MaterialStateProperty.all<OutlinedBorder>(
-                      const StadiumBorder()),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(colorScheme.primary),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      tag,
-                      style: textTheme.button?.copyWith(color: Colors.white),
-                    ),
-                    const Icon(Icons.arrow_right_alt, color: Colors.white),
-                  ],
-                ),
-                // padding: const EdgeInsets.only(
-                //     top: 10, bottom: 10, left: 20, right: 20),
-                // backgroundColor: colorScheme.primary,
-                // label: Text(tag,
-                //     style: textTheme.headline6?.copyWith(color: Colors.white)),
-              )),
-        ],
+    return GestureDetector(
+      onTap: () {
+        onPress?.call();
+      },
+      child: SizedBox(
+        height: heightCard,
+        width: widthCard,
+        child: Stack(
+          children: <Widget>[
+            Container(
+                alignment: Alignment.bottomCenter,
+                child: ClipRRect(
+                  borderRadius: const BorderRadius.all(Radius.circular(radius)),
+                  child: CachedNetworkImage(
+                    width: double.infinity,
+                    height: double.infinity,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) =>
+                        const ColoredBox(color: Colors.grey),
+                    imageUrl: preview,
+                    errorWidget: (context, url, error) =>
+                        const ColoredBox(color: Colors.grey),
+                  ),
+                  // boxShadow: [
+                  //   new BoxShadow(
+                  //     color: Colors.black,
+                  //     blurRadius: 2.0,
+                  //   ),
+                  // ],
+                )),
+            Container(
+                padding: const EdgeInsets.fromLTRB(15, 0, 15, 10),
+                alignment: Alignment.bottomCenter,
+                child: OutlinedButton(
+                  onPressed: () {
+                    onPress?.call();
+                  },
+                  style: ButtonStyle(
+                    minimumSize:
+                        MaterialStateProperty.all<Size>(Size(widthCard, 40)),
+                    shape: MaterialStateProperty.all<OutlinedBorder>(
+                        const StadiumBorder()),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(colorScheme.primary),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        tag,
+                        style: textTheme.button?.copyWith(color: Colors.white),
+                      ),
+                      const Icon(Icons.arrow_right_alt, color: Colors.white),
+                    ],
+                  ),
+                  // padding: const EdgeInsets.only(
+                  //     top: 10, bottom: 10, left: 20, right: 20),
+                  // backgroundColor: colorScheme.primary,
+                  // label: Text(tag,
+                  //     style: textTheme.headline6?.copyWith(color: Colors.white)),
+                )),
+          ],
+        ),
       ),
     );
   }

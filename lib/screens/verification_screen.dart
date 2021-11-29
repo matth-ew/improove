@@ -9,6 +9,7 @@ import 'package:improove/screens/nav_screen.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class VerificationScreen extends StatefulWidget {
   final int? verifyToken;
@@ -109,7 +110,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Verification",
+                      AppLocalizations.of(context)!.verification,
                       style: textTheme.headline6?.copyWith(
                         color: colorScheme.primary,
                       ),
@@ -123,7 +124,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 15),
                           child: Text(
-                            "Verification Code",
+                            AppLocalizations.of(context)!.verificationCode,
                             style: textTheme.headline5?.copyWith(
                               color: colorScheme.primary,
                               fontWeight: FontWeight.w600,
@@ -133,7 +134,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
                         Padding(
                           padding: const EdgeInsets.only(bottom: 40),
                           child: Text(
-                            "A verification code has been sent to your email",
+                            AppLocalizations.of(context)!.verifEmailSent,
                             style: textTheme.bodyText2?.copyWith(
                               color: colorScheme.primary,
                               // fontWeight: FontWeight.w600,
@@ -222,9 +223,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             onSurface: colorScheme.primary,
                             shadowColor: colorScheme.primary,
                           ),
-                          child: const Text(
-                            'Send Again',
-                            style: TextStyle(fontSize: fontSize),
+                          child: Text(
+                            AppLocalizations.of(context)!.resend,
+                            style: const TextStyle(fontSize: fontSize),
                           ),
                         ),
                         const Padding(padding: EdgeInsets.all(8)),
@@ -236,9 +237,9 @@ class _VerificationScreenState extends State<VerificationScreen> {
                             minimumSize: const Size(double.infinity, 50),
                             shape: const StadiumBorder(),
                           ),
-                          child: const Text(
-                            'Submit',
-                            style: TextStyle(fontSize: fontSize),
+                          child: Text(
+                            AppLocalizations.of(context)!.submitVerification,
+                            style: const TextStyle(fontSize: fontSize),
                           ),
                         ),
                       ],

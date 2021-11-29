@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:improove/screens/authentication_screen.dart';
-import 'package:improove/const/text.dart';
 import 'package:introduction_screen/introduction_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OnboardingScreen extends StatefulWidget {
   const OnboardingScreen({Key? key}) : super(key: key);
@@ -73,9 +73,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     final pageDecoration = PageDecoration(
-      titleTextStyle:
-          textTheme.headline4?.copyWith(fontWeight: FontWeight.w700) ??
-              const TextStyle(),
+      titleTextStyle: textTheme.headline4?.copyWith(
+              color: colorScheme.primary, fontWeight: FontWeight.w700) ??
+          const TextStyle(),
       bodyTextStyle: textTheme.bodyText2?.copyWith(
               fontSize: 24, color: colorScheme.onBackground.withOpacity(0.7)) ??
           const TextStyle(),
@@ -98,20 +98,20 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       // ),
       pages: [
         PageViewModel(
-          title: onboardingTitle1,
-          body: onboardingDescription1,
+          title: AppLocalizations.of(context)!.onboardingTitle1,
+          body: AppLocalizations.of(context)!.onboardingDescription1,
           image: _buildImage('onboarding1.svg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: onboardingTitle2,
-          body: onboardingDescription2,
+          title: AppLocalizations.of(context)!.onboardingTitle2,
+          body: AppLocalizations.of(context)!.onboardingDescription2,
           image: _buildImage('onboarding2.svg'),
           decoration: pageDecoration,
         ),
         PageViewModel(
-          title: onboardingTitle3,
-          body: onboardingDescription3,
+          title: AppLocalizations.of(context)!.onboardingTitle3,
+          body: AppLocalizations.of(context)!.onboardingDescription3,
           image: _buildImage('onboarding3.svg'),
           decoration: pageDecoration,
         ),
@@ -176,7 +176,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       //rtl: true, // Display as right-to-left
       // skip: const Text('Skip'),
       next: const Icon(Icons.arrow_forward),
-      done: const Text('Done', style: TextStyle(fontWeight: FontWeight.w600)),
+      done: Text(AppLocalizations.of(context)!.done,
+          style: const TextStyle(fontWeight: FontWeight.w600)),
       curve: Curves.fastLinearToSlowEaseIn,
       controlsMargin: const EdgeInsets.all(16),
       controlsPadding: //kIsWeb ? const EdgeInsets.all(12.0) :

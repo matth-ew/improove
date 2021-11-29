@@ -14,6 +14,7 @@ import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
 import 'authentication_widgets/login_form.dart';
 import 'authentication_widgets/signup_form.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AuthenticationScreen extends StatefulWidget {
   const AuthenticationScreen({Key? key}) : super(key: key);
@@ -149,6 +150,7 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
+    final size = MediaQuery.of(context).size;
     // final buttonTheme = Theme.of(context).buttonTheme;
     final textTheme = Theme.of(context).textTheme;
     const height = 44.0;
@@ -159,145 +161,164 @@ class _AuthenticationScreenState extends State<AuthenticationScreen> {
         return Scaffold(
           backgroundColor: colorScheme.background,
           body: SafeArea(
-            child: ListView(
+            child: SingleChildScrollView(
               padding: const EdgeInsets.all(30),
               // mainAxisSize: MainAxisSize.max,
               // mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(top: 15.0, bottom: 15),
-                  child: Center(
-                    child: Text(
-                      "Improove",
-                      style: textTheme.headline3?.copyWith(
-                        color: colorScheme.primary,
-                      ),
-                    ),
-                  ),
-                ),
-                if (signIn)
-                  const LoginForm(fontSize: fontSize)
-                else
-                  const SignupForm(fontSize: fontSize),
-                Column(
+              child: Container(
+                constraints: BoxConstraints(
+                    minHeight: size.height -
+                        MediaQuery.of(context).padding.top -
+                        MediaQuery.of(context).padding.bottom -
+                        60),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
                     Padding(
-                      padding: const EdgeInsets.all(20.0),
-                      child: Text(
-                        signIn ? "- or sign in with -" : "- or sign up with -",
-                        style: textTheme.overline?.copyWith(
-                          color: colorScheme.onSurface,
+                      padding: const EdgeInsets.only(top: 15.0, bottom: 15),
+                      child: Center(
+                        child: Text(
+                          "Improove",
+                          style: textTheme.headline3?.copyWith(
+                            color: colorScheme.primary,
+                          ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: SizedBox(
-                        height: height,
-                        child: SizedBox.expand(
-                          child: OutlinedButton(
-                            onPressed: () => _facebookLogin(vm.facebookLogin),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                const Color.fromRGBO(25, 119, 243, 1),
-                              ),
+                    Visibility(
+                      visible: signIn,
+                      child: const LoginForm(fontSize: fontSize),
+                      replacement: const SignupForm(fontSize: fontSize),
+                    ),
+                    Column(
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(20.0),
+                          child: Text(
+                            signIn
+                                ? "- ${AppLocalizations.of(context)!.authenticationSignin} -"
+                                : "- ${AppLocalizations.of(context)!.authenticationSignup} -",
+                            style: textTheme.overline?.copyWith(
+                              color: colorScheme.onSurface,
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/facebook.svg',
-                                  height: 24,
-                                ),
-                                Text(
-                                  signIn
-                                      ? " Login with Facebook"
-                                      : " Signup with Facebook",
-                                  style: const TextStyle(
-                                    fontSize: fontSize,
-                                    color: Colors.white,
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: SizedBox(
+                            height: height,
+                            child: SizedBox.expand(
+                              child: OutlinedButton(
+                                onPressed: () =>
+                                    _facebookLogin(vm.facebookLogin),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                    const Color.fromRGBO(25, 119, 243, 1),
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 15.0),
-                      child: SizedBox(
-                        height: height,
-                        child: SizedBox.expand(
-                          child: OutlinedButton(
-                            onPressed: () => _googleLogin(vm.googleLogin),
-                            style: ButtonStyle(
-                              backgroundColor: MaterialStateProperty.all<Color>(
-                                  colorScheme.background),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  'assets/icons/google.svg',
-                                  height: 24,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/facebook.svg',
+                                      height: 24,
+                                    ),
+                                    Text(
+                                      signIn
+                                          ? " ${AppLocalizations.of(context)!.signinButton} Facebook"
+                                          : " ${AppLocalizations.of(context)!.signupButton} Facebook",
+                                      style: const TextStyle(
+                                        fontSize: fontSize,
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  signIn
-                                      ? " Login with Google"
-                                      : " Signup with Google",
-                                  style: TextStyle(
-                                      fontSize: fontSize,
-                                      color: colorScheme.onSecondary),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 15.0),
+                          child: SizedBox(
+                            height: height,
+                            child: SizedBox.expand(
+                              child: OutlinedButton(
+                                onPressed: () => _googleLogin(vm.googleLogin),
+                                style: ButtonStyle(
+                                  backgroundColor:
+                                      MaterialStateProperty.all<Color>(
+                                          colorScheme.background),
                                 ),
-                              ],
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    SvgPicture.asset(
+                                      'assets/icons/google.svg',
+                                      height: 24,
+                                    ),
+                                    Text(
+                                      signIn
+                                          ? " ${AppLocalizations.of(context)!.signinButton} Google"
+                                          : " ${AppLocalizations.of(context)!.signupButton} Google",
+                                      style: TextStyle(
+                                          fontSize: fontSize,
+                                          color: colorScheme.onSecondary),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                    if (Platform.isIOS || Platform.isMacOS)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 15),
-                        child: SignInWithAppleButton(
-                          height: height,
-                          onPressed: () => _appleLogin(vm.appleLogin),
-                        ),
-                      ),
-                  ],
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      signIn = !signIn;
-                    });
-                  },
-                  child: Padding(
-                    padding: const EdgeInsets.all(20.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          signIn
-                              ? "Don't have an account? "
-                              : "Already have an account? ",
-                          style: textTheme.overline?.copyWith(
-                            color: colorScheme.onSurface,
-                          ),
-                        ),
-                        InkWell(
-                          child: Text(
-                            signIn ? "Sign up" : "Sign in",
-                            style: textTheme.overline?.copyWith(
-                              color: Colors.blueAccent,
+                        if (Platform.isIOS || Platform.isMacOS)
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 15),
+                            child: SignInWithAppleButton(
+                              height: height,
+                              onPressed: () => _appleLogin(vm.appleLogin),
                             ),
                           ),
-                        ),
                       ],
                     ),
-                  ),
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          signIn = !signIn;
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(20.0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              signIn
+                                  ? "${AppLocalizations.of(context)!.authNoAccount} "
+                                  : "${AppLocalizations.of(context)!.authYetAccount} ",
+                              style: textTheme.overline?.copyWith(
+                                color: colorScheme.onSurface,
+                              ),
+                            ),
+                            InkWell(
+                              child: Text(
+                                signIn
+                                    ? AppLocalizations.of(context)!.signup
+                                    : AppLocalizations.of(context)!.signin,
+                                style: textTheme.overline?.copyWith(
+                                  color: Colors.blueAccent,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         );
