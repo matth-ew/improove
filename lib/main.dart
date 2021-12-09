@@ -1,17 +1,21 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/screens/splash_screen.dart';
 import 'package:improove/theme/custom_theme.dart';
 import 'package:improove/redux/store.dart';
-// import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   final store = await createStore();
   // runApp(App(store: store));
+  if (defaultTargetPlatform == TargetPlatform.android) {
+    InAppPurchaseAndroidPlatformAddition.enablePendingPurchases();
+  }
   runApp(StoreProvider(store: store, child: const App()));
 }
 

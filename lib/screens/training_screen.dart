@@ -56,20 +56,13 @@ class TrainingScreen extends StatelessWidget {
           }
         },
         builder: (BuildContext context, _ViewModel vm) {
+          String? trainerImage = vm.training?.trainerImage;
           return Scaffold(
             body: CustomScrollView(
               slivers: [
                 SliverAppBar(
                   elevation: 0,
                   expandedHeight: size.height * 0.45,
-                  // leading: IconButton(
-                  //   icon: const Icon(Icons.arrow_back),
-                  //   iconSize: 32,
-                  //   color: Colors.white,
-                  //   onPressed: () {
-                  //     Navigator.of(context).pop();
-                  //   },
-                  // ),
                   actions: [
                     if (vm.savedTrainings.any((s) => s.trainingId == id))
                       IconButton(
@@ -135,46 +128,30 @@ class TrainingScreen extends StatelessWidget {
                           borderRadius:
                               const BorderRadius.all(Radius.circular(30)),
                           child: GestureDetector(
-                              onTap: () => {
-                                    if (vm.training?.trainerId != null)
-                                      pushNewScreen(
-                                        context,
-                                        screen: TrainerScreen(
-                                          id: vm.training!.trainerId,
-                                        ),
-                                        withNavBar: true,
-                                        pageTransitionAnimation:
-                                            PageTransitionAnimation.cupertino,
-                                      )
-                                  },
-                              child: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                backgroundImage: CachedNetworkImageProvider(
-                                  vm.training?.trainerImage ?? "",
-                                ),
-                                radius: 30.0,
-                              )
-                              // CachedNetworkImage(
-                              //     width: 60,
-                              //     height: 60,
-                              //     fit: BoxFit.cover,
-                              //     placeholder: (context, url) =>
-                              //         const CircularProgressIndicator(),
-                              //     errorWidget: (context, url, error) =>
-                              //         const Icon(Icons.error),
-                              //     imageUrl: vm.training!.trainerImage),
-                              ),
+                            onTap: () => {
+                              if (vm.training?.trainerId != null)
+                                pushNewScreen(
+                                  context,
+                                  screen: TrainerScreen(
+                                    id: vm.training!.trainerId,
+                                  ),
+                                  withNavBar: true,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino,
+                                )
+                            },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.grey,
+                              backgroundImage:
+                                  trainerImage != null && trainerImage != ""
+                                      ? CachedNetworkImageProvider(
+                                          trainerImage,
+                                        )
+                                      : null,
+                              radius: 30.0,
+                            ),
+                          ),
                         ),
-                        // Container(
-                        //   height: 35,
-                        //   decoration: const BoxDecoration(
-                        //     borderRadius: BorderRadius.only(
-                        //       topLeft: Radius.circular(35),
-                        //       topRight: Radius.circular(35),
-                        //     ),
-                        //     color: Colors.white,
-                        //   ),
-                        // ),
                       ),
                     ],
                   ),
@@ -204,15 +181,9 @@ class TrainingScreen extends StatelessWidget {
                 ),
                 const SliverPadding(padding: EdgeInsets.all(5)),
                 SliverList(
-                  // gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  //   crossAxisCount: 1,
-                  //   // mainAxisSpacing: 30,
-                  //   // crossAxisSpacing: 0,
-                  //   childAspectRatio: 4,
-                  // ),
                   delegate: SliverChildBuilderDelegate(
                       (BuildContext context, int index) {
-                    return CardRow(
+                    return RowCard(
                       preview: vm.training?.exercises[index].preview,
                       name:
                           "${index + 1}. ${vm.training?.exercises[index].title}",
@@ -233,40 +204,6 @@ class TrainingScreen extends StatelessWidget {
                     );
                   }, childCount: vm.training?.exercises.length),
                 ),
-                // SliverToBoxAdapter(
-                //   child: SizedBox(
-                //     height: size.width * (92 / 254) * (135 / 92),
-                //     width: size.width,
-                //     child: ListView.builder(
-                //       padding: const EdgeInsets.only(left: 19.0, right: 19.0),
-                //       scrollDirection: Axis.horizontal,
-                //       itemCount: vm.training!.exercises.length,
-                //       itemBuilder: (context, index) {
-                //         return Padding(
-                //           padding: const EdgeInsets.only(left: 6, right: 6),
-                //           child: PreviewCard(
-                //             preview: vm.training!.exercises[index].preview,
-                //             name: vm.training!.exercises[index].title,
-                //             // avatar: vm.training!.trainerImage,
-                //             id: index,
-                //             onTapCard: (int index) {
-                //               pushNewScreen(
-                //                 context,
-                //                 screen: ExerciseScreen(
-                //                   trainingId: id,
-                //                   id: index,
-                //                 ),
-                //                 withNavBar: false,
-                //                 pageTransitionAnimation:
-                //                     PageTransitionAnimation.slideUp,
-                //               );
-                //             },
-                //           ),
-                //         );
-                //       },
-                //     ),
-                //   ),
-                // ),
                 const SliverPadding(padding: EdgeInsets.all(5)),
               ],
             ),

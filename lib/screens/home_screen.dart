@@ -17,7 +17,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   static const int numNewTrainings = 4;
-  static const int trainingOfTheDay = 6;
+  static const int trainingOfTheWeek = 6;
 
   const HomeScreen({Key? key}) : super(key: key);
   @override
@@ -29,10 +29,10 @@ class HomeScreen extends StatelessWidget {
     // var size = MediaQuery.of(context).size;
     return StoreConnector(
         converter: (Store<AppState> store) =>
-            _ViewModel.fromStore(store, trainingOfTheDay),
+            _ViewModel.fromStore(store, trainingOfTheWeek),
         onInit: (store) {
           store.dispatch(getTrainings(null, numNewTrainings));
-          store.dispatch(getTrainingById(trainingOfTheDay));
+          store.dispatch(getTrainingById(trainingOfTheWeek));
         },
         builder: (BuildContext context, _ViewModel vm) {
           return Scaffold(
@@ -62,7 +62,7 @@ class HomeScreen extends StatelessWidget {
                     avatar: vm.dailyTraining?.trainerImage,
                     widthRatio: 0.96,
                     heightRatio: 0.70,
-                    id: trainingOfTheDay,
+                    id: trainingOfTheWeek,
                     trainerId: vm.dailyTraining?.trainerId,
                     onTapCard: (int index) {
                       pushNewScreen(

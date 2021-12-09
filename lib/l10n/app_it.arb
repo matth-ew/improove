@@ -1,6 +1,7 @@
 {
     "trainingWeek": "Allenamento della settimana 🔥",
-    "newTrainings": "Nuovi allenamenti 🚀","explore":"Esplora",
+    "newTrainings": "Nuovi allenamenti 🚀",
+    "explore":"Esplora",
     "submitFeedback":"Invia",
     "done":"Fatto",
     "giveFeedback":"Dicci cosa ne pensi",
@@ -26,16 +27,18 @@
 
     "@profile":{},
     "createFolder": "Crea Cartella",
+    "changeFolder": "Cambia Cartella",
     "folderName": "Nome Cartella",
-    "wantDeleteFolder": "Vuoi cancellare la cartella",
+    "wantMoveVideo": "In quale cartella?",
+    "wantDeleteFolder": "Vuoi cancellare la cartella?",
     "allVideoLost": "Tutti i video andranno persi",
-    "notAssigned": "Non assegnati",
+    "myWorkouts": "I miei allenamenti",
     "ctaSavedTrainings":"Qui troverai i corsi che segui",
-    "wantDeleteVideo":"Vuoi cancellare il video",
+    "wantDeleteVideo":"Vuoi cancellare il video?",
     "backLooseVideo":"Uscendo dalla schermata perderai il video",
-    "videoSavedSuccess": "Il video è stato salvato correttamente",
-    "videos": "video",
+    "videoSavedSuccess": "Il video è stato salvato",
     "video": "video",
+    "record": "Registra",
 
 
     "@trainings": {},

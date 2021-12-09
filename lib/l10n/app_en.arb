@@ -1,6 +1,7 @@
 {
     "trainingWeek": "Training of the week 🔥",
-    "newTrainings": "Newest trainings 🚀","explore":"Explore",
+    "newTrainings": "Newest trainings 🚀",
+    "explore":"Explore",
     "submitFeedback":"Submit",
     "done":"Done",
     "giveFeedback":"Tell us what you think",
@@ -26,16 +27,18 @@
 
     "@profile":{},
     "createFolder": "Create Folder",
+    "changeFolder": "Change Folder",
     "folderName": "Folder Name",
+    "wantMoveVideo": "To which folder?",
     "wantDeleteFolder": "Do you want to delete folder?",
     "allVideoLost": "All videos will be lost",
-    "notAssigned": "Not Assigned",
+    "myWorkouts": "My workouts",
     "ctaSavedTrainings":"Here you'll find bookmarked courses",
     "wantDeleteVideo":"Do you want to delete video?",
     "backLooseVideo":"If you go back you'll loose your video",
     "videoSavedSuccess": "Video Saved successfully",
-    "videos": "videos",
     "video": "video",
+    "record": "Record",
 
 
     "@trainings": {},

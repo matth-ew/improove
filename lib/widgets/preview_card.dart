@@ -149,39 +149,39 @@ class PreviewCard extends StatelessWidget {
                 ),
               ),
             ),
-            if (avatar != null && avatar != "")
-              Positioned(
-                top: paddingTopAvatar,
-                left: paddingLeftAvatar,
-                child: GestureDetector(
-                  onTap: () {
-                    pushNewScreen(
-                      context,
-                      screen: TrainerScreen(id: trainerId ?? -1),
-                      withNavBar: true,
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino,
-                    );
-                  },
+            Positioned(
+              top: paddingTopAvatar,
+              left: paddingLeftAvatar,
+              child: GestureDetector(
+                onTap: () {
+                  pushNewScreen(
+                    context,
+                    screen: TrainerScreen(id: trainerId ?? -1),
+                    withNavBar: true,
+                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  );
+                },
+                child: CircleAvatar(
+                  radius: radiusAvatar + borderSize,
+                  backgroundColor: colorScheme.background,
                   child: CircleAvatar(
-                    radius: radiusAvatar + borderSize,
-                    backgroundColor: colorScheme.background,
-                    child: CircleAvatar(
-                      radius: radiusAvatar,
-                      backgroundImage: CachedNetworkImageProvider(
-                        avatar!,
-                      ),
-                      backgroundColor: Colors.grey,
-                      // FadeInImage(
-                      //   width: double.infinity,
-                      //   fit: BoxFit.cover,
-                      //   placeholder: AssetImage(avatarPH),
-                      //   image: NetworkImage(avatar),
-                      // ),
-                    ),
+                    radius: radiusAvatar,
+                    backgroundImage: avatar != null && avatar != ""
+                        ? CachedNetworkImageProvider(
+                            avatar!,
+                          )
+                        : null,
+                    backgroundColor: Colors.grey,
+                    // FadeInImage(
+                    //   width: double.infinity,
+                    //   fit: BoxFit.cover,
+                    //   placeholder: AssetImage(avatarPH),
+                    //   image: NetworkImage(avatar),
+                    // ),
                   ),
                 ),
               ),
+            ),
           ],
         ),
       ),

@@ -1,8 +1,11 @@
+// import 'dart:async';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/screens/home_screen.dart';
 import 'package:improove/screens/explore_screen.dart';
 import 'package:improove/screens/profile_screen.dart';
+// import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
 //import 'package:improove/screens/details_screen.dart';
@@ -22,7 +25,51 @@ class NavScreen extends StatefulWidget {
 }
 
 class _NavScreenState extends State<NavScreen> {
-  // static const double _playerMinHeight = 60.0;
+//   StreamSubscription<List<PurchaseDetails>>? _subscription;
+
+//   @override
+//   void initState() {
+//     final Stream<List<PurchaseDetails>> purchaseUpdated =
+//         InAppPurchase.instance.purchaseStream;
+//     _subscription = purchaseUpdated.listen((purchaseDetailsList) {
+//       _listenToPurchaseUpdated(purchaseDetailsList);
+//     }, onDone: () {
+//       _subscription?.cancel();
+//     }, onError: (error) {
+//       // handle error here.
+//     });
+//     super.initState();
+//   }
+
+//   @override
+//   void dispose() {
+//     _subscription?.cancel();
+//     super.dispose();
+//   }
+
+//   void _listenToPurchaseUpdated(List<PurchaseDetails> purchaseDetailsList) {
+//   purchaseDetailsList.forEach((PurchaseDetails purchaseDetails) async {
+//     if (purchaseDetails.status == PurchaseStatus.pending) {
+//       _showPendingUI();
+//     } else {
+//       if (purchaseDetails.status == PurchaseStatus.error) {
+//         _handleError(purchaseDetails.error!);
+//       } else if (purchaseDetails.status == PurchaseStatus.purchased ||
+//                  purchaseDetails.status == PurchaseStatus.restored) {
+//         bool valid = await _verifyPurchase(purchaseDetails);
+//         if (valid) {
+//           _deliverProduct(purchaseDetails);
+//         } else {
+//           _handleInvalidPurchase(purchaseDetails);
+//         }
+//       }
+//       if (purchaseDetails.pendingCompletePurchase) {
+//         await InAppPurchase.instance
+//             .completePurchase(purchaseDetails);
+//       }
+//     }
+//   });
+// }
 
   final PersistentTabController _controller = PersistentTabController(
       // initialIndex: 0,
@@ -37,46 +84,30 @@ class _NavScreenState extends State<NavScreen> {
       ProfileScreen(controller: _controller),
     ];
   }
-  //       BottomNavigationBarItem(
-  //         icon: Icon(Icons.home),
-  //         label: 'Home',
-  //       ),
-  //       BottomNavigationBarItem(
-  //         icon: Icon(Icons.explore),
-  //         label: 'Improove',
-  //       ),
-  //       // BottomNavigationBarItem(
-  //       //   icon: Icon(Icons.add_circle),
-  //       //   label: 'Add',
-  //       // ),
-  //       // BottomNavigationBarItem(
-  //       //   icon: Icon(Icons.fitness_center),
-  //       //   label: 'Improove',
-  //       // ),
-  //       BottomNavigationBarItem(
-  //         icon: Icon(Icons.person),
-  //         label: 'Profile',
-  //       ),
-  //     ],
 
-  List<PersistentBottomNavBarItem> _navBarsItems(ColorScheme colorScheme) {
+  List<PersistentBottomNavBarItem> _navBarsItems(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final width = MediaQuery.of(context).size.width;
     return [
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.home),
-        inactiveIcon: const Icon(Icons.home_outlined),
+        icon: SizedBox(width: width * 0.2, child: const Icon(Icons.home)),
+        inactiveIcon: SizedBox(
+            width: width * 0.2, child: const Icon(Icons.home_outlined)),
         // title: ("Home"),
         activeColorPrimary: colorScheme.primary,
         inactiveColorPrimary: colorScheme.primary.withOpacity(.49),
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.explore),
-        inactiveIcon: const Icon(Icons.explore_outlined),
+        icon: SizedBox(width: width * 0.2, child: const Icon(Icons.explore)),
+        inactiveIcon: SizedBox(
+            width: width * 0.2, child: const Icon(Icons.explore_outlined)),
         activeColorPrimary: colorScheme.primary,
         inactiveColorPrimary: colorScheme.primary.withOpacity(.49),
       ),
       PersistentBottomNavBarItem(
-        icon: const Icon(Icons.person),
-        inactiveIcon: const Icon(Icons.person_outlined),
+        icon: SizedBox(width: width * 0.2, child: const Icon(Icons.person)),
+        inactiveIcon: SizedBox(
+            width: width * 0.2, child: const Icon(Icons.person_outlined)),
         activeColorPrimary: colorScheme.primary,
         inactiveColorPrimary: colorScheme.primary.withOpacity(.49),
       ),
@@ -91,7 +122,7 @@ class _NavScreenState extends State<NavScreen> {
       context,
       controller: _controller,
       screens: _buildScreens(_controller),
-      items: _navBarsItems(colorScheme),
+      items: _navBarsItems(context),
       confineInSafeArea: true,
       backgroundColor: colorScheme.background, // Default is Colors.white.
       // handleAndroidBackButtonPress: true, // Default is true.
@@ -100,16 +131,6 @@ class _NavScreenState extends State<NavScreen> {
       // stateManagement: true, // Default is true.
       // hideNavigationBarWhenKeyboardShows: true, // Recommended to set 'resizeToAvoidBottomInset' as true while using this argument. Default is true.
       decoration: NavBarDecoration(
-        // boxShadow: [
-        //   BoxShadow(
-        //     color: colorScheme.onSurface.withOpacity(0.1),
-        //     blurRadius: 10,
-        //     spreadRadius: -3,
-        //   )
-        // ],
-        // adjustScreenBottomPaddingOnCurve: false,
-        // borderRadius: BorderRadius.circular(10.0),
-        // colorBehindNavBar: Colors.white,
         border: BorderDirectional(
           top: BorderSide(
             color: colorScheme.onSurface.withOpacity(0.1),
@@ -134,107 +155,3 @@ class _NavScreenState extends State<NavScreen> {
     );
   }
 }
-
-        // child:
-        //     // Consumer(
-        //     // builder: (context, watch, _) {
-        //     //     final selectedVideo = watch(selectedVideoProvider).state;
-        //     //     final miniPlayerController =
-        //     //         watch(miniPlayerControllerProvider).state;
-        //     // return
-        //     IndexedStack(index: _selectedIndex, children: _screens
-        //         // ..add(
-        //         //   Offstage(
-        //         //     offstage: selectedVideo == null,
-        //         //     child: Miniplayer(
-        //         //       controller: miniPlayerController,
-        //         //       minHeight: _playerMinHeight,
-        //         //       maxHeight: MediaQuery.of(context).size.height,
-        //         //       builder: (height, percentage) {
-        //         //         if (selectedVideo == null)
-        //         //           return const SizedBox.shrink();
-
-        //         //         if (height <= _playerMinHeight + 50.0)
-        //         //           return Container(
-        //         //             color: Theme.of(context).scaffoldBackgroundColor,
-        //         //             child: Column(
-        //         //               children: [
-        //         //                 Row(
-        //         //                   children: [
-        //         //                     Image.network(
-        //         //                       selectedVideo.thumbnailUrl,
-        //         //                       height: _playerMinHeight - 4.0,
-        //         //                       width: 120.0,
-        //         //                       fit: BoxFit.cover,
-        //         //                     ),
-        //         //                     Expanded(
-        //         //                       child: Padding(
-        //         //                         padding: const EdgeInsets.all(8.0),
-        //         //                         child: Column(
-        //         //                           crossAxisAlignment:
-        //         //                               CrossAxisAlignment.start,
-        //         //                           mainAxisSize: MainAxisSize.min,
-        //         //                           children: [
-        //         //                             Flexible(
-        //         //                               child: Text(
-        //         //                                 selectedVideo.title,
-        //         //                                 overflow:
-        //         //                                     TextOverflow.ellipsis,
-        //         //                                 style: Theme.of(context)
-        //         //                                     .textTheme
-        //         //                                     .caption!
-        //         //                                     .copyWith(
-        //         //                                       color: Colors.white,
-        //         //                                       fontWeight:
-        //         //                                           FontWeight.w500,
-        //         //                                     ),
-        //         //                               ),
-        //         //                             ),
-        //         //                             Flexible(
-        //         //                               child: Text(
-        //         //                                 selectedVideo.author.username,
-        //         //                                 overflow:
-        //         //                                     TextOverflow.ellipsis,
-        //         //                                 style: Theme.of(context)
-        //         //                                     .textTheme
-        //         //                                     .caption!
-        //         //                                     .copyWith(
-        //         //                                         fontWeight:
-        //         //                                             FontWeight.w500),
-        //         //                               ),
-        //         //                             ),
-        //         //                           ],
-        //         //                         ),
-        //         //                       ),
-        //         //                     ),
-        //         //                     IconButton(
-        //         //                       icon: const Icon(Icons.play_arrow),
-        //         //                       onPressed: () {},
-        //         //                     ),
-        //         //                     IconButton(
-        //         //                       icon: const Icon(Icons.close),
-        //         //                       onPressed: () {
-        //         //                         context
-        //         //                             .read(selectedVideoProvider)
-        //         //                             .state = null;
-        //         //                       },
-        //         //                     ),
-        //         //                   ],
-        //         //                 ),
-        //         //                 const LinearProgressIndicator(
-        //         //                   value: 0.4,
-        //         //                   valueColor: AlwaysStoppedAnimation<Color>(
-        //         //                     Colors.red,
-        //         //                   ),
-        //         //                 ),
-        //         //               ],
-        //         //             ),
-        //         //           );
-        //         //         return VideoScreen();
-        //         //       },
-        //         //     ),
-        //         // ),
-        //         // ),
-        //         //       );
-        //         // },
-        //         ),

@@ -30,7 +30,9 @@ class AppState {
         newTrainingsIds = const [],
         user = const User.initial(),
         localVideos = const [],
-        videoFolders = const [],
+        videoFolders = const [
+          VideoFolder(group: "first-folder", name: "first-folder")
+        ],
         trainers = const {};
 
   dynamic toJson() => {

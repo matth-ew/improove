@@ -6,6 +6,7 @@ class User {
   final int id;
   final String name;
   final String surname;
+  final bool subscribed;
   final String? profileImage;
   final String? trainerImage;
   final String email;
@@ -18,6 +19,7 @@ class User {
   const User({
     required this.name,
     required this.surname,
+    this.subscribed = false,
     this.profileImage,
     this.trainerImage,
     required this.email,
@@ -32,6 +34,7 @@ class User {
   const User.initial()
       : name = "",
         surname = "",
+        subscribed = false,
         profileImage = null,
         trainerImage = "",
         email = "",
@@ -45,6 +48,7 @@ class User {
   User copyWith({
     String? name,
     String? surname,
+    bool? subscribed,
     String? profileImage,
     String? trainerImage,
     String? email,
@@ -58,6 +62,7 @@ class User {
     return User(
       name: name ?? this.name,
       surname: surname ?? this.surname,
+      subscribed: subscribed ?? this.subscribed,
       profileImage: profileImage ?? this.profileImage,
       trainerImage: trainerImage ?? this.trainerImage,
       email: email ?? this.email,
@@ -74,6 +79,7 @@ class User {
         'id': id,
         'name': name,
         'surname': surname,
+        'subscribed': subscribed,
         'profileImage': profileImage,
         'trainerImage': trainerImage,
         'email': email,
@@ -87,6 +93,7 @@ class User {
   User.fromJson(dynamic json)
       : name = (json['name'] ?? "") as String,
         surname = (json['surname'] ?? "") as String,
+        subscribed = (json['subscribed'] ?? false) as bool,
         profileImage = (json['profileImage'] ?? "") as String,
         trainerImage = (json['trainerImage'] ?? "") as String,
         email = (json['email'] ?? "") as String,

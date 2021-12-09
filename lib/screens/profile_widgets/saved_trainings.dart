@@ -70,35 +70,41 @@ class SavedTrainings extends StatelessWidget {
         ),
         ...savedTrainings.map((s) {
           final Training? t = trainings[s.trainingId];
-          return CardRow(
-            preview: t?.preview,
-            name: t?.title,
-            category: t?.category,
-            onTap: () {
-              pushNewScreen(
-                context,
-                screen: TrainingScreen(id: s.trainingId),
-                withNavBar: true,
-                pageTransitionAnimation: PageTransitionAnimation.cupertino,
-              );
-            },
-            action: PopupMenuButton(
-              itemBuilder: (BuildContext context) {
-                return [
-                  PopupMenuItem(
-                    child: Text(AppLocalizations.of(context)!.remove),
-                    onTap: () {
-                      removeTraining(s.trainingId);
-                    },
-                  )
-                ];
-              },
-              child: const Icon(
-                Icons.more_vert,
-                size: 30,
-                color: Colors.grey,
-              ),
-            ),
+          return Column(
+            children: [
+              RowCard(
+                  preview: t?.preview,
+                  name: t?.title,
+                  category: t?.category,
+                  onTap: () {
+                    pushNewScreen(
+                      context,
+                      screen: TrainingScreen(id: s.trainingId),
+                      withNavBar: true,
+                      pageTransitionAnimation:
+                          PageTransitionAnimation.cupertino,
+                    );
+                  },
+                  actions: [
+                    PopupMenuButton(
+                      itemBuilder: (BuildContext context) {
+                        return [
+                          PopupMenuItem(
+                            child: Text(AppLocalizations.of(context)!.remove),
+                            onTap: () {
+                              removeTraining(s.trainingId);
+                            },
+                          )
+                        ];
+                      },
+                      child: const Icon(
+                        Icons.more_vert,
+                        size: 30,
+                        color: Colors.grey,
+                      ),
+                    ),
+                  ]),
+            ],
           );
         }),
       ],

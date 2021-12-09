@@ -38,6 +38,12 @@ class SetTrainerImage {
   SetTrainerImage(this.trainerImage);
 }
 
+class SetSubscribed {
+  final bool subscribed;
+
+  SetSubscribed(this.subscribed);
+}
+
 class AddSavedTraining {
   final SavedTraining savedTraining;
 

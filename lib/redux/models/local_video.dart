@@ -13,6 +13,13 @@ class LocalVideo {
         group = '';
   // name = '';
 
+  LocalVideo copyWith({String? group, String? path}) {
+    return LocalVideo(
+      path: path ?? this.path,
+      group: group ?? this.group,
+    );
+  }
+
   dynamic toJson() => {
         'path': path,
         // 'name': name,

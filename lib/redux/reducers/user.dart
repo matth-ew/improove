@@ -7,6 +7,7 @@ final userReducer = combineReducers<User>([
   TypedReducer<User, SetFullName>(_setFullNameReducer),
   TypedReducer<User, SetProfileImage>(_setProfileImageReducer),
   TypedReducer<User, SetTrainerImage>(_setTrainerImageReducer),
+  TypedReducer<User, SetSubscribed>(_setSubscribed),
   TypedReducer<User, AddSavedTraining>(_addSavedTraining),
   TypedReducer<User, DeleteSavedTraining>(_deleteSavedTraining),
   TypedReducer<User, UserLogout>(_userLogoutReducer),
@@ -26,6 +27,10 @@ User _setProfileImageReducer(User user, SetProfileImage action) {
 
 User _setTrainerImageReducer(User user, SetTrainerImage action) {
   return user.copyWith(trainerImage: action.trainerImage);
+}
+
+User _setSubscribed(User user, SetSubscribed action) {
+  return user.copyWith(subscribed: action.subscribed);
 }
 
 User _addSavedTraining(User user, AddSavedTraining action) {

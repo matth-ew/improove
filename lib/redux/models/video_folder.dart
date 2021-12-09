@@ -18,6 +18,13 @@ class VideoFolder {
   @override
   int get hashCode => group.hashCode;
 
+  VideoFolder copyWith({String? group, String? name}) {
+    return VideoFolder(
+      name: name ?? this.name,
+      group: group ?? this.group,
+    );
+  }
+
   dynamic toJson() => {
         'name': name,
         'group': group,

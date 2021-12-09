@@ -24,8 +24,9 @@ class TrainingService {
     }
   }
 
-  Future<Response?> getTrainingById(int id) async {
+  Future<Response?> getTrainingById(int id, String token) async {
     try {
+      dio.options.headers['Authorization'] = token;
       debugPrint("service getTrainingById");
       return await dio.post(
         '$backendUrl/api/getTrainingById',

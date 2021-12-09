@@ -76,6 +76,7 @@ class _SignupFormState extends State<SignupForm> {
     final colorScheme = Theme.of(context).colorScheme;
     // final buttonTheme = Theme.of(context).buttonTheme;
     final textTheme = Theme.of(context).textTheme;
+    final focus = FocusNode();
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       builder: (BuildContext context, _ViewModel vm) {
@@ -129,7 +130,11 @@ class _SignupFormState extends State<SignupForm> {
                       key: _formPasswordKey,
                       controller: _passwordController,
                       onFieldSubmitted: (value) {
-                        _formPasswordKey.currentState?.validate();
+                        bool val =
+                            _formPasswordKey.currentState?.validate() ?? false;
+                        if (val) {
+                          FocusScope.of(context).requestFocus(focus);
+                        }
                       },
                       validator: validatePassword,
                       obscureText: _obscurePassword,
@@ -165,6 +170,7 @@ class _SignupFormState extends State<SignupForm> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8.0, bottom: 8),
                     child: TextFormField(
+                      focusNode: focus,
                       key: _formCPasswordKey,
                       onFieldSubmitted: (value) {
                         _formCPasswordKey.currentState?.validate();

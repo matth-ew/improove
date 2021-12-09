@@ -58,8 +58,10 @@ class _LocalVideoScreenState extends State<LocalVideoScreen> {
                   bottom: 0,
                   // bottom: 25,
                   child: MyVideoPlayer(
-                      video: File(widget.videos[currentIndex].path),
-                      key: UniqueKey()),
+                    video: File(widget.videos[currentIndex].path),
+                    autoPlay: true,
+                    key: UniqueKey(),
+                  ),
                 ),
               ],
             ),

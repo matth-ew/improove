@@ -7,11 +7,13 @@ class MyVideoPlayer extends StatefulWidget {
   const MyVideoPlayer({
     Key? key,
     this.video = '',
+    this.autoPlay = false,
     // this.onStart,
     this.onEnd,
   }) : super(key: key);
 
   final dynamic video;
+  final bool autoPlay;
   // final Function? onStart;
   final Function? onEnd;
 
@@ -39,35 +41,40 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   }
 
   Future<void> initializePlayer() async {
-    if (widget.video is String) {
-      _videoPlayerController = VideoPlayerController.network(widget.video);
-    } else {
-      _videoPlayerController = VideoPlayerController.file(widget.video);
-    }
-    await Future.wait([
-      _videoPlayerController.initialize(),
-    ]);
-    if (widget.onEnd != null) {
-      _videoPlayerController.addListener(() {
-        if (!_videoPlayerController.value.isPlaying &&
-            _videoPlayerController.value.isInitialized &&
-            (_videoPlayerController.value.duration ==
-                _videoPlayerController.value.position)) {
-          //checking the duration and position every time
-          //Video Completed//
-          debugPrint("VIDEO FINITO");
-          widget.onEnd?.call();
-        }
-      });
-    }
+    try {
+      if (widget.video is String) {
+        _videoPlayerController = VideoPlayerController.network(widget.video);
+      } else {
+        _videoPlayerController = VideoPlayerController.file(widget.video);
+      }
+      await Future.wait([
+        _videoPlayerController.initialize(),
+      ]);
+      if (widget.onEnd != null) {
+        _videoPlayerController.addListener(() {
+          if (!_videoPlayerController.value.isPlaying &&
+              _videoPlayerController.value.isInitialized &&
+              (_videoPlayerController.value.duration ==
+                  _videoPlayerController.value.position)) {
+            //checking the duration and position every time
+            //Video Completed//
+            debugPrint("VIDEO FINITO");
+            widget.onEnd?.call();
+          }
+        });
+      }
 
-    _createChewieController();
-    setState(() {});
+      _createChewieController();
+      setState(() {});
+    } catch (e) {
+      debugPrint(e.toString());
+    }
   }
 
   void _createChewieController() {
     _chewieController = ChewieController(
       videoPlayerController: _videoPlayerController,
+      autoPlay: widget.autoPlay,
       // autoPlay: false,
       // looping: false,
       // showControls: false,

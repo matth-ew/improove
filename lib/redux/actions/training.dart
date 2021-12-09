@@ -1,6 +1,7 @@
 import 'dart:async'; // Add the package
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
+import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/services/training_service.dart';
 import 'package:improove/utility/device_storage.dart';
@@ -43,16 +44,20 @@ ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final Response? r = await TrainingService().getTrainingById(id);
-      if (r?.data['success'] as bool) {
-        final result = r!.data!["result"];
-        store.dispatch(
-          SetTraining(
-            Training.fromJson(result as Map<String, dynamic>),
-            id,
-          ),
-        );
-        debugPrint("GET TRAININGS BY ID");
+      final token = await getAccessToken();
+      if (token != null) {
+        final Response? r = await TrainingService().getTrainingById(id, token);
+        if (r?.data['success'] as bool) {
+          final result = r!.data!["result"];
+          store.dispatch(
+            SetTraining(
+              Training.fromJson(result as Map<String, dynamic>),
+              id,
+            ),
+          );
+          store.dispatch(SetSubscribed(r.data!["subscribed"] as bool));
+          debugPrint("GET TRAININGS BY ID");
+        }
       }
       // final Training training = Training.fromJson(res.data!);
       // if (t != null) {

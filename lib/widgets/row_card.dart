@@ -2,20 +2,20 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:improove/redux/models/training.dart';
 
-class CardRow extends StatelessWidget {
+class RowCard extends StatelessWidget {
   final String? name;
   final String? category;
   final dynamic preview;
   final Function? onTap;
-  final Widget? action;
+  final List<Widget>? actions;
 
-  const CardRow({
+  const RowCard({
     Key? key,
     this.name = '',
     this.category = '',
     this.preview,
     this.onTap,
-    this.action,
+    this.actions,
   }) : super(key: key);
 
   @override
@@ -25,9 +25,10 @@ class CardRow extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     return Center(
       child: InkWell(
+        // borderRadius: const BorderRadius.all(Radius.circular(10)),
         onTap: () => onTap?.call(),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(25, 20, 25, 20),
+          padding: const EdgeInsets.fromLTRB(25, 12, 25, 12),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -89,7 +90,7 @@ class CardRow extends StatelessWidget {
                   ),
                 ),
               ),
-              if (action != null) action!,
+              ...?actions,
             ],
           ),
         ),

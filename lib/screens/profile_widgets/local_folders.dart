@@ -31,7 +31,7 @@ class _LocalFoldersState extends State<LocalFolders> {
     List<LocalVideo> localVideos,
     List<VideoFolder> videoFolders,
   ) async {
-    debugPrint("FOLDERS ${videoFolders.map((x) => x.name)}");
+    // debugPrint("FOLDERS ${videoFolders.map((x) => x.name)}");
     Map<String, Uint8List?> thumbnailsTemp = {};
     List<LocalVideo> videoToLoad = [];
     for (var f in videoFolders) {
@@ -50,7 +50,7 @@ class _LocalFoldersState extends State<LocalFolders> {
 
   @override
   Widget build(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
+    // final colorScheme = Theme.of(context).colorScheme;
     // final textTheme = Theme.of(context).textTheme;
     // final Size size = MediaQuery.of(context).size;
     return StoreConnector(
@@ -69,6 +69,11 @@ class _LocalFoldersState extends State<LocalFolders> {
                 itemCount: vm.videoFolders.length,
                 itemBuilder: (context, index) {
                   VideoFolder videoFolder = vm.videoFolders[index];
+                  String name = videoFolder.name.isEmpty
+                      ? "-"
+                      : videoFolder.name == "first-folder"
+                          ? AppLocalizations.of(context)!.myWorkouts
+                          : videoFolder.name;
                   List<LocalVideo> videos = vm.localVideos
                       .where((v) => v.group == videoFolder.group)
                       .toList();
@@ -76,66 +81,98 @@ class _LocalFoldersState extends State<LocalFolders> {
                   if (videos.isNotEmpty) {
                     thumbnail = thumbnails[videos.last.path];
                   }
-                  return Dismissible(
-                    confirmDismiss: (d) => _askDelete(d, videos.length),
-                    direction: DismissDirection.endToStart,
-                    background: Container(
-                      color: colorScheme.error,
-                      alignment: AlignmentDirectional.centerEnd,
-                      child: Padding(
-                        padding: const EdgeInsets.only(right: 25.0),
-                        child: Icon(
-                          Icons.cancel,
-                          color: colorScheme.onError,
-                          size: 32,
-                        ),
-                      ),
-                    ),
-                    key: UniqueKey(),
-                    child: CardRow(
-                      name: videoFolder.name.isNotEmpty
-                          ? videoFolder.name
-                          : "Without Name",
-                      category:
-                          "${videos.length} ${videos.length == 1 ? AppLocalizations.of(context)!.video : AppLocalizations.of(context)!.videos}",
-                      action: IconButton(
-                        onPressed: () => recordTrimVideo(
-                          context,
-                          onSave: (String path) async {
-                            vm.addLocalVideo(
-                              LocalVideo(path: path, group: videoFolder.group),
-                              (String e) {
-                                pushNewScreen(
+                  return RowCard(
+                    name: name,
+                    category:
+                        "${videos.length} ${AppLocalizations.of(context)!.video}",
+                    actions: [
+                      PopupMenuButton(
+                        itemBuilder: (BuildContext context) {
+                          return [
+                            PopupMenuItem(
+                              child: Text(AppLocalizations.of(context)!.record),
+                              onTap: () {
+                                recordTrimVideo(
                                   context,
-                                  screen: Scaffold(
-                                    backgroundColor: Colors.black,
-                                    body: LocalFolderScreen(
-                                        videoFolder: videoFolder),
-                                  ),
-                                  withNavBar: true,
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.fade,
+                                  onSave: (String path) async {
+                                    vm.addLocalVideo(
+                                      LocalVideo(
+                                        path: path,
+                                        group: videoFolder.group,
+                                      ),
+                                      (String e) {
+                                        pushNewScreen(
+                                          context,
+                                          screen: Scaffold(
+                                            backgroundColor: Colors.black,
+                                            body: LocalFolderScreen(
+                                                videoFolder: videoFolder),
+                                          ),
+                                          withNavBar: true,
+                                          pageTransitionAnimation:
+                                              PageTransitionAnimation.fade,
+                                        );
+                                      },
+                                    );
+                                  },
                                 );
                               },
-                            );
-                          },
+                            ),
+                            PopupMenuItem(
+                              child: Text(AppLocalizations.of(context)!.delete),
+                              onTap: () async {
+                                final delete = await _askDelete(videos.length);
+                                if (delete != null && delete) {
+                                  vm.deleteVideoFolder(videoFolder.group);
+                                }
+                              },
+                            ),
+                          ];
+                        },
+                        child: const Icon(
+                          Icons.more_vert,
+                          size: 30,
+                          color: Colors.grey,
                         ),
-                        icon: Icon(Icons.video_call_rounded,
-                            color: colorScheme.primary),
                       ),
-                      preview: thumbnail,
-                      onTap: () {
-                        pushNewScreen(
-                          context,
-                          screen: Scaffold(
-                            backgroundColor: Colors.black,
-                            body: LocalFolderScreen(videoFolder: videoFolder),
-                          ),
-                          withNavBar: true,
-                          pageTransitionAnimation: PageTransitionAnimation.fade,
-                        );
-                      },
-                    ),
+                      // IconButton(
+                      //   onPressed: () => recordTrimVideo(
+                      //     context,
+                      //     onSave: (String path) async {
+                      //       vm.addLocalVideo(
+                      //         LocalVideo(path: path, group: videoFolder.group),
+                      //         (String e) {
+                      //           pushNewScreen(
+                      //             context,
+                      //             screen: Scaffold(
+                      //               backgroundColor: Colors.black,
+                      //               body: LocalFolderScreen(
+                      //                   videoFolder: videoFolder),
+                      //             ),
+                      //             withNavBar: true,
+                      //             pageTransitionAnimation:
+                      //                 PageTransitionAnimation.fade,
+                      //           );
+                      //         },
+                      //       );
+                      //     },
+                      //   ),
+                      //   icon: Icon(Icons.video_call_rounded,
+                      //       color: colorScheme.primary),
+                      // ),
+                    ],
+                    preview: thumbnail,
+                    onTap: () {
+                      pushNewScreen(
+                        context,
+                        screen: Scaffold(
+                          backgroundColor: Colors.black,
+                          body: LocalFolderScreen(videoFolder: videoFolder),
+                        ),
+                        withNavBar: true,
+                        pageTransitionAnimation: PageTransitionAnimation.fade,
+                      );
+                    },
                   );
                 },
               ),
@@ -155,11 +192,12 @@ class _LocalFoldersState extends State<LocalFolders> {
                       onSubmit: (String name, Function? cb) {
                         var uuid = const Uuid();
                         vm.addVideoFolder(
-                            VideoFolder(
-                              group: "folder${uuid.v1()}",
-                              name: name,
-                            ),
-                            cb);
+                          VideoFolder(
+                            group: "folder${uuid.v1()}",
+                            name: name,
+                          ),
+                          cb,
+                        );
                       },
                     ),
                   );
@@ -172,33 +210,34 @@ class _LocalFoldersState extends State<LocalFolders> {
     );
   }
 
-  Future<bool?> _askDelete(DismissDirection direction, int numVideos) {
+  Future<bool?> _askDelete(int numVideos) {
     if (numVideos == 0) return Future.value(true);
     return showDialog<bool>(
-        context: context,
-        builder: (BuildContext context) => AlertDialog(
-              title: Text(AppLocalizations.of(context)!.wantDeleteFolder),
-              content: Text(AppLocalizations.of(context)!.allVideoLost),
-              actions: [
-                TextButton(
-                  child: Text(AppLocalizations.of(context)!.no),
-                  onPressed: () {
-                    Navigator.pop(context, false);
-                  },
-                ),
-                TextButton(
-                  child: Text(
-                    AppLocalizations.of(context)!.delete,
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.error,
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.pop(context, true);
-                  },
-                )
-              ],
-            ));
+      context: context,
+      builder: (BuildContext context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.wantDeleteFolder),
+        content: Text(AppLocalizations.of(context)!.allVideoLost),
+        actions: [
+          TextButton(
+            child: Text(AppLocalizations.of(context)!.no),
+            onPressed: () {
+              Navigator.pop(context, false);
+            },
+          ),
+          TextButton(
+            child: Text(
+              AppLocalizations.of(context)!.delete,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.error,
+              ),
+            ),
+            onPressed: () {
+              Navigator.pop(context, true);
+            },
+          )
+        ],
+      ),
+    );
   }
 }
 
@@ -206,25 +245,29 @@ class _ViewModel {
   final List<LocalVideo> localVideos;
   final List<VideoFolder> videoFolders;
   final Function(VideoFolder folder, [Function? cb]) addVideoFolder;
+  final Function(String group, [Function? cb]) deleteVideoFolder;
   final Function(LocalVideo video, [Function? cb]) addLocalVideo;
 
   _ViewModel({
     required this.localVideos,
     required this.videoFolders,
     required this.addVideoFolder,
+    required this.deleteVideoFolder,
     required this.addLocalVideo,
   });
 
   static _ViewModel fromStore(Store<AppState> store, BuildContext context) {
-    List<VideoFolder> tempFolder = List.from(store.state.videoFolders);
-    tempFolder.add(VideoFolder(
-        name: AppLocalizations.of(context)!.notAssigned, group: ""));
+    // List<VideoFolder> tempFolder = List.from(store.state.videoFolders);
+    // tempFolder.add(VideoFolder(
+    //     name: AppLocalizations.of(context)!.notAssigned, group: ""));
     return _ViewModel(
       localVideos: store.state.localVideos,
-      videoFolders: tempFolder.toSet().toList(),
+      videoFolders: store.state.videoFolders,
       // videoFolders: store.state.localVideos.map((v) => v.group).toSet().toList(),
       addVideoFolder: (folder, [cb]) =>
           store.dispatch(addVideoFolderThunk(folder, cb)),
+      deleteVideoFolder: (group, [cb]) =>
+          store.dispatch(deleteVideoFolderThunk(group, cb)),
       addLocalVideo: (video, [cb]) =>
           store.dispatch(addLocalVideoThunk(video, cb)),
     );

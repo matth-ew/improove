@@ -64,13 +64,13 @@ class ExerciseScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
 
-    String getVideo(String video) {
-      if (video != "") {
-        return video;
-      } else {
-        return "https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-a-bubble-gum-at-an-amusement-park-1226-large.mp4";
-      }
-    }
+    // String getVideo(String video) {
+    //   if (video != "") {
+    //     return video;
+    //   } else {
+    //     return "https://assets.mixkit.co/videos/preview/mixkit-a-girl-blowing-a-bubble-gum-at-an-amusement-park-1226-large.mp4";
+    //   }
+    // }
 
     return StoreConnector(
         converter: (Store<AppState> store) =>
@@ -108,7 +108,7 @@ class ExerciseScreen extends StatelessWidget {
                         right: 0,
                         bottom: 25,
                         child: MyVideoPlayer(
-                          video: getVideo(vm.exercise!.video),
+                          video: vm.exercise!.video,
                           onEnd: () {
                             vm.setCompleted(
                               trainingId,

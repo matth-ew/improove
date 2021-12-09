@@ -183,7 +183,7 @@ class ProfileScreen extends StatelessWidget {
         ...closedTrainings.map(
           (c) {
             final Training? t = trainings[c.trainingId];
-            return CardRow(
+            return RowCard(
               preview: t?.preview,
               name: t?.title,
               category: t?.category,
