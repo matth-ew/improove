@@ -66,37 +66,41 @@ class _TrimmerViewState extends State<TrimmerView> {
     _loadVideo();
   }
 
+  showPopDialog() {
+    showDialog<void>(
+        context: context,
+        builder: (BuildContext context) => AlertDialog(
+              title: Text(AppLocalizations.of(context)!.wantDeleteVideo),
+              content: Text(AppLocalizations.of(context)!.backLooseVideo),
+              actions: [
+                TextButton(
+                  child: Text(AppLocalizations.of(context)!.no),
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                TextButton(
+                  child: Text(
+                    AppLocalizations.of(context)!.delete,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.error,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.pop(context);
+                  },
+                )
+              ],
+            ));
+  }
+
   @override
   Widget build(BuildContext context) {
     // final colorScheme = Theme.of(context).colorScheme;
     return WillPopScope(
       onWillPop: () async {
-        showDialog<void>(
-            context: context,
-            builder: (BuildContext context) => AlertDialog(
-                  title: Text(AppLocalizations.of(context)!.wantDeleteVideo),
-                  content: Text(AppLocalizations.of(context)!.backLooseVideo),
-                  actions: [
-                    TextButton(
-                      child: Text(AppLocalizations.of(context)!.no),
-                      onPressed: () {
-                        Navigator.pop(context);
-                      },
-                    ),
-                    TextButton(
-                      child: Text(
-                        AppLocalizations.of(context)!.delete,
-                        style: TextStyle(
-                          color: Theme.of(context).colorScheme.error,
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.pop(context);
-                        Navigator.pop(context);
-                      },
-                    )
-                  ],
-                ));
+        showPopDialog();
         return false;
       },
       child: Scaffold(
@@ -172,22 +176,47 @@ class _TrimmerViewState extends State<TrimmerView> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),
-                    child: ElevatedButton(
-                      onPressed: _progressVisibility
-                          ? null
-                          : () async {
-                              _saveVideo();
-                            },
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(Icons.save_alt_rounded),
-                          const SizedBox(
-                            width: 5,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        TextButton(
+                          onPressed: () async {
+                            Navigator.of(context).maybePop();
+                          },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.delete_forever_rounded,
+                                  color: Colors.white),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(AppLocalizations.of(context)!.discard,
+                                  style: TextStyle(color: Colors.white)),
+                            ],
                           ),
-                          Text(AppLocalizations.of(context)!.save),
-                        ],
-                      ),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        ElevatedButton(
+                          onPressed: _progressVisibility
+                              ? null
+                              : () async {
+                                  _saveVideo();
+                                },
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(Icons.save_alt_rounded),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              Text(AppLocalizations.of(context)!.save),
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 ],

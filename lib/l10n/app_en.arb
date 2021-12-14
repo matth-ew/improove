@@ -16,6 +16,7 @@
     "show":"Show",
     "hide":"Hide",
     "loading":"Loading",
+    "discard":"Discard",
 
     "@settings":{},
     "changeProfImage":"Change Profile Image",

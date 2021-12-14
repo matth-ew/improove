@@ -16,6 +16,7 @@
     "show":"Mostra",
     "hide":"Nascondi",
     "loading":"Caricamento",
+    "discard":"Scarta",
 
     "@settings":{},
     "changeProfImage":"Cambia Immagine del Profilo",
