@@ -3,6 +3,7 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/models/local_video.dart';
 import 'package:improove/widgets/my_video_player.dart';
+import 'package:intl/intl.dart';
 
 class LocalVideoScreen extends StatefulWidget {
   final List<LocalVideo> videos;
@@ -30,8 +31,10 @@ class _LocalVideoScreenState extends State<LocalVideoScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    final textTheme = Theme.of(context).textTheme;
     // final colorScheme = Theme.of(context).colorScheme;
     return Scaffold(
+      backgroundColor: Colors.black,
       body: CustomScrollView(
         slivers: [
           SliverAppBar(
@@ -60,7 +63,8 @@ class _LocalVideoScreenState extends State<LocalVideoScreen> {
                   child: MyVideoPlayer(
                     video: File(widget.videos[currentIndex].path),
                     autoPlay: true,
-                    key: UniqueKey(),
+                    key: Key(widget.videos[currentIndex].path),
+                    // key: UniqueKey(),
                   ),
                 ),
               ],
@@ -76,18 +80,28 @@ class _LocalVideoScreenState extends State<LocalVideoScreen> {
                 child: ListView.builder(
                   scrollDirection: Axis.horizontal,
                   itemBuilder: (BuildContext context, int index) {
+                    bool selected = (currentIndex == index);
                     Uint8List? thumbnail =
                         widget.thumbnails[widget.videos[index].path];
+                    String locale =
+                        Localizations.localeOf(context).languageCode;
+                    DateTime date =
+                        File(widget.videos[index].path).lastModifiedSync();
+                    String printDate = DateFormat.yMd(locale).format(date);
                     return GestureDetector(
                       onTap: () {
                         setState(() {
                           currentIndex = index;
                         });
                       },
-                      child: Padding(
+                      child: AnimatedPadding(
+                        duration: const Duration(milliseconds: 150),
+                        curve: Curves.easeOut,
                         padding: EdgeInsets.only(
                           left: index == 0 ? 16 : 0,
                           right: index == widget.thumbnails.length - 1 ? 16 : 8,
+                          top: selected ? 0 : 10,
+                          bottom: selected ? 0 : 10,
                         ),
                         child: AspectRatio(
                           aspectRatio: 0.7,
@@ -95,12 +109,58 @@ class _LocalVideoScreenState extends State<LocalVideoScreen> {
                             borderRadius: const BorderRadius.all(
                               Radius.circular(10),
                             ),
-                            child: thumbnail != null
-                                ? Image(
-                                    image: MemoryImage(thumbnail),
+                            child: Stack(
+                              fit: StackFit.expand,
+                              clipBehavior: Clip.none,
+                              children: [
+                                Visibility(
+                                  visible: thumbnail != null,
+                                  child: Image(
+                                    image: MemoryImage(thumbnail!),
                                     fit: BoxFit.cover,
-                                  )
-                                : const ColoredBox(color: Colors.grey),
+                                  ),
+                                  replacement:
+                                      const ColoredBox(color: Colors.grey),
+                                ),
+                                Visibility(
+                                  visible: selected,
+                                  child: Container(
+                                    color: Colors.black.withOpacity(0.3),
+                                  ),
+                                ),
+                                Container(
+                                  decoration: BoxDecoration(
+                                    gradient: LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      stops: const [0.6, 0.8, 1],
+                                      colors: [
+                                        Colors.transparent,
+                                        Colors.black.withOpacity(0.1),
+                                        Colors.black.withOpacity(0.3)
+                                      ],
+                                    ),
+                                  ),
+                                  alignment: Alignment.bottomLeft,
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Text(
+                                    printDate,
+                                    style: textTheme.overline?.copyWith(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ),
+                                // Visibility(
+                                //   visible: selected,
+                                //   child: const Align(
+                                //     child: Icon(
+                                //       Icons.repeat,
+                                //       color: Colors.white,
+                                //     ),
+                                //   ),
+                                // )
+                              ],
+                            ),
                           ),
                         ),
                       ),

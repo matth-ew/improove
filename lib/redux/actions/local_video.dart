@@ -60,8 +60,8 @@ ThunkAction<AppState> deleteLocalVideosThunk(List<String> paths,
     try {
       debugPrint("REMOVING VIDEO ${paths.toString()}");
       await Future.forEach(paths, (String path) async {
-        await File(path).delete();
         store.dispatch(DeleteLocalVideo(path));
+        await File(path).delete();
       });
       cb?.call(null);
     } catch (e) {

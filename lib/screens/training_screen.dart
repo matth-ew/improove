@@ -7,7 +7,6 @@ import 'package:improove/widgets/edit_text.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/screens/exercise_screen.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/widgets/row_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';

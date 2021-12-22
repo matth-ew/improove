@@ -1,6 +1,4 @@
 import 'dart:typed_data';
-
-import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:improove/redux/reducers/app_reducer.dart';
 import 'package:redux/redux.dart';

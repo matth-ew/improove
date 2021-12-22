@@ -9,7 +9,6 @@ import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/widgets/button_image_picker.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/screens/training_screen.dart';
-import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';

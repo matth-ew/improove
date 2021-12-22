@@ -17,6 +17,7 @@
     "hide":"Hide",
     "loading":"Loading",
     "discard":"Discard",
+    "shareFiles":"Share",
 
     "@settings":{},
     "changeProfImage":"Change Profile Image",
@@ -35,9 +36,11 @@
     "allVideoLost": "All videos will be lost",
     "myWorkouts": "My workouts",
     "ctaSavedTrainings":"Here you'll find bookmarked courses",
+    "ctaRecordTrainings":"Here you'll find your workouts",
     "wantDeleteVideo":"Do you want to delete video?",
-    "backLooseVideo":"If you go back you'll loose your video",
+    "backLoseVideo":"If you go back you'll lose your video",
     "videoSavedSuccess": "Video Saved successfully",
+    "videoSavedGallerySuccess": "Video Saved in Gallery",
     "video": "video",
     "record": "Record",
 

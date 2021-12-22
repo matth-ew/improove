@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'trimmer/video_trimmer.dart';
 import 'trimmer/trimmer.dart';
@@ -25,6 +24,7 @@ class _TrimmerViewState extends State<TrimmerView> {
   double _endValue = 0.0;
 
   bool _isPlaying = false;
+  bool _isMute = false;
   bool _progressVisibility = false;
 
   Future<String?> _saveVideo() async {
@@ -38,6 +38,8 @@ class _TrimmerViewState extends State<TrimmerView> {
         .saveTrimmedVideo(
             startValue: _startValue,
             endValue: _endValue,
+            ffmpegCommand: _isMute ? '-y -c copy -an' : null,
+            customVideoFormat: ".mp4",
             storageDir: "applicationDocumentsDirectory",
             videoFolderName: "VideoSalvati",
             videoFileName: uuid.v1())
@@ -71,7 +73,7 @@ class _TrimmerViewState extends State<TrimmerView> {
         context: context,
         builder: (BuildContext context) => AlertDialog(
               title: Text(AppLocalizations.of(context)!.wantDeleteVideo),
-              content: Text(AppLocalizations.of(context)!.backLooseVideo),
+              content: Text(AppLocalizations.of(context)!.backLoseVideo),
               actions: [
                 TextButton(
                   child: Text(AppLocalizations.of(context)!.no),
@@ -104,8 +106,25 @@ class _TrimmerViewState extends State<TrimmerView> {
         return false;
       },
       child: Scaffold(
+        backgroundColor: Colors.black,
         appBar: AppBar(
+          elevation: 0,
           backgroundColor: Colors.black,
+          actions: [
+            IconButton(
+              splashRadius: 20,
+              icon: _isMute
+                  ? const Icon(Icons.volume_off)
+                  : const Icon(Icons.volume_up_rounded),
+              onPressed: () {
+                bool value = !_isMute;
+                setState(() {
+                  _isMute = value;
+                });
+                _trimmer.videoPlayerController?.setVolume(value ? 0.0 : 1.0);
+              },
+            ),
+          ],
           // title: Text("Video Trimmer"),
         ),
         body: Builder(
@@ -191,14 +210,14 @@ class _TrimmerViewState extends State<TrimmerView> {
                               const SizedBox(
                                 width: 5,
                               ),
-                              Text(AppLocalizations.of(context)!.discard,
-                                  style: TextStyle(color: Colors.white)),
+                              Text(
+                                AppLocalizations.of(context)!.discard,
+                                style: const TextStyle(color: Colors.white),
+                              ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        const SizedBox(width: 20),
                         ElevatedButton(
                           onPressed: _progressVisibility
                               ? null

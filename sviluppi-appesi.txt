@@ -1,6 +1,9 @@
 Manca configurazione Facebook Login e Google Login per Web (https://facebook.meedu.app/#/, )
 Manca flutter secure-storage per Web e va gestito (https://github.com/mogol/flutter_secure_storage/issues/96)
 Manca configurazione Image Picker per iOS https://pub.dev/packages/image_picker
+Manca configurazione Camera per iOS https://pub.dev/packages/camera
 Manca configurazione localization per iOS https://docs.flutter.dev/development/accessibility-and-localization/internationalization
 Manca configurazione Trimmer per iOS https://github.com/sbis04/video_trimmer/
 Manca configurazione pagamenti per iOS https://pub.dev/packages/in_app_purchase https://github.com/flutter/plugins/blob/master/packages/in_app_purchase/in_app_purchase/example/README.md
+Manca configurazione Gallery Saver per iOS https://pub.dev/packages/gallery_saver
+

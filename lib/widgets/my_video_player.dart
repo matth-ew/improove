@@ -24,7 +24,7 @@ class MyVideoPlayer extends StatefulWidget {
 }
 
 class _MyVideoPlayerState extends State<MyVideoPlayer> {
-  late VideoPlayerController _videoPlayerController;
+  VideoPlayerController? _videoPlayerController;
   ChewieController? _chewieController;
 
   @override
@@ -35,7 +35,8 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
 
   @override
   void dispose() {
-    _videoPlayerController.dispose();
+    _videoPlayerController?.pause();
+    _videoPlayerController?.dispose();
     _chewieController?.dispose();
     super.dispose();
   }
@@ -47,15 +48,14 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
       } else {
         _videoPlayerController = VideoPlayerController.file(widget.video);
       }
-      await Future.wait([
-        _videoPlayerController.initialize(),
-      ]);
+      await _videoPlayerController?.initialize();
       if (widget.onEnd != null) {
-        _videoPlayerController.addListener(() {
-          if (!_videoPlayerController.value.isPlaying &&
-              _videoPlayerController.value.isInitialized &&
-              (_videoPlayerController.value.duration ==
-                  _videoPlayerController.value.position)) {
+        _videoPlayerController?.addListener(() {
+          if (_videoPlayerController?.value.isPlaying == false &&
+              _videoPlayerController?.value.isInitialized == true &&
+              (_videoPlayerController?.value.duration != null) &&
+              (_videoPlayerController?.value.duration ==
+                  _videoPlayerController?.value.position)) {
             //checking the duration and position every time
             //Video Completed//
             debugPrint("VIDEO FINITO");
@@ -72,23 +72,25 @@ class _MyVideoPlayerState extends State<MyVideoPlayer> {
   }
 
   void _createChewieController() {
-    _chewieController = ChewieController(
-      videoPlayerController: _videoPlayerController,
-      autoPlay: widget.autoPlay,
-      // autoPlay: false,
-      // looping: false,
-      // showControls: false,
-      materialProgressColors: ChewieProgressColors(
-        playedColor: Colors.red,
-        //   handleColor: Colors.blue,
-        // backgroundColor: Colors.black,
-        //   bufferedColor: Colors.lightGreen,
-      ),
-      // placeholder: Container(
-      // color: Colors.black,
-      // ),
-      // autoInitialize: true,
-    );
+    setState(() {
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController!,
+        autoPlay: widget.autoPlay,
+        // autoPlay: false,
+        // looping: false,
+        // showControls: false,
+        materialProgressColors: ChewieProgressColors(
+          playedColor: Colors.red,
+          //   handleColor: Colors.blue,
+          // backgroundColor: Colors.black,
+          //   bufferedColor: Colors.lightGreen,
+        ),
+        // placeholder: Container(
+        // color: Colors.black,
+        // ),
+        // autoInitialize: true,
+      );
+    });
   }
 
   @override

@@ -17,6 +17,7 @@
     "hide":"Nascondi",
     "loading":"Caricamento",
     "discard":"Scarta",
+    "shareFiles":"Condividi",
 
     "@settings":{},
     "changeProfImage":"Cambia Immagine del Profilo",
@@ -35,9 +36,11 @@
     "allVideoLost": "Tutti i video andranno persi",
     "myWorkouts": "I miei allenamenti",
     "ctaSavedTrainings":"Qui troverai i corsi che segui",
+    "ctaRecordTrainings":"Qui troverai i tuoi allenamenti",
     "wantDeleteVideo":"Vuoi cancellare il video?",
-    "backLooseVideo":"Uscendo dalla schermata perderai il video",
+    "backLoseVideo":"Uscendo dalla schermata perderai il video",
     "videoSavedSuccess": "Il video è stato salvato",
+    "videoSavedGallerySuccess": "Video salvato in galleria",
     "video": "video",
     "record": "Registra",
 

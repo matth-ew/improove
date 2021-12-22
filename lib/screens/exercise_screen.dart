@@ -5,7 +5,6 @@ import 'package:improove/widgets/edit_text.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/widgets/my_video_player.dart';
 import 'package:flutter_redux/flutter_redux.dart';
-import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';

@@ -103,10 +103,8 @@ class _LocalFoldersState extends State<LocalFolders> {
                                       (String e) {
                                         pushNewScreen(
                                           context,
-                                          screen: Scaffold(
-                                            backgroundColor: Colors.black,
-                                            body: LocalFolderScreen(
-                                                videoFolder: videoFolder),
+                                          screen: LocalFolderScreen(
+                                            videoFolder: videoFolder,
                                           ),
                                           withNavBar: true,
                                           pageTransitionAnimation:
