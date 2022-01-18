@@ -4,6 +4,8 @@ import 'package:improove/redux/reducers/reducers.dart';
 AppState appReducer(AppState state, dynamic action) => AppState(
     user: userReducer(state.user, action),
     trainings: trainingReducer(state.trainings, action),
+    improovePurchases:
+        improovePurchasesReducer(state.improovePurchases, action),
     localVideos: localVideoReducer(state.localVideos, action),
     videoFolders: videoFolderReducer(state.videoFolders, action),
     exploreTrainingsIds:

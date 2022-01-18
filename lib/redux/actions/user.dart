@@ -9,9 +9,6 @@ import 'package:improove/services/user_service.dart';
 import 'package:improove/utility/device_storage.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-
-const storage = FlutterSecureStorage();
 
 class SetUser {
   final User user;
