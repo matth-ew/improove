@@ -82,5 +82,25 @@
     "signupButton": "Iscriviti con",
     "authenticationSignin": "o accedi con",
     "authenticationSignup": "o iscriviti con",
-    "createAccount": "Crea il tuo account"
+    "createAccount": "Crea il tuo account",
+
+
+    "@subscribe":{},
+    "sub_title": "Abbonamenti",
+    "sub_improove":"Improove",
+    "sub_one":"Mensile",
+    "sub_three":"Tre mesi",
+    "sub_six":"Sei mesi",
+    "sub_one_discount":"7,99€",
+    "sub_three_discount":"18,99€",
+    "sub_six_discount":"33,99€",
+    "sub_one_price":"10,99€",
+    "sub_three_price":"25,99€",
+    "sub_six_price":"45,99€",
+    "sub_one_weekly":"3,99€/ \n settimana",
+    "sub_three_weekly":"4,99€/ \n settimana",
+    "sub_six_weekly":"5,99€/ \n settimana",
+    "sub_description":"Ottieni accesso completo a tutti i corsi \n e tutte le funzionalità.",
+    "sub_other":"Scegli il piano che fa per te",
+    "sub_upgradePlan":"Abbonati ora"
 }
