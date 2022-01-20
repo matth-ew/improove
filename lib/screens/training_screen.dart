@@ -186,8 +186,7 @@ class TrainingScreen extends StatelessWidget {
                       preview: vm.training?.exercises[index].preview,
                       name:
                           "${index + 1}. ${vm.training?.exercises[index].title}",
-                      category:
-                          "ESEMPIO", //vm.training?.exercises[index].category,
+                      //category: "ESEMPIO", //vm.training?.exercises[index].category,
                       onTap: () {
                         pushNewScreen(
                           context,

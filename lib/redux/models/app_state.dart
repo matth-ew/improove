@@ -8,6 +8,7 @@ class AppState {
   final User user;
 
   //final Training training;
+  final ImproovePurchases improovePurchases;
   final Map<int, Training> trainings;
   final List<int> exploreTrainingsIds;
   final List<int> newTrainingsIds;
@@ -17,6 +18,7 @@ class AppState {
 
   const AppState({
     required this.user,
+    required this.improovePurchases,
     required this.trainings,
     required this.exploreTrainingsIds,
     required this.newTrainingsIds,
@@ -29,6 +31,7 @@ class AppState {
         exploreTrainingsIds = const [],
         newTrainingsIds = const [],
         user = const User.initial(),
+        improovePurchases = const ImproovePurchases.initial(),
         localVideos = const [],
         videoFolders = const [
           VideoFolder(group: "first-folder", name: "first-folder")
@@ -51,6 +54,7 @@ class AppState {
           (json['local-videos'] ?? []).map((v) => LocalVideo.fromJson(v))),
       videoFolders: List<VideoFolder>.from(
           (json['video-folders'] ?? []).map((f) => VideoFolder.fromJson(f))),
+      improovePurchases: const ImproovePurchases.initial(),
       trainers: const {},
       trainings: const {},
       exploreTrainingsIds: const [],

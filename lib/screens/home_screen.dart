@@ -15,7 +15,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   static const int numNewTrainings = 4;
-  static const int trainingOfTheWeek = 6;
+  static const int trainingOfTheWeek = 2;
 
   const HomeScreen({Key? key}) : super(key: key);
   @override
