@@ -14,6 +14,7 @@ import 'package:improove/utility/device_storage.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
+// import 'package:in_app_purchase_android/in_app_purchase_android.dart';
 
 class SetImproovePurchases {
   final ImproovePurchases ip;
@@ -99,16 +100,20 @@ ThunkAction<AppState> initImproovePurchases([Function? cb]) {
           ...storeKeySubscriptions,
           // storeKeyUpgrade,
         };
-        debugPrint("UE INIT LO STORE E' PRONTO");
         final response = await _iap.queryProductDetails(ids);
-
-        debugPrint("UE INIT RESPONSE ${response.toString()}");
         for (var element in response.notFoundIDs) {
           debugPrint('Purchase $element not found');
         }
         _prod =
             response.productDetails.map((e) => PurchasableProduct(e)).toList();
+        _prod.sort((a, b) =>
+            a.productDetails.rawPrice.compareTo(b.productDetails.rawPrice));
         _storeState = StoreState.available;
+        // await _iap.restorePurchases();
+        // var androidAddition =
+        //     _iap.getPlatformAddition<InAppPurchaseAndroidPlatformAddition>();
+        // var query = await androidAddition.queryPastPurchases();
+        // debugPrint("PAST PURCHASES ${query.pastPurchases.toString()}");
       }
       store.dispatch(SetImproovePurchases(
         store.state.improovePurchases.copyWith(

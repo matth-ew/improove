@@ -30,7 +30,7 @@ class PaymentScreen extends StatelessWidget {
             break;
         }
         return Scaffold(
-          appBar: AppBar(title: Text("Payments Page Screen")),
+          appBar: AppBar(title: const Text("Payments Page Screen")),
           body: ListView(children: [
             storeWidget,
             const Padding(
@@ -83,8 +83,9 @@ class _PurchaseList extends StatelessWidget {
                 }))
             .toList(),
       );
-    } else
+    } else {
       return const SizedBox.shrink();
+    }
   }
 }
 
@@ -131,14 +132,10 @@ class _ViewModel {
   final ImproovePurchases improovePurchases;
   final Function(PurchasableProduct product, [Function? cb])
       buyImprooveSubscription;
-  // final Function(String accessToken, [Function? cb]) googleLogin;
-  // final Function(String accessToken, [Function? cb]) appleLogin;
 
   _ViewModel({
     required this.improovePurchases,
     required this.buyImprooveSubscription,
-    // required this.facebookLogin,
-    // required this.appleLogin,
   });
 
   static _ViewModel fromStore(Store<AppState> store) {
@@ -146,10 +143,6 @@ class _ViewModel {
       improovePurchases: store.state.improovePurchases,
       buyImprooveSubscription: (product, [cb]) =>
           store.dispatch(buyImprooveSubscriptionThunk(product, cb)),
-      // facebookLogin: (token, [cb]) =>
-      //     store.dispatch(loginFacebookThunk(token, cb)),
-      // googleLogin: (token, [cb]) => store.dispatch(loginGoogleThunk(token, cb)),
-      // appleLogin: (token, [cb]) => store.dispatch(loginAppleThunk(token, cb)),
     );
   }
 }

@@ -1,14 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:improove/widgets/pricing_and_plans/sub_otherPlansLabel.dart';
+import 'package:improove/redux/models/improove_purchases.dart';
 import 'package:improove/widgets/pricing_and_plans/widgets.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class sub_planLayout extends StatelessWidget {
+class SubPlanLayout extends StatelessWidget {
   final Function(int)? callback;
+  final Function() buy;
+  final List<PurchasableProduct> products;
   final int? selectedPlan;
 
-  sub_planLayout({this.callback, this.selectedPlan});
+  const SubPlanLayout({
+    Key? key,
+    this.callback,
+    this.selectedPlan,
+    required this.products,
+    required this.buy,
+  }) : super(key: key);
 
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.only(
@@ -20,10 +29,13 @@ class sub_planLayout extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          sub_planRow(callback: callback, selectedPlan: selectedPlan),
+          SubPlanRow(
+              callback: callback,
+              selectedPlan: selectedPlan,
+              products: products),
           ElevatedButton(
             onPressed: () {
-              // TO DO
+              buy();
             },
             style: ElevatedButton.styleFrom(
               minimumSize: const Size(double.infinity, 50),

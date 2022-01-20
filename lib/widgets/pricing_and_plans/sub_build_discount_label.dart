@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
-class sub_buildDiscountLabel extends StatefulWidget {
+class SubBuildDiscountLabel extends StatefulWidget {
   final String label;
 
-  const sub_buildDiscountLabel({Key? key, required this.label})
+  const SubBuildDiscountLabel({Key? key, required this.label})
       : super(key: key);
 
   @override
-  _sub_buildDiscountLabel createState() => _sub_buildDiscountLabel();
+  _SubBuildDiscountLabel createState() => _SubBuildDiscountLabel();
 }
 
-class _sub_buildDiscountLabel extends State<sub_buildDiscountLabel> {
+class _SubBuildDiscountLabel extends State<SubBuildDiscountLabel> {
+  @override
   Widget build(BuildContext context) {
     return Text(
       widget.label,
-      style: TextStyle(
+      style: const TextStyle(
           letterSpacing: 0.2,
           color: Colors.black,
           fontWeight: FontWeight.w700,

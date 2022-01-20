@@ -4,7 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
-import 'package:improove/screens/payment_screen.dart';
+// import 'package:improove/screens/payment_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/screens/sub_plans_screen.dart';
 import 'package:improove/widgets/image_picker_cropper.dart';
@@ -88,18 +88,6 @@ class SettingsScreen extends StatelessWidget {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.description),
-              title: Text(AppLocalizations.of(context)!.termsConditions),
-              onTap: () {
-                pushNewScreen(
-                  context,
-                  screen: Sub_plans_screen(),
-                  withNavBar: false,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                );
-              },
-            ),
-            ListTile(
               leading: const Icon(Icons.security),
               title: Text(AppLocalizations.of(context)!.privacyPolicy),
               onTap: () {
@@ -136,12 +124,12 @@ class SettingsScreen extends StatelessWidget {
             ),
             ListTile(
               leading: const Icon(Icons.payments),
-              title: Text("pagamenti"),
+              title: const Text("pagamenti"),
               // title: Text(AppLocalizations.of(context)!.termsConditions),
               onTap: () {
                 pushNewScreen(
                   context,
-                  screen: PaymentScreen(),
+                  screen: const SubPlansScreen(),
                   withNavBar: false,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );

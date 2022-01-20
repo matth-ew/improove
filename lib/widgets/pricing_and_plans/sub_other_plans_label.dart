@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
-class sub_otherPlansLabel extends StatelessWidget {
+class SubOtherPlansLabel extends StatelessWidget {
+  const SubOtherPlansLabel({Key? key}) : super(key: key);
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).size.width * 0.06),
-      child: Text(
+      child: const Text(
         'Other Plans',
         style: TextStyle(
             letterSpacing: 0.5,
