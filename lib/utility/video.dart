@@ -13,6 +13,7 @@ import 'package:gallery_saver/gallery_saver.dart';
 
 recordTrimVideo(BuildContext context, {Function? onSave}) async {
   try {
+    /*
     pushNewScreen(
       context,
       screen: CameraScreen(
@@ -31,27 +32,23 @@ recordTrimVideo(BuildContext context, {Function? onSave}) async {
       ),
       withNavBar: false,
       pageTransitionAnimation: PageTransitionAnimation.cupertino,
-    );
-
-    // final ImagePicker _picker = ImagePicker();
-    // final XFile? fileToSave =
-    //     await _picker.pickVideo(source: ImageSource.camera);
-    // if (fileToSave != null) {
-    //   pushNewScreen(
-    //     context,
-    //     screen: TrimmerView(
-    //       File(fileToSave.path),
-    //       onSave: onSave,
-    //     ),
-    //     withNavBar: false,
-    //     pageTransitionAnimation: PageTransitionAnimation.cupertino,
-    //   );
-    // }
-    // if (fileToSave != null) {
-    //   vm.changeProfileImage(fileToSave, (String? e) {
-    //     Navigator.pop(context);
-    //   });
-    // }
+    );*/
+    /* */
+    final ImagePicker _picker = ImagePicker();
+    final XFile? fileToSave =
+        await _picker.pickVideo(source: ImageSource.camera);
+    if (fileToSave != null) {
+      pushNewScreen(
+        context,
+        screen: TrimmerView(
+          File(fileToSave.path),
+          onSave: onSave,
+        ),
+        withNavBar: false,
+        pageTransitionAnimation: PageTransitionAnimation.cupertino,
+      );
+    }
+    /**/
   } catch (e) {
     debugPrint("Errore in selezione immagine ${e.toString()}");
   }

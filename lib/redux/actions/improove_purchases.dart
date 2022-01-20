@@ -1,4 +1,4 @@
-// import 'dart:io';
+import 'dart:io';
 
 // import 'package:dio/dio.dart';
 import 'package:dio/dio.dart';
@@ -12,6 +12,7 @@ import 'package:improove/utility/device_storage.dart';
 // import 'package:improove/services/user_service.dart';
 // import 'package:improove/utility/device_storage.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:in_app_purchase_storekit/store_kit_wrappers.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 // import 'package:in_app_purchase_android/in_app_purchase_android.dart';
@@ -56,6 +57,15 @@ ThunkAction<AppState> buyImprooveSubscriptionThunk(PurchasableProduct product,
   return (Store<AppState> store) async {
     final _iap = store.state.improovePurchases;
     try {
+      if (Platform.isIOS) {
+        final transactions = await SKPaymentQueueWrapper().transactions();
+        transactions.forEach((transaction) async {
+          if (transaction.transactionState !=
+              SKPaymentTransactionStateWrapper.purchasing) {
+            await SKPaymentQueueWrapper().finishTransaction(transaction);
+          }
+        });
+      }
       final purchaseParam =
           PurchaseParam(productDetails: product.productDetails);
       if (storeKeySubscriptions.contains(product.id)) {

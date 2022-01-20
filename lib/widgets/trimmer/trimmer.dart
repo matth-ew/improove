@@ -1,14 +1,14 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:ffmpeg_kit_flutter_video/ffmpeg_kit.dart';
+import 'package:ffmpeg_kit_flutter_video/ffmpeg_kit_config.dart';
+import 'package:ffmpeg_kit_flutter_video/return_code.dart';
 import 'package:path/path.dart';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_ffmpeg/flutter_ffmpeg.dart';
 import 'package:intl/intl.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:video_player/video_player.dart';
-// import 'package:video_trimmer/src/file_formats.dart';
-// import 'package:video_trimmer/src/storage_dir.dart';
 
 enum TrimmerEvent { initialized }
 
@@ -19,7 +19,7 @@ enum TrimmerEvent { initialized }
 /// * [saveTrimmedVideo()]
 /// * [videPlaybackControl()]
 class Trimmer {
-  final FlutterFFmpeg _flutterFFmpeg = FlutterFFmpeg();
+  // final FlutterFFmpeg _flutterFFmpeg = FFmpegKit();
 
   final StreamController<TrimmerEvent> _controller =
       StreamController<TrimmerEvent>.broadcast();
@@ -48,7 +48,7 @@ class Trimmer {
 
   Future<String> _createFolderInAppDocDir(
     String folderName,
-    String? storageDir,
+    StorageDir? storageDir,
   ) async {
     Directory? _directory;
 
@@ -89,9 +89,8 @@ class Trimmer {
 
   /// Saves the trimmed video to file system.
   ///
-  /// Returns the output video path
   ///
-  /// The required parameters are [startValue] & [endValue].
+  /// The required parameters are [startValue], [endValue] & [onSave].
   ///
   /// The optional parameters are [videoFolderName], [videoFileName],
   /// [outputFormat], [fpsGIF], [scaleGIF], [applyVideoEncoding].
@@ -101,6 +100,10 @@ class Trimmer {
   ///
   /// The `@required` parameter [endValue] is for providing an ending point
   /// to the trimmed video. To be specified in `milliseconds`.
+  ///
+  /// The `@required` parameter [onSave] is a callback Function that helps to
+  /// retrieve the output path as the FFmpeg processing is complete. Returns a
+  /// `String`.
   ///
   /// The parameter [videoFolderName] is used to
   /// pass a folder name which will be used for creating a new
@@ -154,18 +157,19 @@ class Trimmer {
   /// video format is passed in [customVideoFormat], then the app may
   /// crash.
   ///
-  Future<String> saveTrimmedVideo({
+  Future<void> saveTrimmedVideo({
     required double startValue,
     required double endValue,
+    required Function(String? outputPath) onSave,
     bool applyVideoEncoding = false,
-    String? outputFormat,
+    FileFormat? outputFormat,
     String? ffmpegCommand,
     String? customVideoFormat,
     int? fpsGIF,
     int? scaleGIF,
     String? videoFolderName,
     String? videoFileName,
-    String? storageDir,
+    StorageDir? storageDir,
   }) async {
     final String _videoPath = currentVideoFile!.path;
     final String _videoName = basename(_videoPath).split('.')[0];
@@ -209,7 +213,7 @@ class Trimmer {
     debugPrint(path);
 
     if (outputFormat == null) {
-      outputFormat = ".mp4";
+      outputFormat = FileFormat.mp4;
       _outputFormatString = outputFormat.toString();
       debugPrint('OUTPUT: $_outputFormatString');
     } else {
@@ -220,13 +224,13 @@ class Trimmer {
         ' -ss $startPoint -i "$_videoPath" -t ${endPoint - startPoint} -avoid_negative_ts make_zero ';
 
     if (ffmpegCommand == null) {
-      _command = '$_trimLengthCommand  -y -c:a copy';
+      _command = '$_trimLengthCommand -c:a copy ';
 
       if (!applyVideoEncoding) {
-        _command += ' -y -c:v copy ';
+        _command += '-c:v copy ';
       }
 
-      if (outputFormat == ".gif") {
+      if (outputFormat == FileFormat.gif) {
         fpsGIF ??= 10;
         scaleGIF ??= 480;
         _command =
@@ -241,17 +245,25 @@ class Trimmer {
 
     _command += '"$_outputPath"';
 
-    await _flutterFFmpeg.execute(_command).whenComplete(() {
-      debugPrint('Got value');
-      debugPrint('Video successfuly saved');
-      // _resultString = 'Video successfuly saved';
-    }).catchError((error) {
-      debugPrint('Error');
-      // _resultString = 'Couldn\'t save the video';
-      debugPrint('Couldn\'t save the video');
+    FFmpegKit.executeAsync(_command, (session) async {
+      final state =
+          FFmpegKitConfig.sessionStateToString(await session.getState());
+      final returnCode = await session.getReturnCode();
+
+      debugPrint("FFmpeg process exited with state $state and rc $returnCode");
+
+      if (ReturnCode.isSuccess(returnCode)) {
+        debugPrint("FFmpeg processing completed successfully.");
+        debugPrint('Video successfuly saved');
+        onSave(_outputPath);
+      } else {
+        debugPrint("FFmpeg processing failed.");
+        debugPrint('Couldn\'t save the video');
+        onSave(null);
+      }
     });
 
-    return _outputPath;
+    // return _outputPath;
   }
 
   /// For getting the video controller state, to know whether the
@@ -288,5 +300,84 @@ class Trimmer {
   /// Clean up
   void dispose() {
     _controller.close();
+  }
+}
+
+/// The video file formats available for
+/// generating the output trimmed video.
+///
+/// The available formats are `mp4`, `mkv`,
+/// `mov`, `flv`, `avi`, `wmv`& `gif`.
+///
+/// If you define a custom `FFmpeg` command
+/// then this will be ignored.
+///
+class FileFormat {
+  const FileFormat._(this.index);
+
+  final int index;
+
+  static const FileFormat mp4 = FileFormat._(0);
+  static const FileFormat mkv = FileFormat._(1);
+  static const FileFormat mov = FileFormat._(2);
+  static const FileFormat flv = FileFormat._(3);
+  static const FileFormat avi = FileFormat._(4);
+  static const FileFormat wmv = FileFormat._(5);
+  static const FileFormat gif = FileFormat._(6);
+
+  static const List<FileFormat> values = <FileFormat>[
+    mp4,
+    mkv,
+    mov,
+    flv,
+    avi,
+    wmv,
+    gif,
+  ];
+
+  @override
+  String toString() {
+    return const <int, String>{
+      0: '.mp4',
+      1: '.mkv',
+      2: '.mov',
+      3: '.flv',
+      4: '.avi',
+      5: '.wmv',
+      6: '.gif',
+    }[index]!;
+  }
+}
+
+/// Supported storage locations.
+///
+/// * [temporaryDirectory]
+///
+/// * [applicationDocumentsDirectory]
+///
+/// * [externalStorageDirectory]
+///
+class StorageDir {
+  const StorageDir._(this.index);
+
+  final int index;
+
+  static const StorageDir temporaryDirectory = StorageDir._(0);
+  static const StorageDir applicationDocumentsDirectory = StorageDir._(1);
+  static const StorageDir externalStorageDirectory = StorageDir._(2);
+
+  static const List<StorageDir> values = <StorageDir>[
+    temporaryDirectory,
+    applicationDocumentsDirectory,
+    externalStorageDirectory,
+  ];
+
+  @override
+  String toString() {
+    return const <int, String>{
+      0: 'temporaryDirectory',
+      1: 'applicationDocumentsDirectory',
+      2: 'externalStorageDirectory',
+    }[index]!;
   }
 }

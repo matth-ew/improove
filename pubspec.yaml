@@ -53,8 +53,8 @@ dependencies:
   share_plus: ^3.0.4
   gallery_saver: ^2.3.2
   # video_trimmer: ^0.5.2
-  flutter_ffmpeg: ^0.4.2
-  # ffmpeg_kit_flutter: ^4.5.0
+  # flutter_ffmpeg: ^0.4.2
+  ffmpeg_kit_flutter_video: 4.5.1-LTS
   persistent_bottom_nav_bar: ^4.0.2
   image_cropper: ^1.4.1
   file_picker: ^4.0.0

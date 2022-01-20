@@ -50,6 +50,8 @@ class _NavScreenState extends State<NavScreen> {
       } else {
         if (purchaseDetails.status == PurchaseStatus.error) {
           // handleError(purchaseDetails.error!);
+          store.state.improovePurchases.iapConnection
+              ?.completePurchase(purchaseDetails);
         } else if (purchaseDetails.status == PurchaseStatus.purchased ||
             purchaseDetails.status == PurchaseStatus.restored) {
           store.dispatch(

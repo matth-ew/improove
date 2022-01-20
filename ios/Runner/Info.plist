@@ -2,6 +2,11 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>CFBundleLocalizations</key>
+	<array>
+		<string>en</string>
+		<string>it</string>
+	</array>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
@@ -24,7 +29,7 @@
 			<key>CFBundleURLSchemes</key>
 			<array>
 				<string>fb935567717007808</string>
-				<string>213295047170-hi0ak6lq7ise2bu9arc366c4sf7d6516.apps.googleusercontent.com</string>
+				<string>com.googleusercontent.apps.213295047170-hi0ak6lq7ise2bu9arc366c4sf7d6516</string>
 			</array>
 		</dict>
 	</array>
@@ -36,9 +41,7 @@
 	<string>Improove</string>
 	<key>LSApplicationQueriesSchemes</key>
 	<array>
-		<!-- Url Launcher -->
 		<string>mailto</string>
-		<!-- Facebook -->
 		<string>fbapi</string>
 		<string>fbapi20130214</string>
 		<string>fbapi20130410</string>
@@ -57,8 +60,12 @@
 	</array>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>Used to let the User record video of workout in app</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Used to let the User record video of workout with audio in app</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Access to Photo is required for User to change Profile Image</string>
+	<string>Access to Photo is required for User to change Profile Image and for storing Video recorded in the app on device gallery</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

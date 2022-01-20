@@ -34,25 +34,22 @@ class _TrimmerViewState extends State<TrimmerView> {
 
     String? _value;
 
-    await _trimmer
-        .saveTrimmedVideo(
-            startValue: _startValue,
-            endValue: _endValue,
-            ffmpegCommand: _isMute ? '-y -c copy -an' : null,
-            customVideoFormat: ".mp4",
-            storageDir: "applicationDocumentsDirectory",
-            videoFolderName: "VideoSalvati",
-            videoFileName: uuid.v1())
-        .then(
-      (value) {
-        widget.onSave?.call(value);
-        setState(() {
-          _progressVisibility = false;
-          _value = value;
+    await _trimmer.saveTrimmedVideo(
+        startValue: _startValue,
+        endValue: _endValue,
+        ffmpegCommand: _isMute ? '-y -c copy -an' : null,
+        customVideoFormat: ".mp4",
+        storageDir: StorageDir.applicationDocumentsDirectory,
+        videoFolderName: "VideoSalvati",
+        videoFileName: uuid.v1(),
+        onSave: (value) {
+          widget.onSave?.call(value);
+          setState(() {
+            _progressVisibility = false;
+            _value = value;
+          });
+          Navigator.pop(context);
         });
-        Navigator.pop(context);
-      },
-    );
 
     return _value;
   }
