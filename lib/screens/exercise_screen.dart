@@ -1,67 +1,26 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/user.dart';
-import 'package:improove/widgets/edit_text.dart';
-import 'package:improove/widgets/my_expandable_text.dart';
+import 'package:improove/widgets/exercise_widgets/exercise_section.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:improove/widgets/my_video_player.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:redux/redux.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExerciseScreen extends StatelessWidget {
   final int trainingId;
   final int id;
-  const ExerciseScreen({Key? key, this.id = -1, this.trainingId = -1})
-      : super(key: key);
-
-  Widget? checkIfEdit(_ViewModel vm, int trainingId, String section) {
-    if (section == "tips") {
-      if (vm.userId == vm.training.trainerId) {
-        return EditTextCard(
-          text: vm.exercise!.tips,
-          onDone: (String text) {
-            vm.setTips(trainingId, vm.exercise!.title, text);
-          },
-        );
-      } else {
-        return MyExpandableText(text: vm.exercise!.tips);
-      }
-    }
-
-    if (section == "how") {
-      if (vm.userId == vm.training.trainerId) {
-        return EditTextCard(
-          text: vm.exercise!.how,
-          onDone: (String text) {
-            vm.setHow(trainingId, vm.exercise!.title, text);
-          },
-        );
-      } else {
-        return MyExpandableText(text: vm.exercise!.how);
-      }
-    }
-
-    if (section == "mistakes") {
-      if (vm.userId == vm.training.trainerId) {
-        return EditTextCard(
-          text: vm.exercise!.mistakes,
-          onDone: (String text) {
-            vm.setMistakes(trainingId, vm.exercise!.title, text);
-          },
-        );
-      } else {
-        return MyExpandableText(text: vm.exercise!.mistakes);
-      }
-    }
-  }
+  const ExerciseScreen({
+    Key? key,
+    this.id = -1,
+    this.trainingId = -1,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-    final colorScheme = Theme.of(context).colorScheme;
-    final textTheme = Theme.of(context).textTheme;
 
     // String getVideo(String video) {
     //   if (video != "") {
@@ -75,13 +34,14 @@ class ExerciseScreen extends StatelessWidget {
         converter: (Store<AppState> store) =>
             _ViewModel.fromStore(store, trainingId, id),
         builder: (BuildContext context, _ViewModel vm) {
+          bool edit = (vm.userId == vm.training.trainerId);
           return Scaffold(
             body: CustomScrollView(
               slivers: [
                 SliverAppBar(
                   elevation: 0,
                   collapsedHeight: size.height * 0.38,
-                  expandedHeight: size.height * 0.58,
+                  expandedHeight: size.height * 0.62,
                   // leading: IconButton(
                   //   icon: const Icon(Icons.arrow_back),
                   //   iconSize: 32,
@@ -144,66 +104,27 @@ class ExerciseScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // if(vm.exercise != null && vm.exercise!.how.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 25.0,
-                          right: 25.0,
-                          bottom: 15.0,
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.howToPerform,
-                          style: textTheme.headline6
-                              ?.copyWith(color: colorScheme.primary),
-                        ),
+                      ExerciseSection(
+                        title: AppLocalizations.of(context)!.howToPerform,
+                        text: vm.exercise!.how,
+                        onDone: (String text) =>
+                            vm.setHow(trainingId, vm.exercise!.title, text),
+                        ifEdit: edit,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 25.0,
-                          right: 25.0,
-                          bottom: 15.0,
-                        ),
-                        child: checkIfEdit(vm, trainingId, "how"),
+                      ExerciseSection(
+                        title: AppLocalizations.of(context)!.commonMistakes,
+                        text: vm.exercise!.mistakes,
+                        onDone: (String text) => vm.setMistakes(
+                            trainingId, vm.exercise!.title, text),
+                        ifEdit: edit,
                       ),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 25.0,
-                          right: 25.0,
-                          // top: 0,
-                          bottom: 10.0,
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.commonMistakes,
-                          style: textTheme.headline6
-                              ?.copyWith(color: colorScheme.primary),
-                        ),
+                      ExerciseSection(
+                        title: AppLocalizations.of(context)!.tips,
+                        text: vm.exercise!.tips,
+                        onDone: (String text) =>
+                            vm.setTips(trainingId, vm.exercise!.title, text),
+                        ifEdit: edit,
                       ),
-                      Padding(
-                          padding: const EdgeInsets.only(
-                            left: 25.0,
-                            right: 25.0,
-                            bottom: 15.0,
-                          ),
-                          child: checkIfEdit(vm, trainingId, "mistakes")),
-                      Padding(
-                        padding: const EdgeInsets.only(
-                          left: 25.0,
-                          right: 25.0,
-                          bottom: 10.0,
-                        ),
-                        child: Text(
-                          AppLocalizations.of(context)!.tips,
-                          style: textTheme.headline6
-                              ?.copyWith(color: colorScheme.primary),
-                        ),
-                      ),
-                      Padding(
-                          padding: const EdgeInsets.only(
-                            left: 25.0,
-                            right: 25.0,
-                            bottom: 5.0,
-                          ),
-                          child: checkIfEdit(vm, trainingId, "tips")),
                     ],
                   ),
                 ),

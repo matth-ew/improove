@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/actions/user.dart';
+import 'package:improove/screens/sub_plans_screen.dart';
 import 'package:improove/screens/trainer_screen.dart';
 import 'package:improove/widgets/edit_text.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
@@ -57,6 +58,29 @@ class TrainingScreen extends StatelessWidget {
         builder: (BuildContext context, _ViewModel vm) {
           String? trainerImage = vm.training?.trainerImage;
           return Scaffold(
+            bottomNavigationBar: vm.user.subscribed
+                ? null
+                : Container(
+                    padding:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+                    color: colorScheme.primary,
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(
+                                primary: colorScheme.secondary),
+                            child: Text("Subscribe"),
+                            onPressed: () {},
+                          ),
+                        ),
+                        Text("As a free user, you can only preview the course",
+                            style: textTheme.caption
+                                ?.copyWith(color: colorScheme.onPrimary))
+                      ],
+                    )),
             body: CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -180,29 +204,119 @@ class TrainingScreen extends StatelessWidget {
                 ),
                 const SliverPadding(padding: EdgeInsets.all(5)),
                 SliverList(
+                  // delegate: SliverChildListDelegate(
+                  //   generateList(
+                  //     exercises: vm.training?.exercises,
+                  //     goals: vm.training?.goals,
+                  //     ifLocked: (index) {
+                  //       return !vm.user.subscribed &&
+                  //           index > (vm.training?.freeExercises ?? 0) - 1;
+                  //     },
+                  //     onTap: (index) {
+                  //       var locked = !vm.user.subscribed &&
+                  //           index > (vm.training?.freeExercises ?? 0) - 1;
+
+                  //       if (locked) {
+                  //         pushNewScreen(
+                  //           context,
+                  //           screen: const SubPlansScreen(),
+                  //           withNavBar: false,
+                  //           pageTransitionAnimation:
+                  //               PageTransitionAnimation.cupertino,
+                  //         );
+                  //       } else {
+                  //         pushNewScreen(
+                  //           context,
+                  //           screen: ExerciseScreen(
+                  //             trainingId: id,
+                  //             id: index,
+                  //           ),
+                  //           withNavBar: false,
+                  //           pageTransitionAnimation:
+                  //               PageTransitionAnimation.slideUp,
+                  //         );
+                  //       }
+                  //     },
+                  //   ),
+                  // ),
                   delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    return RowCard(
-                      preview: vm.training?.exercises[index].preview,
-                      name:
-                          "${index + 1}. ${vm.training?.exercises[index].title}",
-                      //category: "ESEMPIO", //vm.training?.exercises[index].category,
-                      onTap: () {
-                        pushNewScreen(
-                          context,
-                          screen: ExerciseScreen(
-                            trainingId: id,
-                            id: index,
-                          ),
-                          withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.slideUp,
-                        );
-                      },
-                    );
-                  }, childCount: vm.training?.exercises.length),
+                    (BuildContext context, int index) {
+                      var locked = !vm.user.subscribed &&
+                          index > (vm.training?.freeExercises ?? 0) - 1;
+                      String? goal = vm.training?.exercises[index].goal;
+                      // Goal goal = vm.training?.goals
+                      //     .firstWhere((x) => x.position == index, orElse: () {
+                      //   return Goal(description: "", position: -1);
+                      // }) as Goal;
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 5.0),
+                        child: Column(
+                          children: [
+                            RowCard(
+                              locked: locked,
+                              preview: vm.training?.exercises[index].preview,
+                              name:
+                                  "${index + 1}. ${vm.training?.exercises[index].title}",
+                              //category: "ESEMPIO", //vm.training?.exercises[index].category,
+                              category: goal != null && goal.isNotEmpty
+                                  ? "🎯 ${goal}"
+                                  : null,
+                              onTap: () {
+                                if (locked) {
+                                  pushNewScreen(
+                                    context,
+                                    screen: const SubPlansScreen(),
+                                    withNavBar: false,
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.cupertino,
+                                  );
+                                } else {
+                                  pushNewScreen(
+                                    context,
+                                    screen: ExerciseScreen(
+                                      trainingId: id,
+                                      id: index,
+                                    ),
+                                    withNavBar: false,
+                                    pageTransitionAnimation:
+                                        PageTransitionAnimation.slideUp,
+                                  );
+                                }
+                              },
+                            ),
+                            // Visibility(
+                            //   visible: goal.description.isNotEmpty,
+                            //   child: ListTile(
+                            //       contentPadding:
+                            //           const EdgeInsets.fromLTRB(25, 8, 25, 8),
+                            //       leading: ClipRRect(
+                            //         borderRadius: const BorderRadius.all(
+                            //             Radius.circular(10)),
+                            //         child: Container(
+                            //             color: Colors.grey[200],
+                            //             width: size.width * 0.23,
+                            //             child: AspectRatio(
+                            //               aspectRatio: 1.54,
+                            //               child: const Icon(Icons
+                            //                   .flag_rounded /*Icons.track_changes_outlined*/),
+                            //             )),
+                            //       ),
+                            //       title: Text(
+                            //         goal.description,
+                            //         textAlign: TextAlign.left,
+                            //         style: textTheme.headline6
+                            //             ?.copyWith(color: colorScheme.primary),
+                            //       ),
+                            //       onTap: () {}),
+                            // ),
+                          ],
+                        ),
+                      );
+                    },
+                    childCount: vm.training?.exercises.length,
+                  ),
                 ),
-                const SliverPadding(padding: EdgeInsets.all(5)),
+                // const SliverPadding(padding: EdgeInsets.all(5)),
               ],
             ),
           );

@@ -43,7 +43,7 @@ class SubPlanRow extends StatelessWidget {
                   price: "${discounts[id]} $currency",
                   discount: p.price,
                   weekly:
-                      "${(rawPrice / weeks[id]).toStringAsFixed(2)}$currency${AppLocalizations.of(context)!.sub_weekly}",
+                      "${(discounts[id] / weeks[id]).toStringAsFixed(2)}$currency${AppLocalizations.of(context)!.sub_weekly}",
                   id: id,
                   selectedPlan: selectedPlan,
                   callback: callback),

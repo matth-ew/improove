@@ -32,12 +32,6 @@ class NavScreen extends StatefulWidget {
 class _NavScreenState extends State<NavScreen> {
   StreamSubscription<List<PurchaseDetails>>? _subscription;
 
-  Future<bool> _verifyPurchase(PurchaseDetails purchaseDetails) {
-    // IMPORTANT!! Always verify a purchase before delivering the product.
-    // For the purpose of an example, we directly return true.
-    return Future<bool>.value(true);
-  }
-
   void _handleInvalidPurchase(PurchaseDetails purchaseDetails) {
     // handle invalid purchase here if  _verifyPurchase` failed.
   }
@@ -67,16 +61,7 @@ class _NavScreenState extends State<NavScreen> {
               },
             ),
           );
-          // bool valid = await _verifyPurchase(purchaseDetails);
-          // if (valid) {
-          //   deliverProduct(purchaseDetails);
-          // } else {
-          //   _handleInvalidPurchase(purchaseDetails);
-          // }
         }
-        // if (purchaseDetails.pendingCompletePurchase) {
-        //   await InAppPurchase.instance.completePurchase(purchaseDetails);
-        // }
       }
     });
   }
