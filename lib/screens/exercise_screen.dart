@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/widgets/exercise_widgets/exercise_section.dart';
+import 'package:improove/widgets/exercise_widgets/exercise_description.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:improove/widgets/my_video_player.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -40,6 +41,8 @@ class ExerciseScreen extends StatelessWidget {
               slivers: [
                 SliverAppBar(
                   elevation: 0,
+                  // pinned: true,
+                  // collapsedHeight: size.height * 0.18,
                   collapsedHeight: size.height * 0.38,
                   expandedHeight: size.height * 0.58,
                   // leading: IconButton(
@@ -104,30 +107,30 @@ class ExerciseScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      ExerciseSection(
+                      ExerciseDescription(
                         // title: AppLocalizations.of(context)!.howToPerform,
                         text: vm.exercise!.description,
-                        onDone: (String text) =>
-                            vm.setHow(trainingId, vm.exercise!.title, text),
+                        onDone: (String text) => vm.setDescription(
+                            trainingId, vm.exercise!.title, text),
                         ifEdit: edit,
                       ),
                       ExerciseSection(
                         title: AppLocalizations.of(context)!.howToPerform,
-                        text: vm.exercise!.how,
+                        textList: vm.exercise!.how,
                         onDone: (String text) =>
                             vm.setHow(trainingId, vm.exercise!.title, text),
                         ifEdit: edit,
                       ),
                       ExerciseSection(
                         title: AppLocalizations.of(context)!.commonMistakes,
-                        text: vm.exercise!.mistakes,
+                        textList: vm.exercise!.mistakes,
                         onDone: (String text) => vm.setMistakes(
                             trainingId, vm.exercise!.title, text),
                         ifEdit: edit,
                       ),
                       ExerciseSection(
                         title: AppLocalizations.of(context)!.tips,
-                        text: vm.exercise!.tips,
+                        textList: vm.exercise!.tips,
                         onDone: (String text) =>
                             vm.setTips(trainingId, vm.exercise!.title, text),
                         ifEdit: edit,
@@ -146,6 +149,7 @@ class _ViewModel {
   final Exercise? exercise;
   final Training training;
   final int userId;
+  final Function(int, String, String) setDescription;
   final Function(int, String, String) setTips;
   final Function(int, String, String) setHow;
   final Function(int, String, String) setMistakes;
@@ -155,6 +159,7 @@ class _ViewModel {
     required this.exercise,
     required this.training,
     required this.userId,
+    required this.setDescription,
     required this.setTips,
     required this.setHow,
     required this.setMistakes,
@@ -166,6 +171,8 @@ class _ViewModel {
       userId: store.state.user.id,
       training: store.state.trainings[trainingId]!,
       exercise: store.state.trainings[trainingId]!.exercises[id],
+      setDescription: (int id, String title, String text) =>
+          store.dispatch(setExerciseDescription(id, title, text)),
       setTips: (int id, String title, String text) =>
           store.dispatch(setExerciseTips(id, title, text)),
       setHow: (int id, String title, String text) =>

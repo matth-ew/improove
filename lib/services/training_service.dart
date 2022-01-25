@@ -58,6 +58,23 @@ class TrainingService {
     }
   }
 
+  Future<Response?> setExerciseDescription(
+      int id, String title, String description, String token) async {
+    try {
+      dio.options.headers['Authorization'] = token;
+      return await dio.post(
+        '$backendUrl/api/setExerciseDescription',
+        data: {'id': id, 'title': title, 'description': description},
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint(e.response?.data['msg'].toString());
+      return null;
+    }
+  }
+
   Future<Response?> setExerciseTips(
       int id, String title, String tips, String token) async {
     try {

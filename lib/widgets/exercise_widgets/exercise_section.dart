@@ -4,14 +4,14 @@ import 'package:improove/widgets/my_expandable_text.dart';
 
 class ExerciseSection extends StatelessWidget {
   final String title;
-  final String text;
+  final List<String> textList;
   final Function onDone;
   final bool ifEdit;
 
   const ExerciseSection({
     Key? key,
     this.title = "",
-    required this.text,
+    required this.textList,
     required this.onDone,
     required this.ifEdit,
   }) : super(key: key);
@@ -20,7 +20,7 @@ class ExerciseSection extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
     return Visibility(
-      visible: ifEdit,
+      visible: textList.isNotEmpty,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(25, 0, 25, 30),
         child: Column(
@@ -39,36 +39,36 @@ class ExerciseSection extends StatelessWidget {
                 ),
               ),
             ),
-            EditTextCard(
-              text: text,
-              onDone: onDone,
-            ),
-          ],
-        ),
-      ),
-      replacement: Visibility(
-        visible: text.isNotEmpty,
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(25, 0, 25, 30),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Visibility(
-                visible: title.isNotEmpty,
-                child: Padding(
-                  padding: const EdgeInsets.only(
-                    bottom: 15.0,
-                  ),
-                  child: Text(
-                    title,
-                    style: textTheme.headline6
-                        ?.copyWith(color: colorScheme.primary),
-                  ),
+            ...textList.map(
+              (t) => Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: Text(
+                        "•",
+                        style: textTheme.headline6?.copyWith(
+                          color: colorScheme.primary,
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Text(
+                        t,
+                        style: textTheme.subtitle1?.copyWith(
+                          color: colorScheme.primary.withOpacity(.59),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
-              MyExpandableText(text: text),
-            ],
-          ),
+            ),
+
+            // MyExpandableText(text: text),
+          ],
         ),
       ),
     );

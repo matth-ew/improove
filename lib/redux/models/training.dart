@@ -6,9 +6,9 @@ class Exercise {
   final String description;
   final String preview;
   final String video;
-  final String how;
-  final String tips;
-  final String mistakes;
+  final List<String> how;
+  final List<String> tips;
+  final List<String> mistakes;
   final String goal;
 
   const Exercise(
@@ -26,9 +26,12 @@ class Exercise {
         description = (json['description'] ?? "") as String,
         preview = (json['preview'] ?? "") as String,
         video = (json['video'] ?? "") as String,
-        tips = (json['tips'] ?? "") as String,
-        how = (json['how'] ?? "") as String,
-        mistakes = (json['mistakes'] ?? "") as String,
+        tips = (json['tips'] ?? const []).cast<String>(),
+        // tips = List<String>.from(json['tips'] ?? const []) as List),
+        // .map((t) => tips.fromJson(t as Map<String, dynamic>))),
+        // tips = (json['tips'] ?? "") as List<String>,
+        how = (json['how'] ?? const []).cast<String>(),
+        mistakes = (json['mistakes'] ?? const []).cast<String>(),
         goal = (json['goal'] ?? "") as String;
 
   dynamic toJson() => {
@@ -45,10 +48,10 @@ class Exercise {
   Exercise copyWith(
       {String? title,
       String? description,
-      String? tips,
+      List<String>? tips,
       String? goal,
-      String? mistakes,
-      String? how,
+      List<String>? mistakes,
+      List<String>? how,
       String? video,
       String? preview}) {
     return Exercise(

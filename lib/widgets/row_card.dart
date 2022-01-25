@@ -85,9 +85,10 @@ class RowCard extends StatelessWidget {
                           child: Text(
                             name ?? "",
                             textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: textTheme.headline6
-                                ?.copyWith(color: colorScheme.primary),
+                            // maxLines: 2,
+                            style: textTheme.subtitle1?.copyWith(
+                                color: colorScheme.primary,
+                                fontWeight: FontWeight.bold),
                           ),
                         ),
                         Visibility(
@@ -98,9 +99,11 @@ class RowCard extends StatelessWidget {
                           child: Text(
                             category ?? "",
                             textAlign: TextAlign.left,
-                            maxLines: 1,
-                            style: textTheme.bodyText2
-                                ?.copyWith(color: Colors.grey),
+                            // maxLines: 3,
+                            style: textTheme.caption?.copyWith(
+                              color: Colors.grey,
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
                         ),
                       ],
