@@ -3,6 +3,7 @@ import 'package:meta/meta.dart';
 
 class Exercise {
   final String title;
+  final String description;
   final String preview;
   final String video;
   final String how;
@@ -12,6 +13,7 @@ class Exercise {
 
   const Exercise(
       {required this.title,
+      required this.description,
       required this.preview,
       required this.video,
       required this.tips,
@@ -21,6 +23,7 @@ class Exercise {
 
   Exercise.fromJson(Map<String, dynamic> json)
       : title = (json['title'] ?? "") as String,
+        description = (json['description'] ?? "") as String,
         preview = (json['preview'] ?? "") as String,
         video = (json['video'] ?? "") as String,
         tips = (json['tips'] ?? "") as String,
@@ -30,6 +33,7 @@ class Exercise {
 
   dynamic toJson() => {
         'title': title,
+        'description': description,
         'tips': tips,
         'mistakes': mistakes,
         'how': how,
@@ -40,6 +44,7 @@ class Exercise {
 
   Exercise copyWith(
       {String? title,
+      String? description,
       String? tips,
       String? goal,
       String? mistakes,
@@ -48,6 +53,7 @@ class Exercise {
       String? preview}) {
     return Exercise(
       title: title ?? this.title,
+      description: description ?? this.description,
       preview: preview ?? this.preview,
       tips: tips ?? this.tips,
       how: how ?? this.how,

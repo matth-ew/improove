@@ -10,7 +10,7 @@ class ExerciseSection extends StatelessWidget {
 
   const ExerciseSection({
     Key? key,
-    required this.title,
+    this.title = "",
     required this.text,
     required this.onDone,
     required this.ifEdit,
@@ -21,59 +21,54 @@ class ExerciseSection extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Visibility(
       visible: ifEdit,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 25.0,
-              right: 25.0,
-              bottom: 10.0,
-            ),
-            child: Text(
-              title,
-              style: textTheme.headline6?.copyWith(color: colorScheme.primary),
-            ),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(
-              left: 25.0,
-              right: 25.0,
-              bottom: 15.0,
-            ),
-            child: EditTextCard(
-              text: text,
-              onDone: onDone,
-            ),
-          ),
-        ],
-      ),
-      replacement: Visibility(
-        visible: text.isNotEmpty,
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(25, 0, 25, 30),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 25.0,
-                right: 25.0,
-                bottom: 10.0,
-              ),
-              child: Text(
-                title,
-                style:
-                    textTheme.headline6?.copyWith(color: colorScheme.primary),
+            Visibility(
+              visible: title.isNotEmpty,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  bottom: 15.0,
+                ),
+                child: Text(
+                  title,
+                  style:
+                      textTheme.headline6?.copyWith(color: colorScheme.primary),
+                ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 25.0,
-                right: 25.0,
-                bottom: 15.0,
-              ),
-              child: MyExpandableText(text: text),
+            EditTextCard(
+              text: text,
+              onDone: onDone,
             ),
           ],
+        ),
+      ),
+      replacement: Visibility(
+        visible: text.isNotEmpty,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(25, 0, 25, 30),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Visibility(
+                visible: title.isNotEmpty,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    bottom: 15.0,
+                  ),
+                  child: Text(
+                    title,
+                    style: textTheme.headline6
+                        ?.copyWith(color: colorScheme.primary),
+                  ),
+                ),
+              ),
+              MyExpandableText(text: text),
+            ],
+          ),
         ),
       ),
     );

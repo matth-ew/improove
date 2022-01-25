@@ -152,16 +152,16 @@ class TrainingScreen extends StatelessWidget {
                               const BorderRadius.all(Radius.circular(30)),
                           child: GestureDetector(
                             onTap: () => {
-                              if (vm.training?.trainerId != null)
-                                pushNewScreen(
-                                  context,
-                                  screen: TrainerScreen(
-                                    id: vm.training!.trainerId,
-                                  ),
-                                  withNavBar: true,
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.cupertino,
-                                )
+                              // if (vm.training?.trainerId != null)
+                              //   pushNewScreen(
+                              //     context,
+                              //     screen: TrainerScreen(
+                              //       id: vm.training!.trainerId,
+                              //     ),
+                              //     withNavBar: true,
+                              //     pageTransitionAnimation:
+                              //         PageTransitionAnimation.cupertino,
+                              //   )
                             },
                             child: CircleAvatar(
                               backgroundColor: Colors.grey,

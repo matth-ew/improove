@@ -41,7 +41,7 @@ class ExerciseScreen extends StatelessWidget {
                 SliverAppBar(
                   elevation: 0,
                   collapsedHeight: size.height * 0.38,
-                  expandedHeight: size.height * 0.62,
+                  expandedHeight: size.height * 0.58,
                   // leading: IconButton(
                   //   icon: const Icon(Icons.arrow_back),
                   //   iconSize: 32,
@@ -69,10 +69,10 @@ class ExerciseScreen extends StatelessWidget {
                         child: MyVideoPlayer(
                           video: vm.exercise!.video,
                           onEnd: () {
-                            vm.setCompleted(
-                              trainingId,
-                              "OBJECTID", //TODO: qui serve vm.exercise!.id
-                            );
+                            // vm.setCompleted(
+                            //   trainingId,
+                            //   "OBJECTID", //TODO: qui serve vm.exercise!.id
+                            // );
                           },
                         ),
                       ),
@@ -104,6 +104,13 @@ class ExerciseScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      ExerciseSection(
+                        // title: AppLocalizations.of(context)!.howToPerform,
+                        text: vm.exercise!.description,
+                        onDone: (String text) =>
+                            vm.setHow(trainingId, vm.exercise!.title, text),
+                        ifEdit: edit,
+                      ),
                       ExerciseSection(
                         title: AppLocalizations.of(context)!.howToPerform,
                         text: vm.exercise!.how,

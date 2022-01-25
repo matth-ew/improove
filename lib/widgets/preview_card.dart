@@ -154,12 +154,12 @@ class PreviewCard extends StatelessWidget {
               left: paddingLeftAvatar,
               child: GestureDetector(
                 onTap: () {
-                  pushNewScreen(
-                    context,
-                    screen: TrainerScreen(id: trainerId ?? -1),
-                    withNavBar: true,
-                    pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                  );
+                  // pushNewScreen(
+                  //   context,
+                  //   screen: TrainerScreen(id: trainerId ?? -1),
+                  //   withNavBar: true,
+                  //   pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  // );
                 },
                 child: CircleAvatar(
                   radius: radiusAvatar + borderSize,
