@@ -25,6 +25,7 @@
     "termsConditions":"Terms & Conditions",
     "privacyPolicy":"Privacy Policy",
     "contactUs":"Contact Us",
+    "handleSubscription":"Handle Subscription",
     "disconnect":"Logout",
 
     "@profile":{},

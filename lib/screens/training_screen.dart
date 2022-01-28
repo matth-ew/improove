@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/screens/sub_plans_screen.dart';
-import 'package:improove/screens/trainer_screen.dart';
 import 'package:improove/widgets/edit_text.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/screens/exercise_screen.dart';
@@ -55,32 +54,46 @@ class TrainingScreen extends StatelessWidget {
             store.dispatch(getTrainingById(id));
           }
         },
+        onDidChange: (_ViewModel? pvm, _ViewModel vm) {
+          if (pvm == null || pvm.user.subscribed != vm.user.subscribed) {
+            // store.dispatch(getTrainingById(id));
+            vm.getTraining();
+          }
+        },
         builder: (BuildContext context, _ViewModel vm) {
           String? trainerImage = vm.training?.trainerImage;
           return Scaffold(
-            bottomNavigationBar: vm.user.subscribed
-                ? null
-                : Container(
-                    padding:
-                        const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
-                    color: colorScheme.primary,
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        SizedBox(
-                          width: double.infinity,
-                          child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: colorScheme.secondary),
-                            child: Text("Subscribe"),
-                            onPressed: () {},
-                          ),
-                        ),
-                        Text("As a free user, you can only preview the course",
-                            style: textTheme.caption
-                                ?.copyWith(color: colorScheme.onPrimary))
-                      ],
-                    )),
+            // bottomNavigationBar: vm.user.subscribed
+            //     ? null
+            //     : Container(
+            //         padding:
+            //             const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+            //         color: colorScheme.primary,
+            //         child: Column(
+            //           mainAxisSize: MainAxisSize.min,
+            //           children: [
+            //             SizedBox(
+            //               width: double.infinity,
+            //               child: ElevatedButton(
+            //                 style: ElevatedButton.styleFrom(
+            //                     primary: colorScheme.secondary),
+            //                 child: Text("Subscribe"),
+            //                 onPressed: () {
+            //                   pushNewScreen(
+            //                     context,
+            //                     screen: const SubPlansScreen(),
+            //                     withNavBar: false,
+            //                     pageTransitionAnimation:
+            //                         PageTransitionAnimation.cupertino,
+            //                   );
+            //                   },
+            //               ),
+            //             ),
+            //             Text("As a free user, you can only preview the course",
+            //                 style: textTheme.caption
+            //                     ?.copyWith(color: colorScheme.onPrimary))
+            //           ],
+            //         )),
             body: CustomScrollView(
               slivers: [
                 SliverAppBar(
@@ -204,41 +217,6 @@ class TrainingScreen extends StatelessWidget {
                 ),
                 const SliverPadding(padding: EdgeInsets.all(5)),
                 SliverList(
-                  // delegate: SliverChildListDelegate(
-                  //   generateList(
-                  //     exercises: vm.training?.exercises,
-                  //     goals: vm.training?.goals,
-                  //     ifLocked: (index) {
-                  //       return !vm.user.subscribed &&
-                  //           index > (vm.training?.freeExercises ?? 0) - 1;
-                  //     },
-                  //     onTap: (index) {
-                  //       var locked = !vm.user.subscribed &&
-                  //           index > (vm.training?.freeExercises ?? 0) - 1;
-
-                  //       if (locked) {
-                  //         pushNewScreen(
-                  //           context,
-                  //           screen: const SubPlansScreen(),
-                  //           withNavBar: false,
-                  //           pageTransitionAnimation:
-                  //               PageTransitionAnimation.cupertino,
-                  //         );
-                  //       } else {
-                  //         pushNewScreen(
-                  //           context,
-                  //           screen: ExerciseScreen(
-                  //             trainingId: id,
-                  //             id: index,
-                  //           ),
-                  //           withNavBar: false,
-                  //           pageTransitionAnimation:
-                  //               PageTransitionAnimation.slideUp,
-                  //         );
-                  //       }
-                  //     },
-                  //   ),
-                  // ),
                   delegate: SliverChildBuilderDelegate(
                     (BuildContext context, int index) {
                       var locked = !vm.user.subscribed &&
@@ -328,6 +306,7 @@ class _ViewModel {
   final List<SavedTraining> savedTrainings;
   final Training? training;
   final User user;
+  final Function() getTraining;
   final Function([Function? cb]) saveTraining;
   final Function([Function? cb]) removeTraining;
   final Function(int, String) setDescription;
@@ -336,6 +315,7 @@ class _ViewModel {
       {required this.savedTrainings,
       required this.training,
       required this.user,
+      required this.getTraining,
       required this.saveTraining,
       required this.removeTraining,
       required this.setDescription});
@@ -344,6 +324,7 @@ class _ViewModel {
     return _ViewModel(
       savedTrainings: store.state.user.savedTrainings,
       user: store.state.user,
+      getTraining: () => store.dispatch(getTrainingById(id)),
       setDescription: (int id, String text) =>
           store.dispatch(setTrainingDescription(id, text)),
       training: store.state.trainings[id],

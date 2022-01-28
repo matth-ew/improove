@@ -6,7 +6,7 @@ import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
 // import 'package:improove/screens/payment_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
-import 'package:improove/screens/sub_plans_screen.dart';
+// import 'package:improove/screens/sub_plans_screen.dart';
 import 'package:improove/widgets/image_picker_cropper.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
@@ -122,18 +122,23 @@ class SettingsScreen extends StatelessWidget {
                 launch(emailLaunchUri.toString());
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.payments),
-              title: const Text("pagamenti"),
-              // title: Text(AppLocalizations.of(context)!.termsConditions),
-              onTap: () {
-                pushNewScreen(
-                  context,
-                  screen: const SubPlansScreen(),
-                  withNavBar: false,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
-                );
-              },
+            Visibility(
+              visible: vm.user.subscribed,
+              child: ListTile(
+                leading: const Icon(Icons.payments),
+                title: Text(AppLocalizations.of(context)!.handleSubscription),
+                // title: Text(AppLocalizations.of(context)!.termsConditions),
+                onTap: () {
+                  String url = "";
+                  if (Platform.isIOS) {
+                    url = "market://details?id=fit.improove.app";
+                  } else {
+                    url =
+                        "https://play.google.com/store/account/subscriptions?&package=fit.improove.app";
+                  }
+                  launch(url);
+                },
+              ),
             ),
             ListTile(
               leading: Icon(Icons.logout, color: colorScheme.error),
