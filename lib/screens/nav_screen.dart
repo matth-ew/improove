@@ -4,6 +4,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/improove_purchases.dart';
+import 'package:improove/redux/actions/user.dart';
 import 'package:improove/redux/models/app_state.dart';
 import 'package:improove/screens/home_screen.dart';
 import 'package:improove/screens/explore_screen.dart';
@@ -145,6 +146,7 @@ class _NavScreenState extends State<NavScreen> {
     return StoreBuilder(
         // converter: (Store<AppState> store) => _ViewModel.fromStore(store),
         onInit: (Store<AppState> store) {
+      store.dispatch(getInfoThunk());
       store.dispatch(initImproovePurchases());
       final Stream<List<PurchaseDetails>> purchaseUpdated =
           InAppPurchase.instance.purchaseStream;

@@ -55,9 +55,9 @@ class ProfileScreen extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
-      onInit: (Store<AppState> store) {
-        store.dispatch(getInfoThunk());
-      },
+      // onInit: (Store<AppState> store) {
+      //   store.dispatch(getInfoThunk());
+      // },
       builder: (BuildContext context, _ViewModel vm) {
         // var size = MediaQuery.of(context).size;
         return Scaffold(
