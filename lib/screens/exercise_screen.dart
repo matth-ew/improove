@@ -34,13 +34,24 @@ class ExerciseScreen extends StatelessWidget {
     return StoreConnector(
         converter: (Store<AppState> store) =>
             _ViewModel.fromStore(store, trainingId, id),
+        onInit: (Store<AppState> store) {
+          if (store.state.trainings[trainingId] == null ||
+              store.state.trainings[trainingId]!.exercises[id].video == "") {
+            store.dispatch(getTrainingById(trainingId));
+          }
+        },
         builder: (BuildContext context, _ViewModel vm) {
           bool edit = (vm.userId == vm.training.trainerId);
           return Scaffold(
+            appBar: AppBar(
+              title: Text(vm.exercise?.title ?? ""),
+              backgroundColor: Colors.black,
+            ),
             body: CustomScrollView(
               slivers: [
                 SliverAppBar(
                   elevation: 0,
+                  automaticallyImplyLeading: false,
                   // pinned: true,
                   // collapsedHeight: size.height * 0.18,
                   collapsedHeight: size.height * 0.38,
@@ -65,7 +76,8 @@ class ExerciseScreen extends StatelessWidget {
                         ),
                       ),
                       Positioned(
-                        top: Platform.isIOS ? 35 : 0,
+                        //top: Platform.isIOS ? 35 : 0,
+                        top: 0,
                         left: 0,
                         right: 0,
                         bottom: 25,

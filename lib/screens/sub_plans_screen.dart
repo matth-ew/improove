@@ -26,14 +26,7 @@ class _SubPlansScreen extends State<SubPlansScreen> {
           backgroundColor: const Color(0xfff4f4f4),
           appBar: AppBar(
             centerTitle: false,
-            leading: IconButton(
-              splashRadius: 25,
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              color: Colors.black,
-              icon: const Icon(Icons.arrow_back),
-            ),
+            iconTheme: const IconThemeData(color: Colors.black),
             title: const Text(
               'Subscriptions',
               style: TextStyle(color: Colors.black),

@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:improove/const/images.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/screens/training_screen.dart';
@@ -37,98 +38,100 @@ class ExploreScreen extends StatelessWidget {
       },
       builder: (BuildContext context, _ViewModel vm) {
         return Scaffold(
-          body: NestedScrollView(
-            headerSliverBuilder: (context, _) {
-              return [
-                SliverAppBar(
-                  ///Properties of app bar
-                  backgroundColor: Colors.white,
-                  pinned: true,
-                  expandedHeight: heightScreen / 8,
+          body: SafeArea(
+            child: NestedScrollView(
+              headerSliverBuilder: (context, _) {
+                return [
+                  SliverAppBar(
+                    ///Properties of app bar
+                    backgroundColor: Colors.white,
+                    pinned: true,
+                    expandedHeight: heightScreen / 6,
 
-                  ///Properties of the App Bar when it is expanded
-                  flexibleSpace: FlexibleSpaceBar(
-                    titlePadding:
-                        const EdgeInsetsDirectional.only(start: 25, bottom: 16),
-                    title: Text(
-                      AppLocalizations.of(context)!.explore,
-                      style: textTheme.headline5?.copyWith(
-                        color: colorScheme.primary,
-                        fontWeight: FontWeight.w600,
+                    ///Properties of the App Bar when it is expanded
+                    flexibleSpace: FlexibleSpaceBar(
+                      titlePadding: const EdgeInsetsDirectional.only(
+                          start: 25, bottom: 16),
+                      title: Text(
+                        AppLocalizations.of(context)!.explore,
+                        style: textTheme.headline5?.copyWith(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ];
-            },
-            body: RefreshIndicator(
-              backgroundColor: colorScheme.primary,
-              color: colorScheme.background,
-              onRefresh: () => _refresh(vm.loadTrainings),
-              child: CustomScrollView(
-                slivers: [
-                  SliverGrid(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 30,
-                      // crossAxisSpacing: 0,
-                      childAspectRatio: 0.92,
+                ];
+              },
+              body: RefreshIndicator(
+                backgroundColor: colorScheme.primary,
+                color: colorScheme.background,
+                onRefresh: () => _refresh(vm.loadTrainings),
+                child: CustomScrollView(
+                  slivers: [
+                    SliverGrid(
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        mainAxisSpacing: 30,
+                        // crossAxisSpacing: 0,
+                        childAspectRatio: 0.90,
+                      ),
+                      delegate: SliverChildBuilderDelegate(
+                          (BuildContext context, int index) {
+                        final training = vm.trainings[vm.ids[index]];
+                        final durationString =
+                            '${training?.exercisesLength} ${training?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}';
+                        return Center(
+                          child: PreviewCard(
+                            name: training?.title,
+                            duration: durationString,
+                            preview: training?.preview,
+                            category: training?.category,
+                            avatar: training?.trainerImage,
+                            widthRatio: 0.45,
+                            id: index,
+                            trainerId: training?.trainerId,
+                            onTapCard: (int index) {
+                              if (training != null) {
+                                pushNewScreen(
+                                  context,
+                                  screen: TrainingScreen(id: training.id),
+                                  withNavBar: true,
+                                  pageTransitionAnimation:
+                                      PageTransitionAnimation.cupertino,
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      }, childCount: vm.ids.length),
                     ),
-                    delegate: SliverChildBuilderDelegate(
-                        (BuildContext context, int index) {
-                      final training = vm.trainings[vm.ids[index]];
-                      final durationString =
-                          '${training?.exercisesLength} ${training?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}';
-                      return Center(
-                        child: PreviewCard(
-                          name: training?.title,
-                          duration: durationString,
-                          preview: training?.preview,
-                          category: training?.category,
-                          avatar: training?.trainerImage,
-                          widthRatio: 0.45,
-                          id: index,
-                          trainerId: training?.trainerId,
-                          onTapCard: (int index) {
-                            if (training != null) {
-                              pushNewScreen(
-                                context,
-                                screen: TrainingScreen(id: training.id),
-                                withNavBar: true,
-                                pageTransitionAnimation:
-                                    PageTransitionAnimation.cupertino,
-                              );
-                            }
+                    const SliverPadding(padding: EdgeInsets.all(15)),
+                    SliverToBoxAdapter(
+                      child: Container(
+                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        height: size.width * (198 / 254) * (135 / 198),
+                        width: size.width * (198 / 254),
+                        child: CtaCard(
+                          preview: imgCtaTraining,
+                          tag: AppLocalizations.of(context)!.ctaBecameTrainer,
+                          onPress: () {
+                            pushNewScreen(
+                              context,
+                              screen: const WebViewScreen(
+                                  url: "https://improove.fit"),
+                              withNavBar: false,
+                              pageTransitionAnimation:
+                                  PageTransitionAnimation.cupertino,
+                            );
                           },
                         ),
-                      );
-                    }, childCount: vm.ids.length),
-                  ),
-                  const SliverPadding(padding: EdgeInsets.all(15)),
-                  SliverToBoxAdapter(
-                    child: Container(
-                      padding: const EdgeInsets.only(left: 8, right: 8),
-                      height: size.width * (198 / 254) * (135 / 198),
-                      width: size.width * (198 / 254),
-                      child: CtaCard(
-                        preview: imgCtaTraining,
-                        tag: AppLocalizations.of(context)!.ctaBecameTrainer,
-                        onPress: () {
-                          pushNewScreen(
-                            context,
-                            screen: const WebViewScreen(
-                                url: "https://improove.fit"),
-                            withNavBar: false,
-                            pageTransitionAnimation:
-                                PageTransitionAnimation.cupertino,
-                          );
-                        },
                       ),
                     ),
-                  ),
-                  const SliverPadding(padding: EdgeInsets.all(15)),
-                ],
+                    const SliverPadding(padding: EdgeInsets.all(15)),
+                  ],
+                ),
               ),
             ),
           ),

@@ -131,7 +131,7 @@ class SettingsScreen extends StatelessWidget {
                 onTap: () {
                   String url = "";
                   if (Platform.isIOS) {
-                    url = "market://details?id=fit.improove.app";
+                    url = "https://apps.apple.com/account/subscriptions";
                   } else {
                     url =
                         "https://play.google.com/store/account/subscriptions?&package=fit.improove.app";
