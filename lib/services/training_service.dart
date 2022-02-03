@@ -19,7 +19,7 @@ class TrainingService {
         ),
       );
     } on DioError catch (e) {
-      debugPrint("GETTRAININGS ERROR ");
+      debugPrint("GETTRAININGS ERROR ${e.toString()}");
       return null;
     }
   }

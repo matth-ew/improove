@@ -18,6 +18,7 @@
     "loading":"Loading",
     "discard":"Discard",
     "shareFiles":"Share",
+    "landingUrl": "https://improove.fit/",
 
     "@settings":{},
     "changeProfImage":"Change Profile Image",

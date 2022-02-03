@@ -116,6 +116,8 @@ class Training {
   final int freeExercises;
   final int trainerId;
   final String trainerImage;
+  final String trainerName;
+  final String trainerSurname;
   final String description;
   final int exercisesLength;
   final List<Exercise> exercises;
@@ -130,6 +132,8 @@ class Training {
     required this.freeExercises,
     required this.trainerId,
     required this.trainerImage,
+    required this.trainerName,
+    required this.trainerSurname,
     required this.description,
     required this.exercisesLength,
     required this.exercises,
@@ -146,6 +150,8 @@ class Training {
         freeExercises = 0,
         trainerId = -1,
         trainerImage = "",
+        trainerName = "",
+        trainerSurname = "",
         description = "no description",
         exercisesLength = 0,
         // goals = const [],
@@ -160,6 +166,8 @@ class Training {
     int? freeExercises,
     int? trainerId,
     String? trainerImage,
+    String? trainerName,
+    String? trainerSurname,
     String? description,
     int? exercisesLength,
     List<Exercise>? exercises,
@@ -174,6 +182,8 @@ class Training {
       freeExercises: freeExercises ?? this.freeExercises,
       trainerId: trainerId ?? this.trainerId,
       trainerImage: trainerImage ?? this.trainerImage,
+      trainerName: trainerName ?? this.trainerName,
+      trainerSurname: trainerSurname ?? this.trainerSurname,
       description: description ?? this.description,
       exercisesLength: exercisesLength ?? this.exercisesLength,
       exercises: exercises ?? this.exercises,
@@ -209,7 +219,9 @@ class Training {
         // goals = List<Goal>.from(((json['goals'] ?? const []) as List)
         //     .map((t) => Goal.fromJson(t as Map<String, dynamic>))),
         trainerId = (json['trainer_id'] ?? -1) as int,
-        trainerImage = (json['trainer_image'] ?? "") as String;
+        trainerImage = (json['trainer_image'] ?? "") as String,
+        trainerName = (json['trainer_name'] ?? "") as String,
+        trainerSurname = (json['trainer_surname'] ?? "") as String;
 
   Training.fromJson(dynamic json)
       : id = (json['_id'] ?? -1) as int,
@@ -226,6 +238,8 @@ class Training {
         // goals = List<Goal>.from(((json['goals'] ?? const []) as List)
         //     .map((t) => Goal.fromJson(t as Map<String, dynamic>))),
         trainerId = (json['trainer_id']?["_id"] ?? -1) as int,
+        trainerName = (json['trainer_id']?["name"] ?? "") as String,
+        trainerSurname = (json['trainer_id']?["surname"] ?? "") as String,
         trainerImage = (json['trainer_id']?["profileImage"] ?? "") as String;
 
   @override

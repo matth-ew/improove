@@ -1,10 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+// import 'package:flutter/services.dart';
 import 'package:improove/const/images.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/screens/training_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
+import 'package:improove/utility/analytics.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/widgets/cta_card.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -37,6 +38,14 @@ class ExploreScreen extends StatelessWidget {
         store.dispatch(getTrainings());
       },
       builder: (BuildContext context, _ViewModel vm) {
+        final Size fontSize = (TextPainter(
+                text: TextSpan(
+                    text: AppLocalizations.of(context)!.explore,
+                    style: textTheme.headline4),
+                textScaleFactor: MediaQuery.of(context).textScaleFactor,
+                textDirection: TextDirection.ltr)
+              ..layout())
+            .size;
         return Scaffold(
           body: SafeArea(
             child: NestedScrollView(
@@ -46,12 +55,13 @@ class ExploreScreen extends StatelessWidget {
                     ///Properties of app bar
                     backgroundColor: Colors.white,
                     pinned: true,
-                    expandedHeight: heightScreen / 6,
+                    expandedHeight: fontSize.height + 30,
+                    primary: true,
 
                     ///Properties of the App Bar when it is expanded
                     flexibleSpace: FlexibleSpaceBar(
                       titlePadding: const EdgeInsetsDirectional.only(
-                          start: 25, bottom: 16),
+                          start: 15, bottom: 15),
                       title: Text(
                         AppLocalizations.of(context)!.explore,
                         style: textTheme.headline5?.copyWith(
@@ -117,10 +127,17 @@ class ExploreScreen extends StatelessWidget {
                           preview: imgCtaTraining,
                           tag: AppLocalizations.of(context)!.ctaBecameTrainer,
                           onPress: () {
+                            faCustomEvent(
+                              "CTA_BECOME_TRAINER",
+                              {
+                                "user": vm.userId,
+                              },
+                            );
                             pushNewScreen(
                               context,
-                              screen: const WebViewScreen(
-                                  url: "https://improove.fit"),
+                              screen: WebViewScreen(
+                                  url:
+                                      AppLocalizations.of(context)!.landingUrl),
                               withNavBar: false,
                               pageTransitionAnimation:
                                   PageTransitionAnimation.cupertino,
@@ -142,11 +159,13 @@ class ExploreScreen extends StatelessWidget {
 }
 
 class _ViewModel {
+  final int userId;
   final Map<int, Training> trainings;
   final List<int> ids;
   final Function([Completer? cb]) loadTrainings;
 
   _ViewModel({
+    required this.userId,
     required this.trainings,
     required this.ids,
     required this.loadTrainings,
@@ -154,6 +173,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
+      userId: store.state.user.id,
       trainings: store.state.trainings,
       ids: store.state.exploreTrainingsIds,
       loadTrainings: ([cb]) => store.dispatch(

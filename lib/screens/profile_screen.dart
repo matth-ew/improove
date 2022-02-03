@@ -37,12 +37,12 @@ class ProfileScreen extends StatelessWidget {
         children: <TextSpan>[
           TextSpan(
             text: '$first\n',
-            style: textTheme.headline5?.copyWith(
+            style: textTheme.headline6?.copyWith(
                 color: colorScheme.primary, fontWeight: FontWeight.bold),
           ),
           TextSpan(
               text: second,
-              style: textTheme.subtitle1?.copyWith(color: Colors.grey)),
+              style: textTheme.bodyText2?.copyWith(color: Colors.grey)),
         ],
       ),
     );
@@ -92,7 +92,8 @@ class ProfileScreen extends StatelessWidget {
           ),
           body: SafeArea(
             child: DefaultTabController(
-              length: 3,
+              length: 2,
+              // length: 3,
               child: NestedScrollView(
                 // allows you to build a list of elements that would be scrolled away till the body reached the top
                 headerSliverBuilder: (context, _) {
@@ -121,9 +122,12 @@ class ProfileScreen extends StatelessWidget {
                                     minRadius: 20.0,
                                     maxRadius: 50.0,
                                   ),
-                                textElem("1", "LEVEL", context),
-                                textElem("1", "END", context),
-                                textElem("1", "CHALL", context),
+                                textElem(
+                                    vm.user.savedTrainings.length.toString(),
+                                    "Preferiti",
+                                    context),
+                                textElem(vm.localVideos.length.toString(),
+                                    "Registrazioni", context),
                               ],
                             ),
                           ),
@@ -146,7 +150,7 @@ class ProfileScreen extends StatelessWidget {
                       tabs: const [
                         Tab(icon: Icon(Icons.video_library)),
                         Tab(icon: Icon(Icons.fitness_center_rounded)),
-                        Tab(icon: Icon(Icons.history)),
+                        // Tab(icon: Icon(Icons.history)),
                       ],
                     ),
                     Expanded(
@@ -159,8 +163,8 @@ class ProfileScreen extends StatelessWidget {
                             ctaAction: goToExplore,
                           ),
                           const LocalFolders(),
-                          _showClosedTrainings(
-                              context, vm.user.closedTrainings, vm.trainings),
+                          // _showClosedTrainings(
+                          //     context, vm.user.closedTrainings, vm.trainings),
                         ],
                       ),
                     ),
@@ -203,6 +207,7 @@ class ProfileScreen extends StatelessWidget {
 }
 
 class _ViewModel {
+  final List<LocalVideo> localVideos;
   final Map<int, Training> trainings;
   final User user;
   final Function(int, [Function? cb]) removeTraining;
@@ -210,6 +215,7 @@ class _ViewModel {
   _ViewModel({
     required this.trainings,
     required this.user,
+    required this.localVideos,
     required this.removeTraining,
   });
 
@@ -217,6 +223,7 @@ class _ViewModel {
     return _ViewModel(
       trainings: store.state.trainings,
       user: store.state.user,
+      localVideos: store.state.localVideos,
       removeTraining: (id, [cb]) => store.dispatch(
         removeTrainingThunk(id, cb),
       ),

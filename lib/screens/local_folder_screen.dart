@@ -26,15 +26,22 @@ class LocalFolderScreen extends StatefulWidget {
 
 class _LocalFolderScreenState extends State<LocalFolderScreen> {
   Map<String, Uint8List?> thumbnails = {};
+  Map<String, String?> printDates = {};
 
   Set<String> selected = {};
 
   Future<void> getThumbnails(List<LocalVideo> localVideos) async {
     Map<String, Uint8List?> thumbnailsTemp = {};
+    Map<String, String?> printDatesTemp = {};
+
+    String locale = Localizations.localeOf(context).languageCode;
+
     thumbnailsTemp = await generateThumbnail(localVideos);
+    printDatesTemp = await generatePrintDate(localVideos, locale);
 
     setState(() {
       thumbnails = thumbnailsTemp;
+      printDates = printDatesTemp;
     });
   }
 
@@ -396,16 +403,7 @@ class _LocalFolderScreenState extends State<LocalFolderScreen> {
                   itemBuilder: (context, index) {
                     String path = vm.localVideos[index].path;
                     Uint8List? thumbnail = thumbnails[path];
-                    String locale =
-                        Localizations.localeOf(context).languageCode;
-                    DateTime date;
-                    String printDate = '';
-                    File(path).exists().then((bool v) {
-                      if (v) {
-                        date = File(path).lastModifiedSync();
-                        printDate = DateFormat.yMd(locale).format(date);
-                      }
-                    });
+                    String printDate = printDates[path] ?? "";
                     return Ink(
                         key: Key(path),
                         decoration: BoxDecoration(

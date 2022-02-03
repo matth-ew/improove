@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:improove/screens/feedback_screen.dart';
 import 'package:improove/screens/training_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
+import 'package:improove/utility/analytics.dart';
 import 'package:improove/widgets/cta_card.dart';
 import 'package:improove/const/images.dart';
 import 'package:improove/redux/actions/actions.dart';
@@ -83,10 +84,16 @@ class HomeScreen extends StatelessWidget {
                       preview: imgCtaTraining,
                       tag: AppLocalizations.of(context)!.ctaBecameTrainer,
                       onPress: () {
+                        faCustomEvent(
+                          "CTA_BECOME_TRAINER",
+                          {
+                            "user": vm.userId,
+                          },
+                        );
                         pushNewScreen(
                           context,
-                          screen:
-                              const WebViewScreen(url: "https://improove.fit"),
+                          screen: WebViewScreen(
+                              url: AppLocalizations.of(context)!.landingUrl),
                           withNavBar: false,
                           pageTransitionAnimation:
                               PageTransitionAnimation.cupertino,
@@ -176,11 +183,13 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _ViewModel {
+  final int userId;
   final Map<int, Training> trainings;
   final List<int> ids;
   final Training? dailyTraining;
 
   _ViewModel({
+    required this.userId,
     required this.trainings,
     required this.ids,
     required this.dailyTraining,
@@ -188,8 +197,10 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store, int id) {
     return _ViewModel(
-        trainings: store.state.trainings,
-        ids: store.state.newTrainingsIds,
-        dailyTraining: store.state.trainings[id]);
+      userId: store.state.user.id,
+      trainings: store.state.trainings,
+      ids: store.state.newTrainingsIds,
+      dailyTraining: store.state.trainings[id],
+    );
   }
 }

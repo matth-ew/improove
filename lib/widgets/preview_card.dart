@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
-import 'package:improove/screens/trainer_screen.dart';
+// import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
+// import 'package:improove/screens/trainer_screen.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 
 class PreviewCard extends StatelessWidget {

@@ -4,8 +4,9 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:improove/redux/models/local_video.dart';
-import 'package:improove/screens/camera_screen.dart';
+// import 'package:improove/screens/camera_screen.dart';
 import 'package:improove/widgets/trim_view.dart';
+import 'package:intl/intl.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:video_thumbnail/video_thumbnail.dart';
 import 'package:share_plus/share_plus.dart';
@@ -75,6 +76,28 @@ Future<Map<String, Uint8List?>> generateThumbnail(
   });
 
   return thumbnailsTemp;
+}
+
+Future<Map<String, String?>> generatePrintDate(
+    List<LocalVideo> localVideos, String locale) async {
+  // if (localVideos == null || localVideos.isEmpty) return;
+  Map<String, String?> printDatesTemp = {};
+  await Future.forEach(localVideos, (LocalVideo elem) async {
+    try {
+      DateTime date;
+      String printDate = '';
+      bool v = await File(elem.path).exists();
+      if (v) {
+        date = File(elem.path).lastModifiedSync();
+        printDate = DateFormat.yMd(locale).format(date);
+      }
+      printDatesTemp[elem.path] = printDate;
+    } catch (e) {
+      debugPrint("ERR $e");
+    }
+  });
+
+  return printDatesTemp;
 }
 
 shareVideos(List<String> videos) {

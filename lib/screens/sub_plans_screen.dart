@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:improove/utility/analytics.dart';
 import 'package:improove/widgets/pricing_and_plans/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/improove_purchases.dart';
@@ -21,6 +22,14 @@ class _SubPlansScreen extends State<SubPlansScreen> {
   Widget build(BuildContext context) {
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
+      onInit: (Store<AppState> store) {
+        faCustomEvent(
+          "SUB_SCREEN",
+          {
+            "user": store.state.user.id,
+          },
+        );
+      },
       builder: (BuildContext context, _ViewModel vm) {
         return Scaffold(
           backgroundColor: const Color(0xfff4f4f4),

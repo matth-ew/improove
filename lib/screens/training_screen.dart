@@ -139,6 +139,64 @@ class TrainingScreen extends StatelessWidget {
                         ),
                       ),
                       Positioned(
+                        child: Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              stops: const [0.6, 0.8, 1],
+                              colors: [
+                                Colors.transparent,
+                                Colors.black.withOpacity(0.2),
+                                Colors.black.withOpacity(0.4)
+                              ],
+                            ),
+                          ),
+                          alignment: Alignment.bottomLeft,
+                          padding:
+                              const EdgeInsets.only(left: 25.0, bottom: 50),
+                          child: ClipRRect(
+                            borderRadius:
+                                const BorderRadius.all(Radius.circular(30)),
+                            child: GestureDetector(
+                              onTap: () => {
+                                // if (vm.training?.trainerId != null)
+                                //   pushNewScreen(
+                                //     context,
+                                //     screen: TrainerScreen(
+                                //       id: vm.training!.trainerId,
+                                //     ),
+                                //     withNavBar: true,
+                                //     pageTransitionAnimation:
+                                //         PageTransitionAnimation.cupertino,
+                                //   )
+                              },
+                              child: Row(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor: Colors.grey,
+                                    backgroundImage: trainerImage != null &&
+                                            trainerImage != ""
+                                        ? CachedNetworkImageProvider(
+                                            trainerImage,
+                                          )
+                                        : null,
+                                    radius: 25.0,
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "${vm.training?.trainerName ?? ""} ${vm.training?.trainerSurname ?? ""}",
+                                    style: textTheme.headline6?.copyWith(
+                                      color: Colors.white,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
                         bottom: 0,
                         left: 0,
                         right: 0,
@@ -156,38 +214,6 @@ class TrainingScreen extends StatelessWidget {
                               ),
                             ],
                             color: Colors.white,
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        right: 35,
-                        child: ClipRRect(
-                          borderRadius:
-                              const BorderRadius.all(Radius.circular(30)),
-                          child: GestureDetector(
-                            onTap: () => {
-                              // if (vm.training?.trainerId != null)
-                              //   pushNewScreen(
-                              //     context,
-                              //     screen: TrainerScreen(
-                              //       id: vm.training!.trainerId,
-                              //     ),
-                              //     withNavBar: true,
-                              //     pageTransitionAnimation:
-                              //         PageTransitionAnimation.cupertino,
-                              //   )
-                            },
-                            child: CircleAvatar(
-                              backgroundColor: Colors.grey,
-                              backgroundImage:
-                                  trainerImage != null && trainerImage != ""
-                                      ? CachedNetworkImageProvider(
-                                          trainerImage,
-                                        )
-                                      : null,
-                              radius: 30.0,
-                            ),
                           ),
                         ),
                       ),
@@ -239,7 +265,7 @@ class TrainingScreen extends StatelessWidget {
                                   "${index + 1}. ${vm.training?.exercises[index].title}",
                               //category: "ESEMPIO", //vm.training?.exercises[index].category,
                               category: goal != null && goal.isNotEmpty
-                                  ? "🎯 ${goal}"
+                                  ? "🎯 $goal"
                                   : null,
                               onTap: () {
                                 if (locked) {

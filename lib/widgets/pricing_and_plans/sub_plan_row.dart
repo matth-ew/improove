@@ -18,8 +18,10 @@ class SubPlanRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
-    const discounts = [5.49, 14.49, 39.99];
-    const weeks = [4, 12, 52];
+    // const discounts = [3.99, 9.99, 16.99];
+    // const prices = [4.99, 12.99, 21.99];
+    const priceFromDiscount = 10 / 7;
+    const weeks = [4.3, 13, 26];
     return SizedBox(
       width: width * 0.9,
       child: Row(
@@ -40,10 +42,11 @@ class SubPlanRow extends StatelessWidget {
               child: SubPlanBox(
                   plan:
                       p.productDetails.title.split("-")[1].split("(")[0].trim(),
-                  price: "${discounts[id]} $currency",
-                  discount: p.price,
+                  price: p.price,
+                  discount:
+                      "${(rawPrice * priceFromDiscount).toStringAsFixed(2)} $currency",
                   weekly:
-                      "${(discounts[id] / weeks[id]).toStringAsFixed(2)}$currency${AppLocalizations.of(context)!.sub_weekly}",
+                      "${(rawPrice / weeks[id]).toStringAsFixed(2)}$currency${AppLocalizations.of(context)!.sub_weekly}",
                   id: id,
                   selectedPlan: selectedPlan,
                   callback: callback),

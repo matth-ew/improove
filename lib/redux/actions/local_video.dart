@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:improove/redux/models/models.dart';
+import 'package:improove/utility/analytics.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
@@ -33,6 +34,12 @@ class DeleteLocalVideoGroup {
 ThunkAction<AppState> addLocalVideoThunk(LocalVideo video, [Function? cb]) {
   return (Store<AppState> store) async {
     try {
+      faCustomEvent(
+        "SAVING_LOCAL_VIDEO",
+        {
+          "user": store.state.user.id,
+        },
+      );
       debugPrint("ADDING VIDEO ${video.path}");
       store.dispatch(AddLocalVideo(video));
       cb?.call(null);

@@ -13,7 +13,7 @@ class SubCurrentPlan extends StatelessWidget {
   }) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    const discounts = [5.49, 14.49, 39.99];
+    // const discounts = [5.49, 14.49, 39.99];
     return Center(
       child: Padding(
         padding:
@@ -23,7 +23,7 @@ class SubCurrentPlan extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Text(
-              "${product.productDetails.title.split("-")[1].split("(")[0].trim()} - ${discounts[selectedPlan]} ${product.productDetails.currencySymbol}",
+              "${product.productDetails.title.split("-")[1].split("(")[0].trim()} - ${product.price}",
               // (selectedPlan == 0
               //         ? AppLocalizations.of(context)!.sub_one
               //         : (selectedPlan == 1

@@ -21,6 +21,7 @@ ThunkAction<AppState> getTrainerById(int id, [Completer? completer]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
+      debugPrint("UEUE TRAINER");
       final Response? r = await TrainerService().getTrainerById(id);
       if (r?.data['success'] as bool) {
         final results = [...r!.data!['trainings']];

@@ -31,6 +31,7 @@ class SubPlanBox extends StatelessWidget {
           highlightColor: Colors.white,
           onTap: () => {callback!(id)},
           child: Container(
+            clipBehavior: Clip.hardEdge,
             height: MediaQuery.of(context).size.width * 0.35,
             width: MediaQuery.of(context).size.width * 0.25,
             decoration: BoxDecoration(

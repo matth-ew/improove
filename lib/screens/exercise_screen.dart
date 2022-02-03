@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/user.dart';
+import 'package:improove/utility/analytics.dart';
 import 'package:improove/widgets/exercise_widgets/exercise_section.dart';
 import 'package:improove/widgets/exercise_widgets/exercise_description.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -34,6 +35,15 @@ class ExerciseScreen extends StatelessWidget {
         converter: (Store<AppState> store) =>
             _ViewModel.fromStore(store, trainingId, id),
         onInit: (Store<AppState> store) {
+          // faSetScreen("TRAINING_$trainingId-EXERCISE_$id-USER_${store.state.user.id}");
+          faCustomEvent(
+            "EXERCISE_SCREEN",
+            {
+              "training": trainingId,
+              "exercise": id,
+              "user": store.state.user.id,
+            },
+          );
           if (store.state.trainings[trainingId] == null ||
               store.state.trainings[trainingId]!.exercises[id].video == "") {
             store.dispatch(getTrainingById(trainingId));
