@@ -143,10 +143,12 @@ class _LocalVideoScreenState extends State<LocalVideoScreen> {
                                   ),
                                   alignment: Alignment.bottomLeft,
                                   padding: const EdgeInsets.all(8.0),
-                                  child: Text(
-                                    printDate,
-                                    style: textTheme.overline?.copyWith(
-                                      color: Colors.white,
+                                  child: FittedBox(
+                                    child: Text(
+                                      printDate,
+                                      style: textTheme.overline?.copyWith(
+                                        color: Colors.white,
+                                      ),
                                     ),
                                   ),
                                 ),

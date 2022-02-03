@@ -61,12 +61,14 @@ class ExploreScreen extends StatelessWidget {
                     ///Properties of the App Bar when it is expanded
                     flexibleSpace: FlexibleSpaceBar(
                       titlePadding: const EdgeInsetsDirectional.only(
-                          start: 15, bottom: 15),
-                      title: Text(
-                        AppLocalizations.of(context)!.explore,
-                        style: textTheme.headline5?.copyWith(
-                          color: colorScheme.primary,
-                          fontWeight: FontWeight.w600,
+                          start: 15, bottom: 15, end: 15),
+                      title: FittedBox(
+                        child: Text(
+                          AppLocalizations.of(context)!.explore,
+                          style: textTheme.headline5?.copyWith(
+                            color: colorScheme.primary,
+                            fontWeight: FontWeight.w600,
+                          ),
                         ),
                       ),
                     ),
