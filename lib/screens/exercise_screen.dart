@@ -1,4 +1,3 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/widgets/exercise_widgets/exercise_section.dart';

@@ -6,6 +6,7 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/services/authservice.dart';
 import 'package:improove/services/user_service.dart';
+import 'package:improove/utility/analytics.dart';
 import 'package:improove/utility/device_storage.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
@@ -66,6 +67,7 @@ ThunkAction<AppState> loginThunk(String email, String password,
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
+        await faSetUser(u);
         await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
@@ -82,11 +84,14 @@ ThunkAction<AppState> loginFacebookThunk(String accessToken, [Function? cb]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final Response? r = await AuthService().loginFacebook(accessToken);
+      final referralCode = await getReferralCode();
+      final Response? r =
+          await AuthService().loginFacebook(accessToken, referralCode);
       if (r?.data['success'] as bool) {
         // debugPrint(r!.data!["user"].toString());
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
+        await faSetUser(u);
         await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
@@ -103,10 +108,13 @@ ThunkAction<AppState> loginGoogleThunk(String accessToken, [Function? cb]) {
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final Response? r = await AuthService().loginGoogle(accessToken);
+      final referralCode = await getReferralCode();
+      final Response? r =
+          await AuthService().loginGoogle(accessToken, referralCode);
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
+        await faSetUser(u);
         await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
@@ -124,10 +132,13 @@ ThunkAction<AppState> loginAppleThunk(String authorizationCode,
   // Define the parameter
   return (Store<AppState> store) async {
     try {
-      final Response? r = await AuthService().loginApple(authorizationCode);
+      final referralCode = await getReferralCode();
+      final Response? r =
+          await AuthService().loginApple(authorizationCode, referralCode);
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
         store.dispatch(SetUser(u));
+        await faSetUser(u);
         await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
@@ -144,11 +155,14 @@ ThunkAction<AppState> signupThunk(String email, String password,
     [Function? cb]) {
   // Define the parameter
   return (Store<AppState> store) async {
+    final referralCode = await getReferralCode();
     try {
-      final Response? r = await AuthService().signup(email, password);
+      final Response? r =
+          await AuthService().signup(email, password, referralCode);
       if (r?.data['success'] as bool) {
         final User u = User.fromJson(r!.data!["user"] as Map<String, dynamic>);
-        store.dispatch(SetUser(u)); // Create storage
+        store.dispatch(SetUser(u));
+        await faSetUser(u);
         await setAccessToken(r.data!["token"] as String);
         cb?.call(null);
       } else {
@@ -264,12 +278,13 @@ ThunkAction<AppState> getInfoThunk([Function? cb]) {
       final token = await getAccessToken();
       if (token != null) {
         final Response? r = await UserService().getInfo(token);
-        //debugPrint("UE RESP ${r?.data}");
+        debugPrint("UE RESP ${r?.data}");
         if (r?.data['success'] as bool) {
           final User u =
               User.fromJson(r!.data!["user"] as Map<String, dynamic>);
           //debugPrint("UE USER ${u.toString()}");
           store.dispatch(SetUser(u));
+          await faSetUser(u);
           if (u.savedTrainings.isNotEmpty || u.closedTrainings.isNotEmpty) {
             final List<int> ids = {
               ...u.savedTrainings.map((s) => s.trainingId),

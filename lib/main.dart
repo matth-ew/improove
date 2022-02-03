@@ -6,9 +6,14 @@ import 'package:improove/screens/splash_screen.dart';
 import 'package:improove/theme/custom_theme.dart';
 import 'package:improove/redux/store.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
   final store = await createStore();
   // runApp(App(store: store));

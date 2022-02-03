@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/actions/user.dart';
 import 'package:improove/screens/sub_plans_screen.dart';
+import 'package:improove/utility/analytics.dart';
 import 'package:improove/widgets/edit_text.dart';
 import 'package:improove/widgets/my_expandable_text.dart';
 import 'package:improove/screens/exercise_screen.dart';
@@ -53,6 +54,7 @@ class TrainingScreen extends StatelessWidget {
               store.state.trainings[id]!.description == "") {
             store.dispatch(getTrainingById(id));
           }
+          faSetScreen("TRAINING_$id");
         },
         onDidChange: (_ViewModel? pvm, _ViewModel vm) {
           if (pvm == null || pvm.user.subscribed != vm.user.subscribed) {

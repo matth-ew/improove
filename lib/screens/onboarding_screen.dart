@@ -14,6 +14,7 @@ class OnboardingScreen extends StatefulWidget {
 
 class _OnboardingScreenState extends State<OnboardingScreen> {
   final introKey = GlobalKey<IntroductionScreenState>();
+  String currentText = "";
 
   // Future<bool> isFirstTime() async {
   //   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -28,6 +29,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   Future<void> _setOnboardingEnd() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     await prefs.setBool('isOnboardingFinished', true);
+    await prefs.setString('referralCode', currentText);
   }
 
   // @override
@@ -114,6 +116,28 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           body: AppLocalizations.of(context)!.onboardingDescription3,
           image: _buildImage('onboarding3.svg'),
           decoration: pageDecoration,
+        ),
+        PageViewModel(
+          title: AppLocalizations.of(context)!.onboardingTitle4,
+          bodyWidget: TextField(
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+              border:
+                  OutlineInputBorder(borderRadius: BorderRadius.circular(30.0)),
+              // labelText: 'Email',
+              hintText: AppLocalizations.of(context)!.onboardingDescription4,
+            ),
+            onChanged: (value) {
+              setState(() {
+                currentText = value;
+              });
+            },
+            // maxLines: 1,
+            // minLines: 1,
+          ),
+          image: _buildImage('onboarding4.svg'),
+          decoration: pageDecoration.copyWith(
+              imagePadding: const EdgeInsets.symmetric(horizontal: 50)),
         ),
         // PageViewModel(
         //   title: "Full Screen Page",

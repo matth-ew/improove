@@ -20,11 +20,15 @@ class AuthService {
     }
   }
 
-  Future<Response?> loginFacebook(String accessToken) async {
+  Future<Response?> loginFacebook(
+      String accessToken, String? referralCode) async {
     try {
       return await dio.post(
         '$backendUrl/api/authenticate-facebook',
-        data: {'access_token': accessToken},
+        data: {
+          'access_token': accessToken,
+          'referral_code': referralCode,
+        },
         options: Options(
           headers: {HttpHeaders.contentTypeHeader: 'application/json'},
         ),
@@ -35,28 +39,14 @@ class AuthService {
     }
   }
 
-  Future<Response?> loginGoogle(String accessToken) async {
+  Future<Response?> loginGoogle(
+      String accessToken, String? referralCode) async {
     try {
       return await dio.post(
         '$backendUrl/api/authenticate-google',
-        data: {'access_token': accessToken},
-        options: Options(
-          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
-        ),
-      );
-    } on DioError catch (e) {
-      debugPrint(e.response?.data['msg'].toString());
-      return e.response;
-    }
-  }
-
-  Future<Response?> loginApple(String authorizationCode) async {
-    try {
-      return await dio.post(
-        '$backendUrl/api/authenticate-apple',
         data: {
-          'code': authorizationCode,
-          'useBundleId': Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
+          'access_token': accessToken,
+          'referral_code': referralCode,
         },
         options: Options(
           headers: {HttpHeaders.contentTypeHeader: 'application/json'},
@@ -68,10 +58,35 @@ class AuthService {
     }
   }
 
-  Future<Response?> signup(String email, String password) async {
+  Future<Response?> loginApple(
+      String authorizationCode, String? referralCode) async {
+    try {
+      return await dio.post(
+        '$backendUrl/api/authenticate-apple',
+        data: {
+          'code': authorizationCode,
+          'useBundleId': Platform.isIOS || Platform.isMacOS ? 'true' : 'false',
+          'referral_code': referralCode,
+        },
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint(e.response?.data['msg'].toString());
+      return e.response;
+    }
+  }
+
+  Future<Response?> signup(
+      String email, String password, String? referralCode) async {
     try {
       return await dio.post('$backendUrl/api/adduser',
-          data: {'email': email, 'password': password},
+          data: {
+            'email': email,
+            'password': password,
+            'referral_code': referralCode,
+          },
           options: Options(contentType: Headers.formUrlEncodedContentType));
     } on DioError catch (e) {
       debugPrint(e.response?.data['msg'] as String);

@@ -1,4 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 const _storage = FlutterSecureStorage();
 
@@ -15,6 +16,11 @@ Future<void> setAccessToken(String token) async {
 
 Future<void> deleteAccessToken() async {
   return await _storage.delete(key: "accessToken");
+}
+
+Future<String?> getReferralCode() async {
+  final prefs = await SharedPreferences.getInstance();
+  return prefs.getString('referralCode');
 }
 
 // Future<List<LocalVideo>> getLocalVideos() async {
