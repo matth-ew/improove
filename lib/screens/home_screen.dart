@@ -9,6 +9,7 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/widgets/custom_bottom_sheet.dart';
+import 'package:improove/widgets/long_card.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
@@ -16,7 +17,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
   static const int numNewTrainings = 4;
-  static const int trainingOfTheWeek = 2;
+  // static const int trainingOfTheWeek = 2;
 
   const HomeScreen({Key? key}) : super(key: key);
   @override
@@ -27,13 +28,17 @@ class HomeScreen extends StatelessWidget {
 
     // var size = MediaQuery.of(context).size;
     return StoreConnector(
-        converter: (Store<AppState> store) =>
-            _ViewModel.fromStore(store, trainingOfTheWeek),
+        converter: (Store<AppState> store) => _ViewModel.fromStore(store),
         onInit: (store) {
           store.dispatch(getTrainings(null, numNewTrainings));
-          store.dispatch(getTrainingById(trainingOfTheWeek));
+          store.dispatch(getWeekTraining());
+          // store.dispatch(getTrainingById(trainingOfTheWeek));
         },
         builder: (BuildContext context, _ViewModel vm) {
+          Training? weekTraining = vm.weekTraining;
+          // if (vm.weekTrainingId != null)
+          //   Training? weekTraining = vm.trainings[vm.weekTrainingId];
+
           return Scaffold(
               body: SafeArea(
             child: CustomScrollView(
@@ -52,21 +57,21 @@ class HomeScreen extends StatelessWidget {
                 SliverToBoxAdapter(
                     child: Padding(
                   padding: const EdgeInsets.only(left: 8, right: 8),
-                  child: PreviewCard(
-                    name: vm.dailyTraining?.title,
+                  child: LongCard(
+                    name: weekTraining?.title,
                     duration:
-                        '${vm.dailyTraining?.exercisesLength ?? 0} ${vm.dailyTraining?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}',
-                    preview: vm.dailyTraining?.preview,
-                    category: vm.dailyTraining?.category,
-                    avatar: vm.dailyTraining?.trainerImage,
+                        '${weekTraining?.exercisesLength ?? 0} ${weekTraining?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}',
+                    preview: weekTraining?.preview,
+                    category: weekTraining?.category,
+                    avatar: weekTraining?.trainerImage,
                     widthRatio: 0.96,
-                    heightRatio: 0.70,
-                    id: trainingOfTheWeek,
-                    trainerId: vm.dailyTraining?.trainerId,
+                    heightRatio: 0.60,
+                    id: weekTraining?.id,
+                    trainerId: weekTraining?.trainerId,
                     onTapCard: (int index) {
                       pushNewScreen(
                         context,
-                        screen: TrainingScreen(id: vm.dailyTraining!.id),
+                        screen: TrainingScreen(id: weekTraining!.id),
                         withNavBar: true,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,
@@ -185,21 +190,21 @@ class _ViewModel {
   final int userId;
   final Map<int, Training> trainings;
   final List<int> ids;
-  final Training? dailyTraining;
+  final Training? weekTraining;
 
   _ViewModel({
     required this.userId,
     required this.trainings,
     required this.ids,
-    required this.dailyTraining,
+    required this.weekTraining,
   });
 
-  static _ViewModel fromStore(Store<AppState> store, int id) {
+  static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
       userId: store.state.user.id,
       trainings: store.state.trainings,
       ids: store.state.newTrainingsIds,
-      dailyTraining: store.state.trainings[id],
+      weekTraining: store.state.trainings[store.state.general.weekTrainingId],
     );
   }
 }

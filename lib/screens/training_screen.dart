@@ -13,6 +13,7 @@ import 'package:improove/widgets/row_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TrainingScreen extends StatelessWidget {
   final int id;
@@ -264,9 +265,11 @@ class TrainingScreen extends StatelessWidget {
                               name:
                                   "${index + 1}. ${vm.training?.exercises[index].title}",
                               //category: "ESEMPIO", //vm.training?.exercises[index].category,
-                              category: goal != null && goal.isNotEmpty
-                                  ? "🎯 $goal"
-                                  : null,
+                              category: locked
+                                  ? "🎯 ${AppLocalizations.of(context)!.lockedGoal}"
+                                  : goal != null && goal.isNotEmpty
+                                      ? "🎯 $goal"
+                                      : null,
                               onTap: () {
                                 if (locked) {
                                   pushNewScreen(

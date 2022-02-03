@@ -72,6 +72,30 @@ ThunkAction<AppState> getTrainingById(int id, [Completer? completer]) {
   };
 }
 
+ThunkAction<AppState> getWeekTraining([Completer? completer]) {
+  return (Store<AppState> store) async {
+    try {
+      final Response? r = await TrainingService().getWeekTraining();
+      if (r?.data['success'] as bool) {
+        final training = r!.data!["training"];
+        final Training t = Training.fromJson(training as Map<String, dynamic>);
+        debugPrint("UE DATA ${t.id}");
+        store.dispatch(SetTraining(t, t.id));
+        store.dispatch(
+          SetGeneral(
+            store.state.general.copyWith(
+              weekTrainingId: t.id,
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      debugPrint("Errore in getTraining ${e.toString()}");
+      completer?.completeError(e); // Exception thrown, complete with error
+    }
+  };
+}
+
 ThunkAction<AppState> getTrainings(
     [List<int>? ids, int? newest, Completer? completer]) {
   // Define the parameter
