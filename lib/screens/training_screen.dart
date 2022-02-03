@@ -181,7 +181,7 @@ class TrainingScreen extends StatelessWidget {
                                             trainerImage,
                                           )
                                         : null,
-                                    radius: 25.0,
+                                    radius: 27.0,
                                   ),
                                   const SizedBox(width: 8),
                                   Text(

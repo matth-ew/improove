@@ -26,6 +26,7 @@ class SubPlanBox extends StatelessWidget {
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).size.height * 0.04),
       child: Material(
+        borderRadius: BorderRadius.circular(10),
         child: InkWell(
           borderRadius: BorderRadius.circular(10),
           highlightColor: Colors.white,

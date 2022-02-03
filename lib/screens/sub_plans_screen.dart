@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:improove/utility/analytics.dart';
+import 'package:improove/widgets/pricing_and_plans/sub_subtext.dart';
 import 'package:improove/widgets/pricing_and_plans/widgets.dart';
 import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/improove_purchases.dart';
@@ -65,6 +66,7 @@ class _SubPlansScreen extends State<SubPlansScreen> {
                         SubDetails(
                           product: vm.improovePurchases.products[selectedPlan],
                         ),
+                        SubSubtext()
                       ],
                     ),
                   ),

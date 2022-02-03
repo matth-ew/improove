@@ -74,35 +74,6 @@ class HomeScreen extends StatelessWidget {
                     },
                   ),
                 )),
-                const SliverPadding(padding: EdgeInsets.only(bottom: 15)),
-                SliverToBoxAdapter(
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    // height: size.width * (198 / 254) * (135 / 198),
-                    // width: size.width * (198 / 254),
-                    child: CtaCard(
-                      preview: imgCtaTraining,
-                      tag: AppLocalizations.of(context)!.ctaBecameTrainer,
-                      onPress: () {
-                        faCustomEvent(
-                          "CTA_BECOME_TRAINER",
-                          {
-                            "user": vm.userId,
-                          },
-                        );
-                        pushNewScreen(
-                          context,
-                          screen: WebViewScreen(
-                              url: AppLocalizations.of(context)!.landingUrl),
-                          withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
-                        );
-                      },
-                    ),
-                  ),
-                ),
-                const SliverPadding(padding: EdgeInsets.all(15)),
                 SliverToBoxAdapter(
                   child: Container(
                     padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
@@ -151,7 +122,35 @@ class HomeScreen extends StatelessWidget {
                     );
                   }, childCount: vm.ids.length),
                 ),
-                const SliverPadding(padding: EdgeInsets.all(15)),
+                const SliverPadding(padding: EdgeInsets.only(bottom: 50)),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.only(left: 8, right: 8),
+                    // height: size.width * (198 / 254) * (135 / 198),
+                    // width: size.width * (198 / 254),
+                    child: CtaCard(
+                      preview: imgCtaTraining,
+                      tag: AppLocalizations.of(context)!.ctaBecameTrainer,
+                      onPress: () {
+                        faCustomEvent(
+                          "CTA_BECOME_TRAINER",
+                          {
+                            "user": vm.userId,
+                          },
+                        );
+                        pushNewScreen(
+                          context,
+                          screen: WebViewScreen(
+                              url: AppLocalizations.of(context)!.landingUrl),
+                          withNavBar: false,
+                          pageTransitionAnimation:
+                              PageTransitionAnimation.cupertino,
+                        );
+                      },
+                    ),
+                  ),
+                ),
+                const SliverPadding(padding: EdgeInsets.all(25)),
                 SliverToBoxAdapter(
                   child: Container(
                     padding: const EdgeInsets.only(left: 8, right: 8),

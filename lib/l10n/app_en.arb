@@ -106,5 +106,6 @@
     "sub_six_weekly":"5,99€/ \n weekly",
     "sub_description":"Get full access to all our trainings \n and every feature.",
     "sub_other":"Choose the best plan for you",
-    "sub_upgradePlan":"Upgrade now"
+    "sub_upgradePlan":"Upgrade now",
+  "sub_subtext": "One week free trial, cancel anytime"
 }
