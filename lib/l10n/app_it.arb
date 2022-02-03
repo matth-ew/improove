@@ -1,7 +1,7 @@
 {
     "trainingWeek": "Allenamento del mese 🔥",
     "newTrainings": "Nuovi allenamenti 🚀",
-    "explore":"Cosa vuoi allenare oggi?",
+    "explore":"In cosa migliori oggi?",
     "submitFeedback":"Invia",
     "done":"Fatto",
     "giveFeedback":"Cosa ti piacerebbe che facessimo?",
@@ -48,8 +48,8 @@
 
     "@trainings": {},
     "myCourses":"I miei Corsi",
-    "exercises": "esercizi",
-    "exercise": "esercizio",
+    "exercises": "passaggi",
+    "exercise": "passaggio",
     "howToPerform":"Esecuzione",
     "commonMistakes":"Errori Comuni",
     "tips":"Suggerimenti",
@@ -60,13 +60,13 @@
 
     "@Onboarding": {},
     "onboardingTitle1" : "Migliora le tue skill",
-    "onboardingDescription1" : "Invece di allenamenti generici, segui corsi basati su obiettivi per imparare specifiche abilità",
+    "onboardingDescription1" : "Ottieni risultati con corsi basati su obiettivi mirati a imparare specifiche abilità",
     "onboardingTitle2": "Tutto in una sola applicazione",
     "onboardingDescription2": "Esplora un catalogo che cresce giorno dopo giorno con nuovi corsi per te",
-    "onboardingTitle3": "Tieni traccia dei tuoi progressi",
-    "onboardingDescription3": "Registra i tuoi allenamenti e tienili ordinati ed al sicuro lontani dalla Galleria del tuo telefono",
+    "onboardingTitle3": "Tieni traccia dei progressi",
+    "onboardingDescription3": "Registra i tuoi allenamenti e tienili ordinati ed al sicuro lontano dalla Galleria del tuo telefono",
     "onboardingTitle4": "Hai un codice promozionale?",
-    "onboardingDescription4": "Codice",
+    "onboardingDescription4": "Inserisci il tuo codice",
 
     
     "@authentication":{},
