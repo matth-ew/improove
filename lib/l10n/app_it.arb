@@ -19,7 +19,6 @@
   "discard": "Scarta",
   "shareFiles": "Condividi",
   "landingUrl": "https://improove.fit/it",
-  
   "@settings": {},
   "changeProfImage": "Cambia Immagine del Profilo",
   "changePersInfo": "Cambia Informazioni Personali",
@@ -51,6 +50,7 @@
   "howToPerform": "Esecuzione",
   "commonMistakes": "Errori Comuni",
   "tips": "Suggerimenti",
+  "lockedGoal": "sblocca per scoprire l'obiettivo",
   "@CTA": {},
   "ctaBecameTrainer": "Entra a far parte degli allenatori",
   "ctaFeedback": "Cosa ti piacerebbe che facessimo?",

@@ -24,6 +24,20 @@ class TrainingService {
     }
   }
 
+  Future<Response?> getWeekTraining() async {
+    try {
+      return await dio.post(
+        '$backendUrl/api/getWeekTraining',
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint("GETWEEKTRAINING ERROR ${e.toString()}");
+      return null;
+    }
+  }
+
   Future<Response?> getTrainingById(int id, String token) async {
     try {
       dio.options.headers['Authorization'] = token;

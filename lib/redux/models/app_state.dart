@@ -12,6 +12,7 @@ class AppState {
   final Map<int, Training> trainings;
   final List<int> exploreTrainingsIds;
   final List<int> newTrainingsIds;
+  final General general;
   final List<LocalVideo> localVideos;
   final List<VideoFolder> videoFolders;
   final Map<int, User> trainers;
@@ -22,6 +23,7 @@ class AppState {
     required this.trainings,
     required this.exploreTrainingsIds,
     required this.newTrainingsIds,
+    required this.general,
     required this.localVideos,
     required this.videoFolders,
     required this.trainers,
@@ -30,6 +32,7 @@ class AppState {
       : trainings = const {},
         exploreTrainingsIds = const [],
         newTrainingsIds = const [],
+        general = const General.initial(),
         user = const User.initial(),
         improovePurchases = const ImproovePurchases.initial(),
         localVideos = const [],
@@ -59,6 +62,7 @@ class AppState {
       trainings: const {},
       exploreTrainingsIds: const [],
       newTrainingsIds: const [],
+      general: const General.initial(),
       /*trainers: (json['trainers'] ?? "").map(
         (t) => {
           t["key"]: User.fromJson(

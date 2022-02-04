@@ -1,4 +1,5 @@
 import 'package:improove/redux/models/app_state.dart';
+import 'package:improove/redux/reducers/general.dart';
 import 'package:improove/redux/reducers/reducers.dart';
 
 AppState appReducer(AppState state, dynamic action) => AppState(
@@ -11,4 +12,5 @@ AppState appReducer(AppState state, dynamic action) => AppState(
     exploreTrainingsIds:
         exploreTrainingsReducer(state.exploreTrainingsIds, action),
     newTrainingsIds: newTrainingsReducer(state.newTrainingsIds, action),
+    general: generalReducer(state.general, action),
     trainers: trainerReducer(state.trainers, action));
