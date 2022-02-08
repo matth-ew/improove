@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:improove/widgets/pricing_and_plans/widgets.dart';
 
@@ -33,8 +35,8 @@ class SubPlanBox extends StatelessWidget {
           onTap: () => {callback!(id)},
           child: Container(
             clipBehavior: Clip.hardEdge,
-            height: MediaQuery.of(context).size.width * 0.35,
-            width: MediaQuery.of(context).size.width * 0.25,
+            height: min(MediaQuery.of(context).size.width * 0.35, 210),
+            width: min(MediaQuery.of(context).size.width * 0.25, 150),
             decoration: BoxDecoration(
               border: Border.all(
                   color: selectedPlan == id

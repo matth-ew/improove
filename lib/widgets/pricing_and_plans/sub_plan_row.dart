@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:improove/redux/models/improove_purchases.dart';
 import 'package:improove/widgets/pricing_and_plans/widgets.dart';
@@ -23,7 +25,7 @@ class SubPlanRow extends StatelessWidget {
     const priceFromDiscount = 10 / 7;
     const weeks = [4.3, 13, 26];
     return SizedBox(
-      width: width * 0.9,
+      width: min(width * 0.9, 600),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

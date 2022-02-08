@@ -21,6 +21,7 @@ class _SubPlansScreen extends State<SubPlansScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // final buttonTheme = Theme.of(context).buttonTheme;
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       onInit: (Store<AppState> store) {
@@ -47,26 +48,29 @@ class _SubPlansScreen extends State<SubPlansScreen> {
           body: SizedBox(
             height: MediaQuery.of(context).size.height,
             width: MediaQuery.of(context).size.width,
-            child: Column(
+            child: ListView(
+              shrinkWrap: true,
               children: [
-                Expanded(
-                  child: Center(
-                    child: ListView(
-                      padding: EdgeInsets.symmetric(
-                          vertical: MediaQuery.of(context).size.height * 0.01),
-                      shrinkWrap: true,
+                Center(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(
+                        vertical: MediaQuery.of(context).size.height * 0.01),
+                    child: Column(
                       children: <Widget>[
                         const SubLogo(),
                         const SubImproove(),
-                        SubCurrentPlan(
-                            product:
-                                vm.improovePurchases.products[selectedPlan],
-                            selectedPlan: selectedPlan),
+                        //SubCurrentPlan(
+                        //    product:
+                        //        vm.improovePurchases.products[selectedPlan],
+                        //    selectedPlan: selectedPlan),
                         // sub_infoBox(),
                         SubDetails(
                           product: vm.improovePurchases.products[selectedPlan],
                         ),
-                        SubSubtext()
+                        const SubSubtext(),
+                        const SizedBox(
+                          height: 15,
+                        ),
                       ],
                     ),
                   ),
