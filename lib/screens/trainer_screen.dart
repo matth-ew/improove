@@ -15,10 +15,12 @@ import 'package:redux/redux.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TrainerScreen extends StatelessWidget {
+  final PersistentTabController controller;
   final int id;
   const TrainerScreen({
     Key? key,
     this.id = -1,
+    required this.controller,
   }) : super(key: key);
 
   Widget checkIfEdit(_ViewModel vm, int trainerId) {
@@ -191,8 +193,9 @@ class TrainerScreen extends StatelessWidget {
                             onTapCard: (int index) {
                               pushNewScreen(
                                 context,
-                                screen:
-                                    TrainingScreen(id: vm.trainings[index]!.id),
+                                screen: TrainingScreen(
+                                    id: vm.trainings[index]!.id,
+                                    controller: controller),
                                 withNavBar: true,
                                 pageTransitionAnimation:
                                     PageTransitionAnimation.cupertino,

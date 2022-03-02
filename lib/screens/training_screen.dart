@@ -16,10 +16,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TrainingScreen extends StatelessWidget {
+  final PersistentTabController controller;
   final int id;
   const TrainingScreen({
     Key? key,
     this.id = -1,
+    required this.controller,
   }) : super(key: key);
 
   Widget checkIfEdit(_ViewModel vm, int trainingId) {
@@ -66,269 +68,350 @@ class TrainingScreen extends StatelessWidget {
         builder: (BuildContext context, _ViewModel vm) {
           String? trainerImage = vm.training?.trainerImage;
           return Scaffold(
-            // bottomNavigationBar: vm.user.subscribed
-            //     ? null
-            //     : Container(
-            //         padding:
-            //             const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
-            //         color: colorScheme.primary,
-            //         child: Column(
-            //           mainAxisSize: MainAxisSize.min,
-            //           children: [
-            //             SizedBox(
-            //               width: double.infinity,
-            //               child: ElevatedButton(
-            //                 style: ElevatedButton.styleFrom(
-            //                     primary: colorScheme.secondary),
-            //                 child: Text("Subscribe"),
-            //                 onPressed: () {
-            //                   pushNewScreen(
-            //                     context,
-            //                     screen: const SubPlansScreen(),
-            //                     withNavBar: false,
-            //                     pageTransitionAnimation:
-            //                         PageTransitionAnimation.cupertino,
-            //                   );
-            //                   },
-            //               ),
-            //             ),
-            //             Text("As a free user, you can only preview the course",
-            //                 style: textTheme.caption
-            //                     ?.copyWith(color: colorScheme.onPrimary))
-            //           ],
-            //         )),
-            body: CustomScrollView(
-              slivers: [
-                SliverAppBar(
-                  elevation: 0,
-                  expandedHeight: size.height * 0.45,
-                  actions: [
-                    if (vm.savedTrainings.any((s) => s.trainingId == id))
-                      IconButton(
-                        icon: const Icon(Icons.bookmark),
-                        iconSize: 32,
-                        color: Colors.white,
-                        onPressed: () {
-                          vm.removeTraining();
-                        },
-                      )
-                    else
-                      IconButton(
-                        icon: const Icon(Icons.bookmark_outline),
-                        iconSize: 32,
-                        splashRadius: 25,
-                        color: Colors.white,
-                        onPressed: () {
-                          vm.saveTraining();
-                        },
-                      )
-                  ],
-                  flexibleSpace: Stack(
-                    children: [
-                      Positioned(
-                        top: 0,
-                        left: 0,
-                        right: 0,
-                        bottom: 0,
-                        child: CachedNetworkImage(
-                          fit: BoxFit.cover,
-                          placeholder: (context, url) =>
-                              ColoredBox(color: colorScheme.primary),
-                          imageUrl: vm.training?.preview ?? "",
-                          errorWidget: (context, url, error) =>
-                              const ColoredBox(color: Colors.grey),
-                        ),
-                      ),
-                      Positioned(
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topCenter,
-                              end: Alignment.bottomCenter,
-                              stops: const [0.6, 0.8, 1],
-                              colors: [
-                                Colors.transparent,
-                                Colors.black.withOpacity(0.2),
-                                Colors.black.withOpacity(0.4)
-                              ],
-                            ),
+              // bottomNavigationBar: vm.user.subscribed
+              //     ? null
+              //     : Container(
+              //         padding:
+              //             const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+              //         color: colorScheme.primary,
+              //         child: Column(
+              //           mainAxisSize: MainAxisSize.min,
+              //           children: [
+              //             SizedBox(
+              //               width: double.infinity,
+              //               child: ElevatedButton(
+              //                 style: ElevatedButton.styleFrom(
+              //                     primary: colorScheme.secondary),
+              //                 child: Text("Subscribe"),
+              //                 onPressed: () {
+              //                   pushNewScreen(
+              //                     context,
+              //                     screen: const SubPlansScreen(),
+              //                     withNavBar: false,
+              //                     pageTransitionAnimation:
+              //                         PageTransitionAnimation.cupertino,
+              //                   );
+              //                   },
+              //               ),
+              //             ),
+              //             Text("As a free user, you can only preview the course",
+              //                 style: textTheme.caption
+              //                     ?.copyWith(color: colorScheme.onPrimary))
+              //           ],
+              //         )),
+              body: DefaultTabController(
+            length: 2,
+            child: NestedScrollView(
+              headerSliverBuilder: (context, value) {
+                return [
+                  SliverAppBar(
+                    elevation: 0,
+                    expandedHeight: size.height * 0.45,
+                    collapsedHeight: size.height * 0.2,
+                    pinned: true,
+                    actions: [
+                      if (vm.savedTrainings.any((s) => s.trainingId == id))
+                        IconButton(
+                          icon: const Icon(Icons.bookmark),
+                          iconSize: 32,
+                          color: Colors.white,
+                          onPressed: () {
+                            vm.removeTraining();
+                          },
+                        )
+                      else
+                        IconButton(
+                          icon: const Icon(Icons.bookmark_outline),
+                          iconSize: 32,
+                          splashRadius: 25,
+                          color: Colors.white,
+                          onPressed: () {
+                            vm.saveTraining();
+                          },
+                        )
+                    ],
+                    flexibleSpace: Stack(
+                      children: [
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          bottom: 0,
+                          child: CachedNetworkImage(
+                            fit: BoxFit.cover,
+                            placeholder: (context, url) =>
+                                ColoredBox(color: colorScheme.primary),
+                            imageUrl: vm.training?.preview ?? "",
+                            errorWidget: (context, url, error) =>
+                                const ColoredBox(color: Colors.grey),
                           ),
-                          alignment: Alignment.bottomLeft,
-                          padding:
-                              const EdgeInsets.only(left: 25.0, bottom: 50),
-                          child: ClipRRect(
-                            borderRadius:
-                                const BorderRadius.all(Radius.circular(30)),
-                            child: GestureDetector(
-                              onTap: () => {
-                                // if (vm.training?.trainerId != null)
-                                //   pushNewScreen(
-                                //     context,
-                                //     screen: TrainerScreen(
-                                //       id: vm.training!.trainerId,
-                                //     ),
-                                //     withNavBar: true,
-                                //     pageTransitionAnimation:
-                                //         PageTransitionAnimation.cupertino,
-                                //   )
-                              },
-                              child: Row(
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.grey,
-                                    backgroundImage: trainerImage != null &&
-                                            trainerImage != ""
-                                        ? CachedNetworkImageProvider(
-                                            trainerImage,
-                                          )
-                                        : null,
-                                    radius: 27.0,
-                                  ),
-                                  const SizedBox(width: 8),
-                                  Text(
-                                    "${vm.training?.trainerName ?? ""} ${vm.training?.trainerSurname ?? ""}",
-                                    style: textTheme.headline6?.copyWith(
-                                      color: Colors.white,
-                                    ),
-                                  ),
+                        ),
+                        Positioned(
+                          child: Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                stops: const [0.6, 0.8, 1],
+                                colors: [
+                                  Colors.transparent,
+                                  Colors.black.withOpacity(0.2),
+                                  Colors.black.withOpacity(0.4)
                                 ],
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        bottom: 0,
-                        left: 0,
-                        right: 0,
-                        child: Container(
-                          height: 30,
-                          decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(35),
-                              topRight: Radius.circular(35),
-                            ),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.white,
-                                offset: Offset(0, 2),
-                              ),
-                            ],
-                            color: Colors.white,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Flexible(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 25.0),
-                              child: Text(
-                                vm.training?.title ?? "",
-                                style: textTheme.headline4
-                                    ?.copyWith(fontWeight: FontWeight.w600),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                      checkIfEdit(vm, id),
-                    ],
-                  ),
-                ),
-                const SliverPadding(padding: EdgeInsets.all(5)),
-                SliverList(
-                  delegate: SliverChildBuilderDelegate(
-                    (BuildContext context, int index) {
-                      var locked = !vm.user.subscribed &&
-                          index > (vm.training?.freeExercises ?? 0) - 1;
-                      String? goal = vm.training?.exercises[index].goal;
-                      // Goal goal = vm.training?.goals
-                      //     .firstWhere((x) => x.position == index, orElse: () {
-                      //   return Goal(description: "", position: -1);
-                      // }) as Goal;
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 5.0),
-                        child: Column(
-                          children: [
-                            RowCard(
-                              locked: locked,
-                              preview: vm.training?.exercises[index].preview,
-                              name:
-                                  "${index + 1}. ${vm.training?.exercises[index].title}",
-                              //category: "ESEMPIO", //vm.training?.exercises[index].category,
-                              category: locked
-                                  ? "🎯 ${AppLocalizations.of(context)!.lockedGoal}"
-                                  : goal != null && goal.isNotEmpty
-                                      ? "🎯 $goal"
-                                      : null,
-                              onTap: () {
-                                if (locked) {
-                                  pushNewScreen(
-                                    context,
-                                    screen: const SubPlansScreen(),
-                                    withNavBar: false,
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.cupertino,
-                                  );
-                                } else {
-                                  pushNewScreen(
-                                    context,
-                                    screen: ExerciseScreen(
-                                      trainingId: id,
-                                      id: index,
+                            alignment: Alignment.bottomLeft,
+                            padding:
+                                const EdgeInsets.only(left: 25.0, bottom: 50),
+                            child: ClipRRect(
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(30)),
+                              child: GestureDetector(
+                                onTap: () => {
+                                  // if (vm.training?.trainerId != null)
+                                  //   pushNewScreen(
+                                  //     context,
+                                  //     screen: TrainerScreen(
+                                  //       id: vm.training!.trainerId,
+                                  //     ),
+                                  //     withNavBar: true,
+                                  //     pageTransitionAnimation:
+                                  //         PageTransitionAnimation.cupertino,
+                                  //   )
+                                },
+                                child: Row(
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: Colors.grey,
+                                      backgroundImage: trainerImage != null &&
+                                              trainerImage != ""
+                                          ? CachedNetworkImageProvider(
+                                              trainerImage,
+                                            )
+                                          : null,
+                                      radius: 27.0,
                                     ),
-                                    withNavBar: false,
-                                    pageTransitionAnimation:
-                                        PageTransitionAnimation.slideUp,
-                                  );
-                                }
-                              },
+                                    const SizedBox(width: 8),
+                                    Text(
+                                      "${vm.training?.trainerName ?? ""} ${vm.training?.trainerSurname ?? ""}",
+                                      style: textTheme.headline6?.copyWith(
+                                        color: Colors.white,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ),
-                            // Visibility(
-                            //   visible: goal.description.isNotEmpty,
-                            //   child: ListTile(
-                            //       contentPadding:
-                            //           const EdgeInsets.fromLTRB(25, 8, 25, 8),
-                            //       leading: ClipRRect(
-                            //         borderRadius: const BorderRadius.all(
-                            //             Radius.circular(10)),
-                            //         child: Container(
-                            //             color: Colors.grey[200],
-                            //             width: size.width * 0.23,
-                            //             child: AspectRatio(
-                            //               aspectRatio: 1.54,
-                            //               child: const Icon(Icons
-                            //                   .flag_rounded /*Icons.track_changes_outlined*/),
-                            //             )),
-                            //       ),
-                            //       title: Text(
-                            //         goal.description,
-                            //         textAlign: TextAlign.left,
-                            //         style: textTheme.headline6
-                            //             ?.copyWith(color: colorScheme.primary),
-                            //       ),
-                            //       onTap: () {}),
-                            // ),
-                          ],
+                          ),
                         ),
-                      );
-                    },
-                    childCount: vm.training?.exercises.length,
-                  ),
-                ),
-                // const SliverPadding(padding: EdgeInsets.all(5)),
-              ],
+                        Positioned(
+                          bottom: 0,
+                          left: 0,
+                          right: 0,
+                          child: Container(
+                            height: 15,
+                            decoration: const BoxDecoration(
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(35),
+                                topRight: Radius.circular(35),
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.white,
+                                  offset: Offset(0, 2),
+                                ),
+                              ],
+                              color: Colors.white,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  )
+                ];
+              },
+              body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    TabBar(
+                      indicatorColor: colorScheme.primary,
+                      labelColor: colorScheme.primary,
+                      labelStyle: textTheme.headline6,
+                      unselectedLabelColor: Colors.grey,
+                      tabs: [
+                        Tab(
+                            text:
+                                AppLocalizations.of(context)!.firstTrainingTab),
+                        Tab(
+                            text: AppLocalizations.of(context)!
+                                .secondTrainingTab),
+                        // Tab(icon: Icon(Icons.history)),
+                      ],
+                    ),
+                    Expanded(
+                        child: TabBarView(children: [
+                      ListView(
+                          //crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Flexible(
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        right: 25.0, left: 25.0),
+                                    child: Text(
+                                      vm.training?.title ?? "",
+                                      style: textTheme.headline4?.copyWith(
+                                          fontWeight: FontWeight.w600),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            checkIfEdit(vm, id),
+                            const Padding(padding: EdgeInsets.all(5)),
+                            ListView.builder(
+                              controller: ScrollController(),
+                              shrinkWrap: true,
+                              itemBuilder: (BuildContext context, int index) {
+                                var locked = !vm.user.subscribed &&
+                                    index >
+                                        (vm.training?.freeExercises ?? 0) - 1;
+                                String? goal =
+                                    vm.training?.exercises[index].goal;
+                                // Goal goal = vm.training?.goals
+                                //     .firstWhere((x) => x.position == index, orElse: () {
+                                //   return Goal(description: "", position: -1);
+                                // }) as Goal;
+                                return Padding(
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 5.0),
+                                  child: Column(
+                                    children: [
+                                      RowCard(
+                                        locked: locked,
+                                        preview: vm
+                                            .training?.exercises[index].preview,
+                                        name:
+                                            "${index + 1}. ${vm.training?.exercises[index].title}",
+                                        //category: "ESEMPIO", //vm.training?.exercises[index].category,
+                                        category: locked
+                                            ? "🎯 ${AppLocalizations.of(context)!.lockedGoal}"
+                                            : goal != null && goal.isNotEmpty
+                                                ? "🎯 $goal"
+                                                : null,
+                                        onTap: () {
+                                          if (locked) {
+                                            pushNewScreen(
+                                              context,
+                                              screen: const SubPlansScreen(),
+                                              withNavBar: false,
+                                              pageTransitionAnimation:
+                                                  PageTransitionAnimation
+                                                      .cupertino,
+                                            );
+                                          } else {
+                                            pushNewScreen(
+                                              context,
+                                              screen: ExerciseScreen(
+                                                trainingId: id,
+                                                id: index,
+                                              ),
+                                              withNavBar: false,
+                                              pageTransitionAnimation:
+                                                  PageTransitionAnimation
+                                                      .slideUp,
+                                            );
+                                          }
+                                        },
+                                      ),
+                                      // Visibility(
+                                      //   visible: goal.description.isNotEmpty,
+                                      //   child: ListTile(
+                                      //       contentPadding:
+                                      //           const EdgeInsets.fromLTRB(25, 8, 25, 8),
+                                      //       leading: ClipRRect(
+                                      //         borderRadius: const BorderRadius.all(
+                                      //             Radius.circular(10)),
+                                      //         child: Container(
+                                      //             color: Colors.grey[200],
+                                      //             width: size.width * 0.23,
+                                      //             child: AspectRatio(
+                                      //               aspectRatio: 1.54,
+                                      //               child: const Icon(Icons
+                                      //                   .flag_rounded /*Icons.track_changes_outlined*/),
+                                      //             )),
+                                      //       ),
+                                      //       title: Text(
+                                      //         goal.description,
+                                      //         textAlign: TextAlign.left,
+                                      //         style: textTheme.headline6
+                                      //             ?.copyWith(color: colorScheme.primary),
+                                      //       ),
+                                      //       onTap: () {}),
+                                      // ),
+                                    ],
+                                  ),
+                                );
+                              },
+                              itemCount: vm.training?.exercises.length,
+                            ),
+                          ]),
+                      Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                child: RowCard(
+                                  locked: !vm.user.subscribed,
+                                  preview: vm.training?.exercises[0].preview,
+                                  name: AppLocalizations.of(context)!
+                                      .askQuestionTitle,
+                                  //category: "ESEMPIO", //vm.training?.exercises[index].category,
+                                  category: AppLocalizations.of(context)!
+                                      .askQuestionDescription,
+                                  onTap: () {
+                                    if (!vm.user.subscribed) {
+                                      pushNewScreen(
+                                        context,
+                                        screen: const SubPlansScreen(),
+                                        withNavBar: false,
+                                        pageTransitionAnimation:
+                                            PageTransitionAnimation.cupertino,
+                                      );
+                                    }
+                                  },
+                                )),
+                            Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 5.0),
+                                child: RowCard(
+                                  locked: !vm.user.subscribed,
+                                  preview: vm.training?.exercises[0].preview,
+                                  name: AppLocalizations.of(context)!
+                                      .sendVideoFormTitle,
+                                  //category: "ESEMPIO", //vm.training?.exercises[index].category,
+                                  category: AppLocalizations.of(context)!
+                                      .sendVideoFormDescription,
+                                  onTap: () {
+                                    if (!vm.user.subscribed) {
+                                      pushNewScreen(
+                                        context,
+                                        screen: const SubPlansScreen(),
+                                        withNavBar: false,
+                                        pageTransitionAnimation:
+                                            PageTransitionAnimation.cupertino,
+                                      );
+                                    }
+                                  },
+                                )),
+                          ])
+                      // const SliverPadding(padding: EdgeInsets.all(5)),
+                    ])),
+                  ]),
             ),
-          );
+          ));
         });
   }
 }

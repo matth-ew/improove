@@ -10,7 +10,7 @@ class SubSubtext extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.08),
+      padding: EdgeInsets.only(top: MediaQuery.of(context).size.height * 0.05),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,

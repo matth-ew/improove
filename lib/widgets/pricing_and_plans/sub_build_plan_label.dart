@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 class SubBuildPlanLabel extends StatelessWidget {
   final String label;
-
   const SubBuildPlanLabel({Key? key, required this.label}) : super(key: key);
 
   @override
@@ -12,8 +11,8 @@ class SubBuildPlanLabel extends StatelessWidget {
       style: const TextStyle(
           letterSpacing: 0.1,
           color: Colors.black,
-          fontWeight: FontWeight.w600,
-          fontSize: 12),
+          fontWeight: FontWeight.w700,
+          fontSize: 13),
       textAlign: TextAlign.center,
     );
   }

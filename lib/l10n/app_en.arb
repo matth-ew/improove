@@ -55,6 +55,12 @@
     "commonMistakes":"Common Mistakes",
     "tips":"Tips",
     "lockedGoal": "sblocca per scoprire l'obiettivo",
+    "firstTrainingTab": "Program",
+    "secondTrainingTab": "Support",
+    "askQuestionTitle": "Ask a private question",
+    "askQuestionDescription": "Ask your trainer anything",
+    "sendVideoFormTitle": "Send video form",
+    "sendVideoFormDescription": "Send a video ad get advice on your form and progression",
 
     "@CTA": {},
     "ctaBecameTrainer" : "Join our trainers' team",

@@ -26,8 +26,8 @@ class SubPlanLayout extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Padding(
       padding: EdgeInsets.only(
-        right: MediaQuery.of(context).size.width * 0.1,
-        left: MediaQuery.of(context).size.width * 0.1,
+        //right: MediaQuery.of(context).size.width * 0.1,
+        //left: MediaQuery.of(context).size.width * 0.1,
         bottom: MediaQuery.of(context).size.width * 0.1,
       ),
       child: Column(
@@ -38,22 +38,31 @@ class SubPlanLayout extends StatelessWidget {
               callback: callback,
               selectedPlan: selectedPlan,
               products: products),
-          ElevatedButton(
-            onPressed: () {
-              buy();
-            },
-            style: ElevatedButton.styleFrom(
-              minimumSize: const Size(double.infinity, 50),
-              shape: const StadiumBorder(),
+          Padding(
+            padding: EdgeInsets.only(
+              right: MediaQuery.of(context).size.width * 0.1,
+              left: MediaQuery.of(context).size.width * 0.1,
             ),
-            child: Text(
-              AppLocalizations.of(context)!.sub_upgradePlan,
-              // style: TextStyle(fontSize: 20),
+            child: ElevatedButton(
+              onPressed: () {
+                buy();
+              },
+              style: ElevatedButton.styleFrom(
+                minimumSize: const Size(double.infinity, 50),
+                shape: const StadiumBorder(),
+              ),
+              child: Text(
+                AppLocalizations.of(context)!.sub_upgradePlan,
+                // style: TextStyle(fontSize: 20),
+              ),
             ),
           ),
           Padding(
-            padding:
-                const EdgeInsets.only(top: 5, bottom: 10, left: 5, right: 5),
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).size.width * 0.02,
+              right: MediaQuery.of(context).size.width * 0.1,
+              left: MediaQuery.of(context).size.width * 0.1,
+            ),
             child: RichText(
               textAlign: TextAlign.center,
               text: TextSpan(

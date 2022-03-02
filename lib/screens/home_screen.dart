@@ -16,10 +16,11 @@ import 'package:redux/redux.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeScreen extends StatelessWidget {
+  final PersistentTabController controller;
   static const int numNewTrainings = 4;
   // static const int trainingOfTheWeek = 2;
 
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({Key? key, required this.controller}) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // final Size size = MediaQuery.of(context).size;
@@ -71,7 +72,8 @@ class HomeScreen extends StatelessWidget {
                     onTapCard: (int index) {
                       pushNewScreen(
                         context,
-                        screen: TrainingScreen(id: weekTraining!.id),
+                        screen: TrainingScreen(
+                            id: weekTraining!.id, controller: controller),
                         withNavBar: true,
                         pageTransitionAnimation:
                             PageTransitionAnimation.cupertino,
@@ -116,7 +118,8 @@ class HomeScreen extends StatelessWidget {
                           if (training != null) {
                             pushNewScreen(
                               context,
-                              screen: TrainingScreen(id: training.id),
+                              screen: TrainingScreen(
+                                  id: training.id, controller: controller),
                               withNavBar: true,
                               pageTransitionAnimation:
                                   PageTransitionAnimation.cupertino,

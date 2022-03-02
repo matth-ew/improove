@@ -10,17 +10,19 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 // import 'package:video_player/video_player.dart';
 
 class SavedTrainings extends StatelessWidget {
+  final PersistentTabController controller;
   final List<SavedTraining> savedTrainings;
   final Map<int, Training> trainings;
   final Function removeTraining;
   final Function ctaAction;
-  const SavedTrainings({
-    Key? key,
-    required this.savedTrainings,
-    required this.removeTraining,
-    required this.ctaAction,
-    required this.trainings,
-  }) : super(key: key);
+  const SavedTrainings(
+      {Key? key,
+      required this.savedTrainings,
+      required this.removeTraining,
+      required this.ctaAction,
+      required this.trainings,
+      required this.controller})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +81,8 @@ class SavedTrainings extends StatelessWidget {
                   onTap: () {
                     pushNewScreen(
                       context,
-                      screen: TrainingScreen(id: s.trainingId),
+                      screen: TrainingScreen(
+                          id: s.trainingId, controller: controller),
                       withNavBar: true,
                       pageTransitionAnimation:
                           PageTransitionAnimation.cupertino,

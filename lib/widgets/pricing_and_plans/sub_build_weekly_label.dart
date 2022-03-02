@@ -12,7 +12,7 @@ class SubBuildWeeklyLabel extends StatelessWidget {
       textAlign: TextAlign.center,
       style: const TextStyle(
         letterSpacing: 0.2,
-        color: Colors.grey,
+        color: Colors.black,
         fontWeight: FontWeight.w700,
         fontSize: 12,
       ),

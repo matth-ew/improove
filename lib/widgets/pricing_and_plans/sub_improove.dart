@@ -9,7 +9,7 @@ class SubImproove extends StatelessWidget {
     return Center(
       child: Padding(
         padding: EdgeInsets.only(
-            top: MediaQuery.of(context).size.height * 0.03,
+            top: MediaQuery.of(context).size.height * 0.02,
             bottom: MediaQuery.of(context).size.height * 0.03),
         child: Text(AppLocalizations.of(context)!.sub_improove,
             style: const TextStyle(

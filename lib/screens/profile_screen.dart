@@ -161,6 +161,7 @@ class ProfileScreen extends StatelessWidget {
                             trainings: vm.trainings,
                             removeTraining: vm.removeTraining,
                             ctaAction: goToExplore,
+                            controller: controller,
                           ),
                           const LocalFolders(),
                           // _showClosedTrainings(
@@ -193,7 +194,8 @@ class ProfileScreen extends StatelessWidget {
               onTap: () {
                 pushNewScreen(
                   context,
-                  screen: TrainingScreen(id: c.trainingId),
+                  screen:
+                      TrainingScreen(id: c.trainingId, controller: controller),
                   withNavBar: true,
                   pageTransitionAnimation: PageTransitionAnimation.cupertino,
                 );

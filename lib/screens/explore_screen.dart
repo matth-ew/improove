@@ -15,8 +15,10 @@ import 'package:redux/redux.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExploreScreen extends StatelessWidget {
+  final PersistentTabController controller;
   const ExploreScreen({
     Key? key,
+    required this.controller,
   }) : super(key: key);
 
   @override
@@ -107,7 +109,8 @@ class ExploreScreen extends StatelessWidget {
                               if (training != null) {
                                 pushNewScreen(
                                   context,
-                                  screen: TrainingScreen(id: training.id),
+                                  screen: TrainingScreen(
+                                      id: training.id, controller: controller),
                                   withNavBar: true,
                                   pageTransitionAnimation:
                                       PageTransitionAnimation.cupertino,

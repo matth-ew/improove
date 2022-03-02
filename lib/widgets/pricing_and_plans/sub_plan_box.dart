@@ -35,8 +35,8 @@ class SubPlanBox extends StatelessWidget {
           onTap: () => {callback!(id)},
           child: Container(
             clipBehavior: Clip.hardEdge,
-            height: min(MediaQuery.of(context).size.width * 0.35, 210),
-            width: min(MediaQuery.of(context).size.width * 0.25, 150),
+            height: min(MediaQuery.of(context).size.width * 0.45, 210),
+            width: min(MediaQuery.of(context).size.width * 0.28, 150),
             decoration: BoxDecoration(
               border: Border.all(
                   color: selectedPlan == id
@@ -53,7 +53,7 @@ class SubPlanBox extends StatelessWidget {
                 Visibility(
                   visible: discount != null,
                   child: Padding(
-                    padding: const EdgeInsets.only(top: 10.0),
+                    padding: const EdgeInsets.only(top: 12.0),
                     child: SubBuildDiscountLabel(label: discount ?? ""),
                   ),
                   maintainSize: true,
@@ -65,7 +65,7 @@ class SubPlanBox extends StatelessWidget {
                   child: SubBuildPlanPrice(price: price),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 5.0),
+                  padding: const EdgeInsets.only(top: 30.0),
                   child: SubBuildWeeklyLabel(label: weekly),
                 ),
               ],
