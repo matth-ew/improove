@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:improove/redux/models/training.dart';
@@ -81,11 +83,11 @@ class SavedTrainings extends StatelessWidget {
                   onTap: () {
                     pushNewScreen(
                       context,
-                      screen: TrainingScreen(
-                          id: s.trainingId, controller: controller),
+                      screen: TrainingScreen(id: s.trainingId),
                       withNavBar: true,
-                      pageTransitionAnimation:
-                          PageTransitionAnimation.cupertino,
+                      pageTransitionAnimation: Platform.isIOS
+                          ? PageTransitionAnimation.cupertino
+                          : PageTransitionAnimation.fade,
                     );
                   },
                   actions: [

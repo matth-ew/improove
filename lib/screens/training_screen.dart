@@ -1,4 +1,6 @@
 // import 'package:expandable_text/expandable_text.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:improove/redux/actions/training.dart';
 import 'package:improove/redux/actions/user.dart';
@@ -16,12 +18,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class TrainingScreen extends StatelessWidget {
-  final PersistentTabController controller;
   final int id;
   const TrainingScreen({
     Key? key,
     this.id = -1,
-    required this.controller,
   }) : super(key: key);
 
   Widget checkIfEdit(_ViewModel vm, int trainingId) {
@@ -51,55 +51,55 @@ class TrainingScreen extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
     return StoreConnector(
-        converter: (Store<AppState> store) => _ViewModel.fromStore(store, id),
-        onInit: (Store<AppState> store) {
-          if (store.state.trainings[id] == null ||
-              store.state.trainings[id]!.description == "") {
-            store.dispatch(getTrainingById(id));
-          }
-          faSetScreen("TRAINING_$id");
-        },
-        onDidChange: (_ViewModel? pvm, _ViewModel vm) {
-          if (pvm == null || pvm.user.subscribed != vm.user.subscribed) {
-            // store.dispatch(getTrainingById(id));
-            vm.getTraining();
-          }
-        },
-        builder: (BuildContext context, _ViewModel vm) {
-          String? trainerImage = vm.training?.trainerImage;
-          return Scaffold(
-              // bottomNavigationBar: vm.user.subscribed
-              //     ? null
-              //     : Container(
-              //         padding:
-              //             const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
-              //         color: colorScheme.primary,
-              //         child: Column(
-              //           mainAxisSize: MainAxisSize.min,
-              //           children: [
-              //             SizedBox(
-              //               width: double.infinity,
-              //               child: ElevatedButton(
-              //                 style: ElevatedButton.styleFrom(
-              //                     primary: colorScheme.secondary),
-              //                 child: Text("Subscribe"),
-              //                 onPressed: () {
-              //                   pushNewScreen(
-              //                     context,
-              //                     screen: const SubPlansScreen(),
-              //                     withNavBar: false,
-              //                     pageTransitionAnimation:
-              //                         PageTransitionAnimation.cupertino,
-              //                   );
-              //                   },
-              //               ),
-              //             ),
-              //             Text("As a free user, you can only preview the course",
-              //                 style: textTheme.caption
-              //                     ?.copyWith(color: colorScheme.onPrimary))
-              //           ],
-              //         )),
-              body: DefaultTabController(
+      converter: (Store<AppState> store) => _ViewModel.fromStore(store, id),
+      onInit: (Store<AppState> store) {
+        if (store.state.trainings[id] == null ||
+            store.state.trainings[id]!.description == "") {
+          store.dispatch(getTrainingById(id));
+        }
+        faSetScreen("TRAINING_$id");
+      },
+      onDidChange: (_ViewModel? pvm, _ViewModel vm) {
+        if (pvm == null || pvm.user.subscribed != vm.user.subscribed) {
+          // store.dispatch(getTrainingById(id));
+          vm.getTraining();
+        }
+      },
+      builder: (BuildContext context, _ViewModel vm) {
+        String? trainerImage = vm.training?.trainerImage;
+        return Scaffold(
+          // bottomNavigationBar: vm.user.subscribed
+          //     ? null
+          //     : Container(
+          //         padding:
+          //             const EdgeInsets.symmetric(vertical: 8, horizontal: 25),
+          //         color: colorScheme.primary,
+          //         child: Column(
+          //           mainAxisSize: MainAxisSize.min,
+          //           children: [
+          //             SizedBox(
+          //               width: double.infinity,
+          //               child: ElevatedButton(
+          //                 style: ElevatedButton.styleFrom(
+          //                     primary: colorScheme.secondary),
+          //                 child: Text("Subscribe"),
+          //                 onPressed: () {
+          //                   pushNewScreen(
+          //                     context,
+          //                     screen: const SubPlansScreen(),
+          //                     withNavBar: false,
+          //                     pageTransitionAnimation:
+          //                         PageTransitionAnimation.cupertino,
+          //                   );
+          //                   },
+          //               ),
+          //             ),
+          //             Text("As a free user, you can only preview the course",
+          //                 style: textTheme.caption
+          //                     ?.copyWith(color: colorScheme.onPrimary))
+          //           ],
+          //         )),
+          body: DefaultTabController(
             length: 2,
             child: NestedScrollView(
               headerSliverBuilder: (context, value) {
@@ -162,7 +162,7 @@ class TrainingScreen extends StatelessWidget {
                             ),
                             alignment: Alignment.bottomLeft,
                             padding:
-                                const EdgeInsets.only(left: 25.0, bottom: 50),
+                                const EdgeInsets.only(left: 25.0, bottom: 60),
                             child: ClipRRect(
                               borderRadius:
                                   const BorderRadius.all(Radius.circular(30)),
@@ -208,21 +208,40 @@ class TrainingScreen extends StatelessWidget {
                           bottom: 0,
                           left: 0,
                           right: 0,
-                          child: Container(
-                            height: 15,
-                            decoration: const BoxDecoration(
-                              borderRadius: BorderRadius.only(
-                                topLeft: Radius.circular(35),
-                                topRight: Radius.circular(35),
-                              ),
-                              boxShadow: [
-                                BoxShadow(
+                          child: Column(
+                            children: [
+                              Container(
+                                // height: 15,
+                                decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.only(
+                                    topLeft: Radius.circular(35),
+                                    topRight: Radius.circular(35),
+                                  ),
+                                  //   boxShadow: [
+                                  //     BoxShadow(
+                                  //       color: Colors.white,
+                                  //       offset: Offset(0, 2),
+                                  //     ),
+                                  //   ],
                                   color: Colors.white,
-                                  offset: Offset(0, 2),
                                 ),
-                              ],
-                              color: Colors.white,
-                            ),
+                                child: TabBar(
+                                  indicatorColor: colorScheme.secondary,
+                                  labelColor: colorScheme.primary,
+                                  labelStyle: textTheme.headline6,
+                                  unselectedLabelColor: Colors.grey,
+                                  tabs: [
+                                    Tab(
+                                        text: AppLocalizations.of(context)!
+                                            .firstTrainingTab),
+                                    Tab(
+                                        text: AppLocalizations.of(context)!
+                                            .secondTrainingTab),
+                                    // Tab(icon: Icon(Icons.history)),
+                                  ],
+                                ),
+                              ),
+                            ],
                           ),
                         ),
                       ],
@@ -231,39 +250,25 @@ class TrainingScreen extends StatelessWidget {
                 ];
               },
               body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    TabBar(
-                      indicatorColor: colorScheme.primary,
-                      labelColor: colorScheme.primary,
-                      labelStyle: textTheme.headline6,
-                      unselectedLabelColor: Colors.grey,
-                      tabs: [
-                        Tab(
-                            text:
-                                AppLocalizations.of(context)!.firstTrainingTab),
-                        Tab(
-                            text: AppLocalizations.of(context)!
-                                .secondTrainingTab),
-                        // Tab(icon: Icon(Icons.history)),
-                      ],
-                    ),
-                    Expanded(
-                        child: TabBarView(children: [
-                      ListView(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Expanded(
+                    child: TabBarView(
+                      children: [
+                        ListView(
                           //crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
                               children: [
-                                Flexible(
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(
-                                        right: 25.0, left: 25.0),
-                                    child: Text(
-                                      vm.training?.title ?? "",
-                                      style: textTheme.headline4?.copyWith(
-                                          fontWeight: FontWeight.w600),
-                                    ),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 25.0,
+                                    vertical: 0,
+                                  ),
+                                  child: Text(
+                                    vm.training?.title ?? "",
+                                    style: textTheme.headline4
+                                        ?.copyWith(fontWeight: FontWeight.w600),
                                   ),
                                 ),
                               ],
@@ -307,8 +312,11 @@ class TrainingScreen extends StatelessWidget {
                                               screen: const SubPlansScreen(),
                                               withNavBar: false,
                                               pageTransitionAnimation:
-                                                  PageTransitionAnimation
-                                                      .cupertino,
+                                                  Platform.isIOS
+                                                      ? PageTransitionAnimation
+                                                          .cupertino
+                                                      : PageTransitionAnimation
+                                                          .fade,
                                             );
                                           } else {
                                             pushNewScreen(
@@ -356,63 +364,72 @@ class TrainingScreen extends StatelessWidget {
                               },
                               itemCount: vm.training?.exercises.length,
                             ),
-                          ]),
-                      Column(
+                          ],
+                        ),
+                        Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: RowCard(
-                                  locked: !vm.user.subscribed,
-                                  preview: vm.training?.exercises[0].preview,
-                                  name: AppLocalizations.of(context)!
-                                      .askQuestionTitle,
-                                  //category: "ESEMPIO", //vm.training?.exercises[index].category,
-                                  category: AppLocalizations.of(context)!
-                                      .askQuestionDescription,
-                                  onTap: () {
-                                    if (!vm.user.subscribed) {
-                                      pushNewScreen(
-                                        context,
-                                        screen: const SubPlansScreen(),
-                                        withNavBar: false,
-                                        pageTransitionAnimation:
-                                            PageTransitionAnimation.cupertino,
-                                      );
-                                    }
-                                  },
-                                )),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 5.0),
+                              child: RowCard(
+                                locked: !vm.user.subscribed,
+                                preview: vm.training?.preview,
+                                name: AppLocalizations.of(context)!
+                                    .askQuestionTitle,
+                                //category: "ESEMPIO", //vm.training?.exercises[index].category,
+                                category: AppLocalizations.of(context)!
+                                    .askQuestionDescription,
+                                onTap: () {
+                                  if (!vm.user.subscribed) {
+                                    pushNewScreen(
+                                      context,
+                                      screen: const SubPlansScreen(),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
                             Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 5.0),
-                                child: RowCard(
-                                  locked: !vm.user.subscribed,
-                                  preview: vm.training?.exercises[0].preview,
-                                  name: AppLocalizations.of(context)!
-                                      .sendVideoFormTitle,
-                                  //category: "ESEMPIO", //vm.training?.exercises[index].category,
-                                  category: AppLocalizations.of(context)!
-                                      .sendVideoFormDescription,
-                                  onTap: () {
-                                    if (!vm.user.subscribed) {
-                                      pushNewScreen(
-                                        context,
-                                        screen: const SubPlansScreen(),
-                                        withNavBar: false,
-                                        pageTransitionAnimation:
-                                            PageTransitionAnimation.cupertino,
-                                      );
-                                    }
-                                  },
-                                )),
-                          ])
-                      // const SliverPadding(padding: EdgeInsets.all(5)),
-                    ])),
-                  ]),
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 5.0),
+                              child: RowCard(
+                                locked: !vm.user.subscribed,
+                                preview: vm.training?.preview,
+                                name: AppLocalizations.of(context)!
+                                    .sendVideoFormTitle,
+                                //category: "ESEMPIO", //vm.training?.exercises[index].category,
+                                category: AppLocalizations.of(context)!
+                                    .sendVideoFormDescription,
+                                onTap: () {
+                                  if (!vm.user.subscribed) {
+                                    pushNewScreen(
+                                      context,
+                                      screen: const SubPlansScreen(),
+                                      withNavBar: false,
+                                      pageTransitionAnimation:
+                                          PageTransitionAnimation.cupertino,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          ],
+                        )
+                        // const SliverPadding(padding: EdgeInsets.all(5)),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ));
-        });
+          ),
+        );
+      },
+    );
   }
 }
 

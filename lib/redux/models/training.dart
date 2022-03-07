@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:meta/meta.dart';
 
 class Exercise {
+  final String id;
   final String title;
   final String description;
   final String preview;
@@ -11,18 +12,21 @@ class Exercise {
   final List<String> mistakes;
   final String goal;
 
-  const Exercise(
-      {required this.title,
-      required this.description,
-      required this.preview,
-      required this.video,
-      required this.tips,
-      required this.how,
-      required this.mistakes,
-      required this.goal});
+  const Exercise({
+    required this.id,
+    required this.title,
+    required this.description,
+    required this.preview,
+    required this.video,
+    required this.tips,
+    required this.how,
+    required this.mistakes,
+    required this.goal,
+  });
 
   Exercise.fromJson(Map<String, dynamic> json)
-      : title = (json['title'] ?? "") as String,
+      : id = (json['id'] ?? "") as String,
+        title = (json['title'] ?? "") as String,
         description = (json['description'] ?? "") as String,
         preview = (json['preview'] ?? "") as String,
         video = (json['video'] ?? "") as String,
@@ -35,6 +39,7 @@ class Exercise {
         goal = (json['goal'] ?? "") as String;
 
   dynamic toJson() => {
+        'id': id,
         'title': title,
         'description': description,
         'tips': tips,
@@ -46,7 +51,8 @@ class Exercise {
       };
 
   Exercise copyWith(
-      {String? title,
+      {String? id,
+      String? title,
       String? description,
       List<String>? tips,
       String? goal,
@@ -55,6 +61,7 @@ class Exercise {
       String? video,
       String? preview}) {
     return Exercise(
+      id: id ?? this.id,
       title: title ?? this.title,
       description: description ?? this.description,
       preview: preview ?? this.preview,
@@ -142,17 +149,16 @@ class Training {
 
   const Training.initial()
       : id = -1,
-        title = "Dragonflag",
-        duration = "18 minuti",
-        preview =
-            "https://images.unsplash.com/photo-1619361728853-2542f3864532?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80",
-        category = "no tag",
+        title = "",
+        duration = "",
+        preview = "",
+        category = "",
         freeExercises = 0,
         trainerId = -1,
         trainerImage = "",
         trainerName = "",
         trainerSurname = "",
-        description = "no description",
+        description = "",
         exercisesLength = 0,
         // goals = const [],
         exercises = const [];

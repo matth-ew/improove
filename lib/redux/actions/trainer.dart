@@ -17,6 +17,50 @@ class SetTrainer {
   SetTrainer(this.trainer, this.id);
 }
 
+class SetTrainers {
+  final Map<int, User> trainers;
+
+  SetTrainers(this.trainers);
+}
+
+class SetNewTrainersIds {
+  final List<int> trainersIds;
+
+  SetNewTrainersIds(this.trainersIds);
+}
+
+ThunkAction<AppState> getLatestTrainers([Completer? completer]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      // debugPrint("UEUE TRAINER");
+      final Response? r = await TrainerService().getLatestTrainers();
+      if (r?.data['success'] as bool) {
+        final results = [...r!.data!['trainers']];
+        Map<int, User> trainers = {};
+        List<int> ids = [];
+        for (var i = 0; i < results.length; i++) {
+          final User u = User.fromJson(results[i] as Map<String, dynamic>);
+          trainers[u.id] = u;
+          ids.add(u.id);
+        }
+
+        store.dispatch(SetTrainers(trainers));
+        store.dispatch(SetNewTrainersIds(ids));
+      }
+
+      // if (t != null) {
+      //   store.dispatch(SetTrainer(t, id));
+      //   completer?.complete();
+      // }
+      // No exception, complete without error
+    } catch (e) {
+      debugPrint("Errore in getTrainerById ${e.toString()}");
+      completer?.completeError(e); // Exception thrown, complete with error
+    }
+  };
+}
+
 ThunkAction<AppState> getTrainerById(int id, [Completer? completer]) {
   // Define the parameter
   return (Store<AppState> store) async {

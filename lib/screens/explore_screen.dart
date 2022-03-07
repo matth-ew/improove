@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/material.dart';
 // import 'package:flutter/services.dart';
 import 'package:improove/const/images.dart';
@@ -6,6 +7,7 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/screens/training_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
 import 'package:improove/utility/analytics.dart';
+import 'package:improove/widgets/long_card.dart';
 import 'package:improove/widgets/preview_card.dart';
 import 'package:improove/widgets/cta_card.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -15,10 +17,8 @@ import 'package:redux/redux.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ExploreScreen extends StatelessWidget {
-  final PersistentTabController controller;
   const ExploreScreen({
     Key? key,
-    required this.controller,
   }) : super(key: key);
 
   @override
@@ -64,9 +64,10 @@ class ExploreScreen extends StatelessWidget {
                       titlePadding: const EdgeInsetsDirectional.only(
                           start: 15, bottom: 15, end: 15),
                       title: FittedBox(
+                        fit: BoxFit.scaleDown,
                         child: Text(
                           AppLocalizations.of(context)!.explore,
-                          style: textTheme.headline5?.copyWith(
+                          style: textTheme.headline6?.copyWith(
                             color: colorScheme.primary,
                             fontWeight: FontWeight.w600,
                           ),
@@ -82,49 +83,66 @@ class ExploreScreen extends StatelessWidget {
                 onRefresh: () => _refresh(vm.loadTrainings),
                 child: CustomScrollView(
                   slivers: [
-                    SliverGrid(
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisCount: 2,
-                        mainAxisSpacing: 30,
-                        // crossAxisSpacing: 0,
-                        childAspectRatio: 0.90,
+                    SliverPadding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16),
+                      sliver: SliverGrid(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          mainAxisSpacing: 8,
+                          crossAxisSpacing: 8,
+                          childAspectRatio: 0.7,
+                        ),
+                        delegate: SliverChildBuilderDelegate(
+                            (BuildContext context, int index) {
+                          final training = vm.trainings[vm.ids[index]];
+                          final durationString =
+                              '${training?.exercisesLength} ${training?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}';
+                          return FittedBox(
+                            fit: BoxFit.scaleDown,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 8.0),
+                              child: PreviewCard(
+                                name: training?.title,
+                                duration: durationString,
+                                preview: training?.preview,
+                                category: training?.category,
+                                avatar: training?.trainerImage,
+                                widthRatio: 0.45,
+                                // ratio: 16 / 9,
+                                // widthRatio: 0.5,
+                                // heightRatio: 0.60,
+                                id: index,
+                                trainerId: training?.trainerId,
+                                onTapCard: (int index) {
+                                  if (training != null) {
+                                    pushNewScreen(
+                                      context,
+                                      screen: TrainingScreen(id: training.id),
+                                      withNavBar: true,
+                                      pageTransitionAnimation: Platform.isIOS
+                                          ? PageTransitionAnimation.cupertino
+                                          : PageTransitionAnimation.fade,
+                                    );
+                                  }
+                                },
+                              ),
+                            ),
+                          );
+                        }, childCount: vm.ids.length),
                       ),
-                      delegate: SliverChildBuilderDelegate(
-                          (BuildContext context, int index) {
-                        final training = vm.trainings[vm.ids[index]];
-                        final durationString =
-                            '${training?.exercisesLength} ${training?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}';
-                        return Center(
-                          child: PreviewCard(
-                            name: training?.title,
-                            duration: durationString,
-                            preview: training?.preview,
-                            category: training?.category,
-                            avatar: training?.trainerImage,
-                            widthRatio: 0.45,
-                            id: index,
-                            trainerId: training?.trainerId,
-                            onTapCard: (int index) {
-                              if (training != null) {
-                                pushNewScreen(
-                                  context,
-                                  screen: TrainingScreen(
-                                      id: training.id, controller: controller),
-                                  withNavBar: true,
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.cupertino,
-                                );
-                              }
-                            },
-                          ),
-                        );
-                      }, childCount: vm.ids.length),
                     ),
-                    const SliverPadding(padding: EdgeInsets.all(15)),
+                    const SliverToBoxAdapter(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 50.0),
+                        child: Divider(),
+                      ),
+                    ),
                     SliverToBoxAdapter(
                       child: Container(
-                        padding: const EdgeInsets.only(left: 8, right: 8),
+                        padding:
+                            const EdgeInsets.only(left: 16, right: 16, top: 8),
                         height: size.width * (198 / 254) * (135 / 198),
                         width: size.width * (198 / 254),
                         child: CtaCard(
@@ -143,14 +161,15 @@ class ExploreScreen extends StatelessWidget {
                                   url:
                                       AppLocalizations.of(context)!.landingUrl),
                               withNavBar: false,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
+                              pageTransitionAnimation: Platform.isIOS
+                                  ? PageTransitionAnimation.cupertino
+                                  : PageTransitionAnimation.fade,
                             );
                           },
                         ),
                       ),
                     ),
-                    const SliverPadding(padding: EdgeInsets.all(15)),
+                    const SliverPadding(padding: EdgeInsets.all(8)),
                   ],
                 ),
               ),

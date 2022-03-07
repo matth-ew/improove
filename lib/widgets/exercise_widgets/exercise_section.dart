@@ -22,7 +22,7 @@ class ExerciseSection extends StatelessWidget {
     return Visibility(
       visible: textList.isNotEmpty,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(25, 0, 25, 30),
+        padding: const EdgeInsets.fromLTRB(25, 5, 25, 25),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

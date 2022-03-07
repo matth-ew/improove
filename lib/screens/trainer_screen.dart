@@ -193,12 +193,12 @@ class TrainerScreen extends StatelessWidget {
                             onTapCard: (int index) {
                               pushNewScreen(
                                 context,
-                                screen: TrainingScreen(
-                                    id: vm.trainings[index]!.id,
-                                    controller: controller),
+                                screen:
+                                    TrainingScreen(id: vm.trainings[index]!.id),
                                 withNavBar: true,
-                                pageTransitionAnimation:
-                                    PageTransitionAnimation.cupertino,
+                                pageTransitionAnimation: Platform.isIOS
+                                    ? PageTransitionAnimation.cupertino
+                                    : PageTransitionAnimation.fade,
                               );
                             },
                           ),

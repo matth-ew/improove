@@ -407,6 +407,7 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
         _onStartDragged();
       }
     } else if (_dragType == EditorDragType.center) {
+      return;
       // var _Fraction = (details.localPosition.dx / _thumbnailViewerW);
       // var _Pos = _videoDuration * _Fraction;
       // debugPrint("UE POS $_Pos");
@@ -437,7 +438,7 @@ class _TrimEditorState extends State<TrimEditor> with TickerProviderStateMixin {
   void _onEndDragged() {
     _endFraction = _endPos.dx / _thumbnailViewerW;
     _videoEndPos = _videoDuration * _endFraction;
-    debugPrint("UE POS $_videoEndPos");
+    // debugPrint("UE POS $_videoEndPos");
     widget.onChangeEnd!(_videoEndPos);
     _linearTween.end = _endPos.dx;
     _animationController!.duration =

@@ -492,8 +492,9 @@ class _LocalFolderScreenState extends State<LocalFolderScreen> {
                                   thumbnails: thumbnails,
                                 ),
                                 withNavBar: false,
-                                pageTransitionAnimation:
-                                    PageTransitionAnimation.cupertino,
+                                pageTransitionAnimation: Platform.isIOS
+                                    ? PageTransitionAnimation.cupertino
+                                    : PageTransitionAnimation.fade,
                               );
                             }
                           },

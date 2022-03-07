@@ -12,10 +12,12 @@ class AppState {
   final Map<int, Training> trainings;
   final List<int> exploreTrainingsIds;
   final List<int> newTrainingsIds;
+  final List<int> newTrainersIds;
   final General general;
   final List<LocalVideo> localVideos;
   final List<VideoFolder> videoFolders;
   final Map<int, User> trainers;
+  final Training inCreationTraining;
 
   const AppState({
     required this.user,
@@ -23,15 +25,18 @@ class AppState {
     required this.trainings,
     required this.exploreTrainingsIds,
     required this.newTrainingsIds,
+    required this.newTrainersIds,
     required this.general,
     required this.localVideos,
     required this.videoFolders,
     required this.trainers,
+    required this.inCreationTraining,
   });
   const AppState.initial()
       : trainings = const {},
         exploreTrainingsIds = const [],
         newTrainingsIds = const [],
+        newTrainersIds = const [],
         general = const General.initial(),
         user = const User.initial(),
         improovePurchases = const ImproovePurchases.initial(),
@@ -39,13 +44,15 @@ class AppState {
         videoFolders = const [
           VideoFolder(group: "first-folder", name: "first-folder")
         ],
-        trainers = const {};
+        trainers = const {},
+        inCreationTraining = const Training.initial();
 
   dynamic toJson() => {
         'user': user.toJson(),
         'local-videos': List<dynamic>.from(localVideos.map((v) => v.toJson())),
         'video-folders':
             List<dynamic>.from(videoFolders.map((f) => f.toJson())),
+        'in-creation-training': inCreationTraining.toJson(),
         //'trainers': trainers.entries.map((e) => {e.key: e.value.toJson()}),
         //'trainings': trainings.entries.map((e) => {e.key: e.value.toJson()}),
       };
@@ -57,11 +64,13 @@ class AppState {
           (json['local-videos'] ?? []).map((v) => LocalVideo.fromJson(v))),
       videoFolders: List<VideoFolder>.from(
           (json['video-folders'] ?? []).map((f) => VideoFolder.fromJson(f))),
+      inCreationTraining: Training.fromJson(json['in-creation-training']),
       improovePurchases: const ImproovePurchases.initial(),
       trainers: const {},
       trainings: const {},
       exploreTrainingsIds: const [],
       newTrainingsIds: const [],
+      newTrainersIds: const [],
       general: const General.initial(),
       /*trainers: (json['trainers'] ?? "").map(
         (t) => {

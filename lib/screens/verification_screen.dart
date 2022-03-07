@@ -22,7 +22,7 @@ class VerificationScreen extends StatefulWidget {
 }
 
 class _VerificationScreenState extends State<VerificationScreen> {
-  TextEditingController textEditingController = TextEditingController();
+  TextEditingController? textEditingController = TextEditingController();
 
   StreamController<ErrorAnimationType>? errorController;
 
@@ -38,6 +38,7 @@ class _VerificationScreenState extends State<VerificationScreen> {
   @override
   void dispose() {
     errorController?.close();
+    textEditingController?.dispose();
 
     super.dispose();
   }

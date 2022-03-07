@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -226,8 +228,9 @@ class _SignupFormState extends State<SignupForm> {
                                   screen: const WebViewScreen(
                                       url: "https://improove.fit/terms"),
                                   withNavBar: false,
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.cupertino,
+                                  pageTransitionAnimation: Platform.isIOS
+                                      ? PageTransitionAnimation.cupertino
+                                      : PageTransitionAnimation.fade,
                                 );
                               },
                           ),
@@ -244,8 +247,9 @@ class _SignupFormState extends State<SignupForm> {
                                   screen: const WebViewScreen(
                                       url: "https://improove.fit/privacy"),
                                   withNavBar: false,
-                                  pageTransitionAnimation:
-                                      PageTransitionAnimation.cupertino,
+                                  pageTransitionAnimation: Platform.isIOS
+                                      ? PageTransitionAnimation.cupertino
+                                      : PageTransitionAnimation.fade,
                                 );
                               },
                           ),

@@ -136,21 +136,23 @@ class ExerciseScreen extends StatelessWidget {
                         ifEdit: edit,
                       ),
                       ExerciseSection(
-                        title: AppLocalizations.of(context)!.howToPerform,
+                        title:
+                            "🔍 ${AppLocalizations.of(context)!.howToPerform}",
                         textList: vm.exercise!.how,
                         onDone: (String text) =>
                             vm.setHow(trainingId, vm.exercise!.title, text),
                         ifEdit: edit,
                       ),
                       ExerciseSection(
-                        title: AppLocalizations.of(context)!.commonMistakes,
+                        title:
+                            "😵 ${AppLocalizations.of(context)!.commonMistakes}",
                         textList: vm.exercise!.mistakes,
                         onDone: (String text) => vm.setMistakes(
                             trainingId, vm.exercise!.title, text),
                         ifEdit: edit,
                       ),
                       ExerciseSection(
-                        title: AppLocalizations.of(context)!.tips,
+                        title: "💡 ${AppLocalizations.of(context)!.tips}",
                         textList: vm.exercise!.tips,
                         onDone: (String text) =>
                             vm.setTips(trainingId, vm.exercise!.title, text),

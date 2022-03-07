@@ -15,6 +15,7 @@ class LongCard extends StatelessWidget {
   final int? trainerId;
   final double? widthRatio;
   final double? heightRatio;
+  final double ratio;
 
   const LongCard({
     Key? key,
@@ -27,6 +28,7 @@ class LongCard extends StatelessWidget {
     this.trainerId = -1,
     this.onTapCard,
     this.onTapAvatar,
+    this.ratio = 16.0 / 9.0,
     this.widthRatio,
     this.heightRatio,
   }) : super(key: key);
@@ -44,16 +46,18 @@ class LongCard extends StatelessWidget {
     const heightInnerScreenRatio = 20 / 99;
     const radiusAvatarRatio = 12 / 32;
     const paddingTopAvatarRatio = 88 / 119;
-    const paddingLeftAvatarRatio = 9 / 92;
-    const paddingTopTextRatio = 97 / 119;
-    const paddingLeftTextRatio = 33 / 92;
+    const paddingLeftAvatarRatio = 6 / 92;
+    const paddingTopTextRatio = 99 / 119;
+    // const paddingLeftTextRatio = 33 / 92;
     const radius = 15.0;
     const borderSize = 2.0;
 
     //placeholders
-
     final double widthCard = widthScreen * widthScreenRatio;
     final double heightCard = widthCard * heightScreenRatio;
+
+    // final double widthCard = widthScreen * ratio;
+    // final double heightCard = widthCard / ratio;
     final double heightInnerCard = heightCard * heightInnerScreenRatio;
     final double radiusAvatar = heightInnerCard * radiusAvatarRatio;
     final double paddingTopAvatar =
@@ -62,7 +66,7 @@ class LongCard extends StatelessWidget {
         widthCard * paddingLeftAvatarRatio - borderSize;
     final double paddingTopText = heightCard * paddingTopTextRatio;
     final double paddingLeftText =
-        paddingLeftAvatar + radiusAvatar * 2 + borderSize + 10;
+        paddingLeftAvatar + radiusAvatar * 2 + borderSize + 12;
     const double paddingTopCategory = 10;
     const double paddingLeftCategory = 10;
 
@@ -139,13 +143,14 @@ class LongCard extends StatelessWidget {
                   children: <Widget>[
                     Text(
                       name ?? "",
-                      style: textTheme.subtitle2
-                          ?.copyWith(color: colorScheme.primary),
+                      style: textTheme.subtitle1?.copyWith(
+                          color: colorScheme.primary,
+                          fontWeight: FontWeight.w600),
                       overflow: TextOverflow.ellipsis,
                     ),
                     Text(duration ?? "",
                         style: textTheme.bodyText2
-                            ?.copyWith(fontSize: 10, color: Colors.grey)),
+                            ?.copyWith(fontSize: 12, color: Colors.grey)),
                   ],
                 ),
               ),

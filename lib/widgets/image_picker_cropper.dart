@@ -9,6 +9,7 @@ Future<File?> showImagePickerCropper(
   int? maxHeight,
   int? maxWidth,
   String? cropper,
+  CropAspectRatio? aspectRatio,
 ]) async {
   final colorScheme = Theme.of(context).colorScheme;
   // final buttonTheme = Theme.of(context).buttonTheme;
@@ -27,7 +28,7 @@ Future<File?> showImagePickerCropper(
       cropStyle: myCrop,
       maxHeight: maxHeight,
       maxWidth: maxWidth,
-      aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+      aspectRatio: aspectRatio ?? const CropAspectRatio(ratioX: 1, ratioY: 1),
       androidUiSettings: AndroidUiSettings(
         // toolbarTitle: 'Cropper',
         toolbarColor: colorScheme.primary,

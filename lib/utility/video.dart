@@ -46,10 +46,38 @@ recordTrimVideo(BuildContext context, {Function? onSave}) async {
           onSave: onSave,
         ),
         withNavBar: false,
-        pageTransitionAnimation: PageTransitionAnimation.cupertino,
+        pageTransitionAnimation: Platform.isIOS
+            ? PageTransitionAnimation.cupertino
+            : PageTransitionAnimation.fade,
       );
     }
     /**/
+  } catch (e) {
+    debugPrint("Errore in selezione immagine ${e.toString()}");
+  }
+}
+
+pickTrimVideo(BuildContext context,
+    {Function? onSave, bool? pop, String? folderName}) async {
+  try {
+    final ImagePicker _picker = ImagePicker();
+    final XFile? fileToSave =
+        await _picker.pickVideo(source: ImageSource.gallery);
+    if (fileToSave != null) {
+      pushNewScreen(
+        context,
+        screen: TrimmerView(
+          File(fileToSave.path),
+          onSave: onSave,
+          pop: pop ?? true,
+          folderName: folderName,
+        ),
+        withNavBar: false,
+        pageTransitionAnimation: Platform.isIOS
+            ? PageTransitionAnimation.cupertino
+            : PageTransitionAnimation.fade,
+      );
+    }
   } catch (e) {
     debugPrint("Errore in selezione immagine ${e.toString()}");
   }

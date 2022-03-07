@@ -9,8 +9,16 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class TrimmerView extends StatefulWidget {
   final File file;
   final Function? onSave;
+  final bool pop;
+  final String? folderName;
 
-  const TrimmerView(this.file, {Key? key, this.onSave}) : super(key: key);
+  const TrimmerView(
+    this.file, {
+    Key? key,
+    this.onSave,
+    this.pop = true,
+    this.folderName = "VideoSalvati",
+  }) : super(key: key);
 
   @override
   _TrimmerViewState createState() => _TrimmerViewState();
@@ -36,19 +44,24 @@ class _TrimmerViewState extends State<TrimmerView> {
 
     await _trimmer.saveTrimmedVideo(
         startValue: _startValue,
+        applyVideoEncoding: true,
         endValue: _endValue,
-        ffmpegCommand: _isMute ? '-y -c copy -an' : null,
+        ffmpegCommand:
+            '-preset slow -movflags +faststart -crf 27 ${_isMute ? '-an' : ''}',
         customVideoFormat: ".mp4",
         storageDir: StorageDir.applicationDocumentsDirectory,
-        videoFolderName: "VideoSalvati",
+        videoFolderName: widget.folderName ?? "VideoSalvati",
         videoFileName: uuid.v1(),
         onSave: (value) {
-          widget.onSave?.call(value);
+          if (value != null) {
+            widget.onSave?.call(value);
+            // widget.file.delete();
+            if (widget.pop) Navigator.pop(context);
+          }
           setState(() {
             _progressVisibility = false;
             _value = value;
           });
-          Navigator.pop(context);
         });
 
     return _value;

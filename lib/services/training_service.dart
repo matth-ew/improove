@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:improove/const/text.dart';
+import 'package:improove/redux/models/training.dart';
 
 class TrainingService {
   Dio dio = Dio();
@@ -135,6 +136,62 @@ class TrainingService {
         ),
       );
     } on DioError catch (e) {
+      debugPrint(e.response?.data['msg'].toString());
+      return null;
+    }
+  }
+
+  Future<Response?> createTraining(Training t, String token) async {
+    try {
+      dio.options.headers['Authorization'] = token;
+      return await dio.post(
+        '$backendUrl/api/createTraining',
+        data: {
+          'training': t,
+        },
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint(e.response?.data['msg'].toString());
+      return null;
+    }
+  }
+
+  Future<Response?> uploadObject(File file, String url, String type) async {
+    try {
+      debugPrint("UE UPLOADOBJECT $url");
+      // String fileName = path.split('/').last;
+      // FormData formData = FormData.fromMap({
+      //   "file": await MultipartFile.fromFile(path, filename: fileName),
+      // });
+      return await dio.put(
+        url,
+        data: file.openRead(),
+        options: Options(
+          contentType: type,
+          headers: {
+            "Content-Length": file.lengthSync(),
+            "Cache-Control": "max-age=31536000",
+          },
+        ),
+        // onSendProgress: (int sentBytes, int totalBytes) {
+        //   double progressPercent = sentBytes / totalBytes * 100;
+        //   print("$progressPercent %");
+        // },
+      );
+      // return await dio.post(url, data: File(path).readAsBytesSync());
+      // var response = await http.put(url, body: image.readAsBytesSync());
+      // return await dio.put(url, data: formData);
+      // return await dio.post(
+      //   '$backendUrl/api/createTraining',
+      //   options: Options(
+      //     headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+      //   ),
+      // );
+    } on DioError catch (e) {
+      debugPrint("UEUE ERRORE UPLOAD! ${e.toString()}");
       debugPrint(e.response?.data['msg'].toString());
       return null;
     }

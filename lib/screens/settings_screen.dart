@@ -4,6 +4,7 @@ import 'package:flutter_redux/flutter_redux.dart';
 import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
+import 'package:improove/screens/create_training_screen.dart';
 // import 'package:improove/screens/payment_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
 // import 'package:improove/screens/sub_plans_screen.dart';
@@ -70,7 +71,9 @@ class SettingsScreen extends StatelessWidget {
                     submit: vm.changeProfileInfo,
                   ),
                   withNavBar: false,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  pageTransitionAnimation: Platform.isIOS
+                      ? PageTransitionAnimation.cupertino
+                      : PageTransitionAnimation.fade,
                 );
               },
             ),
@@ -83,7 +86,9 @@ class SettingsScreen extends StatelessWidget {
                   screen:
                       const WebViewScreen(url: "https://improove.fit/terms"),
                   withNavBar: false,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  pageTransitionAnimation: Platform.isIOS
+                      ? PageTransitionAnimation.cupertino
+                      : PageTransitionAnimation.fade,
                 );
               },
             ),
@@ -96,9 +101,28 @@ class SettingsScreen extends StatelessWidget {
                   screen:
                       const WebViewScreen(url: "https://improove.fit/privacy"),
                   withNavBar: false,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  pageTransitionAnimation: Platform.isIOS
+                      ? PageTransitionAnimation.cupertino
+                      : PageTransitionAnimation.fade,
                 );
               },
+            ),
+            Visibility(
+              visible: vm.user.trainer,
+              child: ListTile(
+                leading: const Icon(Icons.fitness_center_rounded),
+                title: Text(AppLocalizations.of(context)!.ct_create),
+                onTap: () {
+                  pushNewScreen(
+                    context,
+                    screen: const CreateTrainingScreen(),
+                    withNavBar: false,
+                    pageTransitionAnimation: Platform.isIOS
+                        ? PageTransitionAnimation.cupertino
+                        : PageTransitionAnimation.fade,
+                  );
+                },
+              ),
             ),
             ListTile(
               leading: const Icon(Icons.email),

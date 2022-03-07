@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_redux/flutter_redux.dart';
@@ -194,10 +196,11 @@ class ProfileScreen extends StatelessWidget {
               onTap: () {
                 pushNewScreen(
                   context,
-                  screen:
-                      TrainingScreen(id: c.trainingId, controller: controller),
+                  screen: TrainingScreen(id: c.trainingId),
                   withNavBar: true,
-                  pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                  pageTransitionAnimation: Platform.isIOS
+                      ? PageTransitionAnimation.cupertino
+                      : PageTransitionAnimation.fade,
                 );
               },
             );

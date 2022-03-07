@@ -1,4 +1,9 @@
+import 'dart:io';
+import 'dart:math';
+
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:improove/screens/feedback_screen.dart';
 import 'package:improove/screens/training_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
@@ -20,19 +25,29 @@ class HomeScreen extends StatelessWidget {
   static const int numNewTrainings = 4;
   // static const int trainingOfTheWeek = 2;
 
-  const HomeScreen({Key? key, required this.controller}) : super(key: key);
+  void goToExplore() {
+    debugPrint("GOTOEXPLORE!");
+    controller.jumpToTab(1);
+  }
+
+  const HomeScreen({
+    Key? key,
+    required this.controller,
+  }) : super(key: key);
   @override
   Widget build(BuildContext context) {
     // final Size size = MediaQuery.of(context).size;
     final textTheme = Theme.of(context).textTheme;
     final colorScheme = Theme.of(context).colorScheme;
 
-    // var size = MediaQuery.of(context).size;
+    var size = MediaQuery.of(context).size;
+    double trainerAvatar = min(size.width * 0.25, 250);
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store),
         onInit: (store) {
           store.dispatch(getTrainings(null, numNewTrainings));
           store.dispatch(getWeekTraining());
+          store.dispatch(getLatestTrainers());
           // store.dispatch(getTrainingById(trainingOfTheWeek));
         },
         builder: (BuildContext context, _ViewModel vm) {
@@ -46,7 +61,16 @@ class HomeScreen extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+                    child: SvgPicture.asset(
+                      'assets/icons/logoScritta.svg',
+                      height: 30,
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                     child: Text(
                       AppLocalizations.of(context)!.trainingWeek,
                       style: textTheme.headline5?.copyWith(
@@ -57,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                 ),
                 SliverToBoxAdapter(
                     child: Padding(
-                  padding: const EdgeInsets.only(left: 8, right: 8),
+                  padding: const EdgeInsets.only(left: 16, right: 16),
                   child: LongCard(
                     name: weekTraining?.title,
                     duration:
@@ -72,116 +96,232 @@ class HomeScreen extends StatelessWidget {
                     onTapCard: (int index) {
                       pushNewScreen(
                         context,
-                        screen: TrainingScreen(
-                            id: weekTraining!.id, controller: controller),
+                        screen: TrainingScreen(id: weekTraining!.id),
                         withNavBar: true,
-                        pageTransitionAnimation:
-                            PageTransitionAnimation.cupertino,
+                        pageTransitionAnimation: Platform.isIOS
+                            ? PageTransitionAnimation.cupertino
+                            : PageTransitionAnimation.fade,
                       );
                     },
                   ),
                 )),
                 SliverToBoxAdapter(
                   child: Container(
-                    padding: const EdgeInsets.fromLTRB(15, 15, 15, 15),
+                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
                     child: Text(
-                      AppLocalizations.of(context)!.newTrainings,
+                      AppLocalizations.of(context)!.newTrainers,
                       style: textTheme.headline5?.copyWith(
                           color: colorScheme.primary,
                           fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
-                SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 30,
-                    // crossAxisSpacing: 0,
-                    childAspectRatio: 0.90,
-                  ),
-                  delegate: SliverChildBuilderDelegate(
-                      (BuildContext context, int index) {
-                    final training = vm.trainings[vm.ids[index]];
-                    final durationString =
-                        '${training?.exercisesLength} ${training?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}';
-                    return Center(
-                      child: PreviewCard(
-                        name: training?.title,
-                        duration: durationString,
-                        preview: training?.preview,
-                        category: training?.category,
-                        avatar: training?.trainerImage,
-                        widthRatio: 0.45,
-                        id: index,
-                        trainerId: training?.trainerId,
-                        onTapCard: (int index) {
-                          if (training != null) {
-                            pushNewScreen(
-                              context,
-                              screen: TrainingScreen(
-                                  id: training.id, controller: controller),
-                              withNavBar: true,
-                              pageTransitionAnimation:
-                                  PageTransitionAnimation.cupertino,
+                SliverToBoxAdapter(
+                  child: SizedBox(
+                    height: trainerAvatar + 30,
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: [
+                        const SizedBox(width: 12),
+                        ...vm.newTrainersIds.map(
+                          (i) {
+                            var trainer = vm.trainers[i];
+                            return Column(
+                              children: [
+                                Container(
+                                  width: trainerAvatar + 8,
+                                  height: trainerAvatar + 10,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 4, vertical: 5),
+                                  child: CircleAvatar(
+                                    backgroundColor: Colors.grey,
+                                    backgroundImage: trainer != null &&
+                                            trainer.profileImage != null
+                                        ? CachedNetworkImageProvider(
+                                            trainer.profileImage!,
+                                          )
+                                        : null,
+                                  ),
+                                ),
+                                Container(
+                                  padding:
+                                      const EdgeInsets.symmetric(horizontal: 4),
+                                  width: trainerAvatar + 8,
+                                  child: Text(
+                                    "${trainer?.name}",
+                                    style: textTheme.subtitle2,
+                                    overflow: TextOverflow.clip,
+                                    textAlign: TextAlign.center,
+                                    maxLines: 1,
+                                  ),
+                                )
+                              ],
                             );
-                          }
+                          },
+                        ),
+                        SizedBox(width: 12),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverToBoxAdapter(
+                  child: Container(
+                    padding: const EdgeInsets.fromLTRB(16, 16, 0, 16),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: Text(
+                            AppLocalizations.of(context)!.newTrainings,
+                            style: textTheme.headline5?.copyWith(
+                                color: colorScheme.primary,
+                                fontWeight: FontWeight.w600),
+                          ),
+                        ),
+                        FittedBox(
+                          fit: BoxFit.scaleDown,
+                          child: TextButton(
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    AppLocalizations.of(context)!.seeAll,
+                                    // style: textTheme.button?.copyWith(
+                                    //   decoration: TextDecoration.underline,
+                                    // ),
+                                  ),
+                                  Icon(
+                                    Icons.chevron_right,
+                                    size: 15,
+                                    color: colorScheme.secondary,
+                                  )
+                                ],
+                              ),
+                              onPressed: goToExplore),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16),
+                  sliver: SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 8,
+                      crossAxisSpacing: 8,
+                      childAspectRatio: 0.70,
+                    ),
+                    delegate: SliverChildBuilderDelegate(
+                        (BuildContext context, int index) {
+                      final training = vm.trainings[vm.ids[index]];
+                      final durationString =
+                          '${training?.exercisesLength} ${training?.exercisesLength == 1 ? AppLocalizations.of(context)!.exercise : AppLocalizations.of(context)!.exercises}';
+                      return FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 8.0),
+                          child: PreviewCard(
+                            name: training?.title,
+                            duration: durationString,
+                            preview: training?.preview,
+                            category: training?.category,
+                            avatar: training?.trainerImage,
+                            widthRatio: 0.45,
+                            id: index,
+                            trainerId: training?.trainerId,
+                            onTapCard: (int index) {
+                              if (training != null) {
+                                pushNewScreen(
+                                  context,
+                                  screen: TrainingScreen(
+                                    id: training.id,
+                                  ),
+                                  withNavBar: true,
+                                  pageTransitionAnimation: Platform.isIOS
+                                      ? PageTransitionAnimation.cupertino
+                                      : PageTransitionAnimation.fade,
+                                );
+                              }
+                            },
+                          ),
+                        ),
+                      );
+                    }, childCount: vm.ids.length),
+                  ),
+                ),
+                // const SliverPadding(padding: EdgeInsets.only(bottom: 8)),
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.0),
+                    child: Divider(),
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  sliver: SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      // height: size.width * (198 / 254) * (135 / 198),
+                      // width: size.width * (198 / 254),
+                      child: CtaCard(
+                        preview: imgCtaTraining,
+                        tag: AppLocalizations.of(context)!.ctaBecameTrainer,
+                        onPress: () {
+                          faCustomEvent(
+                            "CTA_BECOME_TRAINER",
+                            {
+                              "user": vm.userId,
+                            },
+                          );
+                          pushNewScreen(
+                            context,
+                            screen: WebViewScreen(
+                                url: AppLocalizations.of(context)!.landingUrl),
+                            withNavBar: false,
+                            pageTransitionAnimation: Platform.isIOS
+                                ? PageTransitionAnimation.cupertino
+                                : PageTransitionAnimation.fade,
+                          );
                         },
                       ),
-                    );
-                  }, childCount: vm.ids.length),
-                ),
-                const SliverPadding(padding: EdgeInsets.only(bottom: 50)),
-                SliverToBoxAdapter(
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    // height: size.width * (198 / 254) * (135 / 198),
-                    // width: size.width * (198 / 254),
-                    child: CtaCard(
-                      preview: imgCtaTraining,
-                      tag: AppLocalizations.of(context)!.ctaBecameTrainer,
-                      onPress: () {
-                        faCustomEvent(
-                          "CTA_BECOME_TRAINER",
-                          {
-                            "user": vm.userId,
-                          },
-                        );
-                        pushNewScreen(
-                          context,
-                          screen: WebViewScreen(
-                              url: AppLocalizations.of(context)!.landingUrl),
-                          withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
-                        );
-                      },
                     ),
                   ),
                 ),
-                const SliverPadding(padding: EdgeInsets.all(25)),
-                SliverToBoxAdapter(
-                  child: Container(
-                    padding: const EdgeInsets.only(left: 8, right: 8),
-                    // height: size.width * (198 / 254) * (135 / 198),
-                    // width: size.width * (198 / 254),
-                    child: CtaCard(
-                      preview: imgCtaFeedback,
-                      tag: AppLocalizations.of(context)!.ctaFeedback,
-                      onPress: () {
-                        showCustomBottomSheet(context, const FeedbackScreen());
-                        // pushNewScreen(
-                        //   context,
-                        //   screen:
-                        //       const WebViewScreen(url: "https://improove.fit"),
-                        //   withNavBar: false,
-                        //   pageTransitionAnimation:
-                        //       PageTransitionAnimation.cupertino,
-                        // );
-                      },
+                const SliverToBoxAdapter(
+                  child: Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 50.0),
+                    child: Divider(),
+                  ),
+                ),
+                SliverPadding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  sliver: SliverToBoxAdapter(
+                    child: Container(
+                      padding: const EdgeInsets.only(left: 16, right: 16),
+                      // height: size.width * (198 / 254) * (135 / 198),
+                      // width: size.width * (198 / 254),
+                      child: CtaCard(
+                        preview: imgCtaFeedback,
+                        tag: AppLocalizations.of(context)!.ctaFeedback,
+                        onPress: () {
+                          showCustomBottomSheet(
+                              context, const FeedbackScreen());
+                          // pushNewScreen(
+                          //   context,
+                          //   screen:
+                          //       const WebViewScreen(url: "https://improove.fit"),
+                          //   withNavBar: false,
+                          //   pageTransitionAnimation:
+                          //       PageTransitionAnimation.cupertino,
+                          // );
+                        },
+                      ),
                     ),
                   ),
                 ),
-                const SliverPadding(padding: EdgeInsets.all(35)),
               ],
             ),
           ));
@@ -192,13 +332,17 @@ class HomeScreen extends StatelessWidget {
 class _ViewModel {
   final int userId;
   final Map<int, Training> trainings;
+  final Map<int, User> trainers;
   final List<int> ids;
+  final List<int> newTrainersIds;
   final Training? weekTraining;
 
   _ViewModel({
     required this.userId,
     required this.trainings,
+    required this.trainers,
     required this.ids,
+    required this.newTrainersIds,
     required this.weekTraining,
   });
 
@@ -206,7 +350,9 @@ class _ViewModel {
     return _ViewModel(
       userId: store.state.user.id,
       trainings: store.state.trainings,
+      trainers: store.state.trainers,
       ids: store.state.newTrainingsIds,
+      newTrainersIds: store.state.newTrainersIds,
       weekTraining: store.state.trainings[store.state.general.weekTrainingId],
     );
   }

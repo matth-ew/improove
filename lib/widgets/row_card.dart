@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 // import 'package:improove/redux/models/training.dart';
@@ -7,6 +9,7 @@ class RowCard extends StatelessWidget {
   final String? category;
   final dynamic preview;
   final Function? onTap;
+  final int? maxLines;
   final List<Widget>? actions;
   final bool locked;
 
@@ -16,6 +19,7 @@ class RowCard extends StatelessWidget {
     this.category = '',
     this.preview,
     this.onTap,
+    this.maxLines,
     this.actions,
     this.locked = false,
   }) : super(key: key);
@@ -48,14 +52,21 @@ class RowCard extends StatelessWidget {
                               const BorderRadius.all(Radius.circular(10)),
                           child: preview != null
                               ? preview is String
-                                  ? CachedNetworkImage(
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) =>
-                                          const ColoredBox(color: Colors.grey),
-                                      imageUrl: preview!,
-                                      errorWidget: (context, url, error) =>
-                                          const ColoredBox(color: Colors.grey),
-                                    )
+                                  ? (preview as String).contains("http")
+                                      ? CachedNetworkImage(
+                                          fit: BoxFit.cover,
+                                          placeholder: (context, url) =>
+                                              const ColoredBox(
+                                                  color: Colors.grey),
+                                          imageUrl: preview!,
+                                          errorWidget: (context, url, error) =>
+                                              const ColoredBox(
+                                                  color: Colors.grey),
+                                        )
+                                      : Image(
+                                          image: FileImage(File(preview)),
+                                          fit: BoxFit.cover,
+                                        )
                                   : Image(
                                       image: MemoryImage(preview),
                                       fit: BoxFit.cover,
@@ -85,7 +96,7 @@ class RowCard extends StatelessWidget {
                           child: Text(
                             name ?? "",
                             textAlign: TextAlign.left,
-                            // maxLines: 2,
+                            maxLines: maxLines,
                             style: textTheme.subtitle1?.copyWith(
                                 color: colorScheme.primary,
                                 fontWeight: FontWeight.bold),

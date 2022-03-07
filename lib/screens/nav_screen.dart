@@ -105,7 +105,7 @@ class _NavScreenState extends State<NavScreen> {
   List<Widget> _buildScreens(PersistentTabController _controller) {
     return [
       HomeScreen(controller: _controller),
-      ExploreScreen(controller: _controller),
+      const ExploreScreen(),
       ProfileScreen(controller: _controller),
     ];
   }

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:improove/redux/models/improove_purchases.dart';
 import 'package:improove/widgets/pricing_and_plans/widgets.dart';
@@ -81,8 +83,9 @@ class SubPlanLayout extends StatelessWidget {
                           screen: const WebViewScreen(
                               url: "https://improove.fit/terms"),
                           withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
+                          pageTransitionAnimation: Platform.isIOS
+                              ? PageTransitionAnimation.cupertino
+                              : PageTransitionAnimation.fade,
                         );
                       },
                   ),
@@ -99,8 +102,9 @@ class SubPlanLayout extends StatelessWidget {
                           screen: const WebViewScreen(
                               url: "https://improove.fit/privacy"),
                           withNavBar: false,
-                          pageTransitionAnimation:
-                              PageTransitionAnimation.cupertino,
+                          pageTransitionAnimation: Platform.isIOS
+                              ? PageTransitionAnimation.cupertino
+                              : PageTransitionAnimation.fade,
                         );
                       },
                   ),

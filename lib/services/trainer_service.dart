@@ -7,6 +7,22 @@ import 'package:improove/const/text.dart';
 class TrainerService {
   Dio dio = Dio();
 
+  Future<Response?> getLatestTrainers() async {
+    try {
+      debugPrint("service getLatestTrainers");
+      return await dio.post(
+        '$backendUrl/api/getLatestTrainers',
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint("UE DIOERROR");
+      debugPrint(e.response?.data['msg'].toString());
+      return null;
+    }
+  }
+
   Future<Response?> getTrainerById(int id) async {
     try {
       debugPrint("service getTrainerById");

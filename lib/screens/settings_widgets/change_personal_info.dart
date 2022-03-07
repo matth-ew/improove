@@ -47,10 +47,12 @@ class _ChangePersonalInfoState extends State<ChangePersonalInfo> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        title: Text(
-          AppLocalizations.of(context)!.changePersInfo,
-          style: textTheme.headline6?.copyWith(
-              color: colorScheme.primary, fontWeight: FontWeight.w600),
+        title: FittedBox(
+          child: Text(
+            AppLocalizations.of(context)!.changePersInfo,
+            style: textTheme.headline6?.copyWith(
+                color: colorScheme.primary, fontWeight: FontWeight.w600),
+          ),
         ),
         leading: IconButton(
           splashRadius: 25,
