@@ -11,6 +11,7 @@ class AppState {
   final ImproovePurchases improovePurchases;
   final Map<int, Training> trainings;
   final List<int> exploreTrainingsIds;
+  final List<int> unapprovedTrainingsIds;
   final List<int> newTrainingsIds;
   final List<int> newTrainersIds;
   final General general;
@@ -24,6 +25,7 @@ class AppState {
     required this.improovePurchases,
     required this.trainings,
     required this.exploreTrainingsIds,
+    required this.unapprovedTrainingsIds,
     required this.newTrainingsIds,
     required this.newTrainersIds,
     required this.general,
@@ -35,6 +37,7 @@ class AppState {
   const AppState.initial()
       : trainings = const {},
         exploreTrainingsIds = const [],
+        unapprovedTrainingsIds = const [],
         newTrainingsIds = const [],
         newTrainersIds = const [],
         general = const General.initial(),
@@ -69,6 +72,7 @@ class AppState {
       trainers: const {},
       trainings: const {},
       exploreTrainingsIds: const [],
+      unapprovedTrainingsIds: const [],
       newTrainingsIds: const [],
       newTrainersIds: const [],
       general: const General.initial(),

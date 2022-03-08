@@ -25,6 +25,22 @@ class TrainingService {
     }
   }
 
+  Future<Response?> getUnapprovedTrainings(token) async {
+    try {
+      dio.options.headers['Authorization'] = token;
+      debugPrint("service getUnapprovedTrainings ");
+      return await dio.post(
+        '$backendUrl/api/getUnapprovedTrainings',
+        options: Options(
+          headers: {HttpHeaders.contentTypeHeader: 'application/json'},
+        ),
+      );
+    } on DioError catch (e) {
+      debugPrint("GETUNAPPTRAININGS ERROR ${e.toString()}");
+      return null;
+    }
+  }
+
   Future<Response?> getWeekTraining() async {
     try {
       return await dio.post(

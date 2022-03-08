@@ -5,6 +5,7 @@ import 'package:improove/redux/actions/actions.dart';
 import 'package:improove/redux/models/models.dart';
 import 'package:improove/screens/authentication_screen.dart';
 import 'package:improove/screens/create_training_screen.dart';
+import 'package:improove/screens/unapproved_screen.dart';
 // import 'package:improove/screens/payment_screen.dart';
 import 'package:improove/screens/webview_screen.dart';
 // import 'package:improove/screens/sub_plans_screen.dart';
@@ -27,8 +28,9 @@ class SettingsScreen extends StatelessWidget {
     return StoreConnector(
       converter: (Store<AppState> store) => _ViewModel.fromStore(store),
       builder: (BuildContext context, _ViewModel vm) {
-        return Column(
-          mainAxisSize: MainAxisSize.min,
+        return ListView(
+          shrinkWrap: true,
+          // mainAxisSize: MainAxisSize.min,
           children: <Widget>[
             ListTile(
               leading: const Icon(Icons.photo),
@@ -116,6 +118,23 @@ class SettingsScreen extends StatelessWidget {
                   pushNewScreen(
                     context,
                     screen: const CreateTrainingScreen(),
+                    withNavBar: false,
+                    pageTransitionAnimation: Platform.isIOS
+                        ? PageTransitionAnimation.cupertino
+                        : PageTransitionAnimation.fade,
+                  );
+                },
+              ),
+            ),
+            Visibility(
+              visible: vm.user.superuser,
+              child: ListTile(
+                leading: const Icon(Icons.check_circle),
+                title: const Text("Controlla corsi"),
+                onTap: () {
+                  pushNewScreen(
+                    context,
+                    screen: const UnapprovedScreen(),
                     withNavBar: false,
                     pageTransitionAnimation: Platform.isIOS
                         ? PageTransitionAnimation.cupertino

@@ -26,6 +26,12 @@ class SetNewTrainingsIds {
   SetNewTrainingsIds(this.trainingsIds);
 }
 
+class SetUnapprovedTrainingsIds {
+  final List<int> trainingsIds;
+
+  SetUnapprovedTrainingsIds(this.trainingsIds);
+}
+
 class SetTraining {
   final Training training;
   final int id;
@@ -130,6 +136,37 @@ ThunkAction<AppState> getTrainings(
         //   store.dispatch(SetTrainings(t));
         //   completer?.complete();
         // }
+      }
+      // No exception, complete without error
+    } catch (e) {
+      debugPrint("Errore in getTraining ${e.toString()}");
+      completer?.completeError(e); // Exception thrown, complete with error
+    }
+  };
+}
+
+ThunkAction<AppState> getUnapprovedTrainings([Completer? completer]) {
+  // Define the parameter
+  return (Store<AppState> store) async {
+    try {
+      final token = await getAccessToken();
+      if (token != null) {
+        final Response? r =
+            await TrainingService().getUnapprovedTrainings(token);
+        if (r?.data['success'] as bool) {
+          // debugPrint("UE GET TRAININGS IN");
+          final Map<int, Training> trainings = {};
+          final results = [...r!.data!["result"]];
+          for (var i = 0; i < results.length; i++) {
+            final Training t =
+                Training.fromJson(results[i] as Map<String, dynamic>);
+            trainings.addAll({t.id: t});
+          }
+
+          store.dispatch(SetTrainings(trainings));
+          store.dispatch(SetUnapprovedTrainingsIds(trainings.keys.toList()));
+          completer?.complete();
+        }
       }
       // No exception, complete without error
     } catch (e) {

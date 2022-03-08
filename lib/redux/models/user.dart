@@ -9,6 +9,7 @@ class User {
   final String referral;
   final bool subscribed;
   final bool trainer;
+  final bool superuser;
   final String? profileImage;
   final String? trainerImage;
   final String email;
@@ -24,6 +25,7 @@ class User {
     this.referral = "",
     this.subscribed = false,
     this.trainer = false,
+    this.superuser = false,
     this.profileImage,
     this.trainerImage,
     required this.email,
@@ -41,6 +43,7 @@ class User {
         referral = "",
         subscribed = false,
         trainer = false,
+        superuser = false,
         profileImage = null,
         trainerImage = "",
         email = "",
@@ -57,6 +60,7 @@ class User {
     String? referral,
     bool? subscribed,
     bool? trainer,
+    bool? superuser,
     String? profileImage,
     String? trainerImage,
     String? email,
@@ -73,6 +77,7 @@ class User {
       referral: referral ?? this.referral,
       subscribed: subscribed ?? this.subscribed,
       trainer: trainer ?? this.trainer,
+      superuser: superuser ?? this.superuser,
       profileImage: profileImage ?? this.profileImage,
       trainerImage: trainerImage ?? this.trainerImage,
       email: email ?? this.email,
@@ -92,6 +97,7 @@ class User {
         'referral': referral,
         'subscribed': subscribed,
         'trainer': trainer,
+        'superuser': superuser,
         'profileImage': profileImage,
         'trainerImage': trainerImage,
         'email': email,
@@ -108,6 +114,7 @@ class User {
         referral = (json['referral'] ?? "") as String,
         subscribed = (json['subscribed'] ?? false) as bool,
         trainer = (json['trainer'] ?? false) as bool,
+        superuser = (json['superuser'] ?? false) as bool,
         profileImage = (json['profileImage'] ?? "") as String,
         trainerImage = (json['trainerImage'] ?? "") as String,
         email = (json['email'] ?? "") as String,

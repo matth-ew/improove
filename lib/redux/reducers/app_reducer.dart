@@ -11,6 +11,8 @@ AppState appReducer(AppState state, dynamic action) => AppState(
       videoFolders: videoFolderReducer(state.videoFolders, action),
       exploreTrainingsIds:
           exploreTrainingsReducer(state.exploreTrainingsIds, action),
+      unapprovedTrainingsIds:
+          unapprovedTrainingsReducer(state.unapprovedTrainingsIds, action),
       newTrainingsIds: newTrainingsReducer(state.newTrainingsIds, action),
       newTrainersIds: newTrainersReducer(state.newTrainersIds, action),
       general: generalReducer(state.general, action),
