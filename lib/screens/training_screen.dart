@@ -373,14 +373,22 @@ class TrainingScreen extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 5.0),
                               child: RowCard(
+                                imageText: "🙋",
+                                imageBg: colorScheme.secondary.withOpacity(0.5),
                                 locked: !vm.user.subscribed,
-                                preview: vm.training?.preview,
+                                // preview: vm.training?.preview,
                                 name: AppLocalizations.of(context)!
                                     .askQuestionTitle,
                                 //category: "ESEMPIO", //vm.training?.exercises[index].category,
                                 category: AppLocalizations.of(context)!
                                     .askQuestionDescription,
                                 onTap: () {
+                                  faCustomEvent(
+                                    "ASK_QUESTION_TAP",
+                                    {
+                                      "user": vm.user.id,
+                                    },
+                                  );
                                   if (!vm.user.subscribed) {
                                     pushNewScreen(
                                       context,
@@ -397,14 +405,21 @@ class TrainingScreen extends StatelessWidget {
                               padding:
                                   const EdgeInsets.symmetric(vertical: 5.0),
                               child: RowCard(
+                                imageText: "🎥",
+                                imageBg: colorScheme.secondary.withOpacity(0.5),
                                 locked: !vm.user.subscribed,
-                                preview: vm.training?.preview,
                                 name: AppLocalizations.of(context)!
                                     .sendVideoFormTitle,
                                 //category: "ESEMPIO", //vm.training?.exercises[index].category,
                                 category: AppLocalizations.of(context)!
                                     .sendVideoFormDescription,
                                 onTap: () {
+                                  faCustomEvent(
+                                    "VIDEO_QUESTION_TAP",
+                                    {
+                                      "user": vm.user.id,
+                                    },
+                                  );
                                   if (!vm.user.subscribed) {
                                     pushNewScreen(
                                       context,

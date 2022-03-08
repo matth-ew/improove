@@ -79,8 +79,16 @@ class _SubPlansScreen extends State<SubPlansScreen> {
                   callback: (val) => setState(() => selectedPlan = val),
                   selectedPlan: selectedPlan,
                   products: vm.improovePurchases.products,
-                  buy: () => vm.buyImprooveSubscription(
-                      vm.improovePurchases.products[selectedPlan]),
+                  buy: () {
+                    faCustomEvent(
+                      "BUY_TAP",
+                      {
+                        "user": vm.userId,
+                      },
+                    );
+                    vm.buyImprooveSubscription(
+                        vm.improovePurchases.products[selectedPlan]);
+                  },
                 ),
               ],
             ),
@@ -92,6 +100,7 @@ class _SubPlansScreen extends State<SubPlansScreen> {
 }
 
 class _ViewModel {
+  final int userId;
   final ImproovePurchases improovePurchases;
   final Function(PurchasableProduct product, [Function? cb])
       buyImprooveSubscription;
@@ -99,6 +108,7 @@ class _ViewModel {
   // final Function(String accessToken, [Function? cb]) appleLogin;
 
   _ViewModel({
+    required this.userId,
     required this.improovePurchases,
     required this.buyImprooveSubscription,
     // required this.facebookLogin,
@@ -107,6 +117,7 @@ class _ViewModel {
 
   static _ViewModel fromStore(Store<AppState> store) {
     return _ViewModel(
+      userId: store.state.user.id,
       improovePurchases: store.state.improovePurchases,
       buyImprooveSubscription: (product, [cb]) =>
           store.dispatch(buyImprooveSubscriptionThunk(product, cb)),

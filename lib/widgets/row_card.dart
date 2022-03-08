@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 // import 'package:improove/redux/models/training.dart';
 
 class RowCard extends StatelessWidget {
+  final String? imageText;
+  final Color? imageBg;
   final String? name;
   final String? category;
   final dynamic preview;
@@ -17,6 +19,8 @@ class RowCard extends StatelessWidget {
     Key? key,
     this.name = '',
     this.category = '',
+    this.imageText,
+    this.imageBg,
     this.preview,
     this.onTap,
     this.maxLines,
@@ -71,7 +75,15 @@ class RowCard extends StatelessWidget {
                                       image: MemoryImage(preview),
                                       fit: BoxFit.cover,
                                     )
-                              : const ColoredBox(color: Colors.grey),
+                              : Container(
+                                  color: imageBg ?? Colors.grey,
+                                  child: imageText != null
+                                      ? FittedBox(
+                                          child: Padding(
+                                          padding: const EdgeInsets.all(4.0),
+                                          child: Text(imageText!),
+                                        ))
+                                      : null),
                         ),
                       ),
                       Visibility(
