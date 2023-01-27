@@ -17,6 +17,8 @@
 	<string>6.0</string>
 	<key>CFBundleName</key>
 	<string>improove</string>
+	<key>CFBundleDisplayName</key>
+	<string>Improove</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>

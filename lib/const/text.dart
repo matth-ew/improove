@@ -1,4 +1,5 @@
-//const backendUrl = "http://10.0.2.2:3001";
+// const backendUrl = "http://10.0.2.2:3001";
+// const backendUrl = "http://192.168.1.140:3001";
 const backendUrl = "https://improove.fit";
 // const backendUrl = "https://icoll.improove.fit";
 const List<String> storeKeySubscriptions = [

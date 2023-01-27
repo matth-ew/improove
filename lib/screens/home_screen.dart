@@ -19,6 +19,7 @@ import 'package:improove/widgets/preview_card.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:redux/redux.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+// import 'package:native_updater/native_updater.dart';
 
 class HomeScreen extends StatelessWidget {
   final PersistentTabController controller;
@@ -45,6 +46,10 @@ class HomeScreen extends StatelessWidget {
     return StoreConnector(
         converter: (Store<AppState> store) => _ViewModel.fromStore(store),
         onInit: (store) {
+          // NativeUpdater.displayUpdateAlert(
+          //   context,
+          //   forceUpdate: true,
+          // );
           store.dispatch(getTrainings(null, numNewTrainings));
           store.dispatch(getWeekTraining());
           store.dispatch(getLatestTrainers());
